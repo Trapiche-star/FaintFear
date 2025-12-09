@@ -8,6 +8,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private PlayerMove playerMove;
 
+    bool isOnLay = false;
 
     GameObject crossHiair;
 
@@ -52,17 +53,21 @@ public class PlayerInteraction : MonoBehaviour
         {
             Debug.Log($"범위내에 들어옴: {hit.collider.name}");
             crossHiair.SetActive(true);
-
+            isOnLay = true;
         }
         else
         {
             crossHiair.SetActive(false);
-
+            isOnLay = false;
         }
     }
 
     private void Interact()
     {
         // e키 눌렀을 때 구현
+        if(!isOnLay)
+        {
+
+        }
     }
 }
