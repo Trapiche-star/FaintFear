@@ -8,27 +8,38 @@ public class PlayerInteraction : MonoBehaviour
 
     private PlayerMove playerMove;
 
+
+    GameObject crossHiair;
+
     private void Awake()
     {
         // 같은 오브젝트에 있는 PlayerMove 컴포넌트 가져오기
         playerMove = GetComponent<PlayerMove>();
 
         if (cameraRoot == null) cameraRoot = transform.GetChild(0);
+        crossHiair = transform.GetChild (1).GetChild(0).gameObject;
+        crossHiair.SetActive(false);
     }
 
     private void OnEnable()
     {
         if (playerMove != null)
-            playerMove.OnInteractEvent += ShootRay;
+            playerMove.OnInteractEvent += Interact;
     }
 
     private void OnDisable()
     {
         if (playerMove != null)
-            playerMove.OnInteractEvent -= ShootRay;
+            playerMove.OnInteractEvent -= Interact;
     }
 
-    // E키가 눌렸을 때 실행될 함수
+    private void Update()
+    {
+        ShootRay();
+    }
+
+
+
     private void ShootRay()
     {
         Vector3 rayOrigin = cameraRoot.position;
@@ -39,9 +50,19 @@ public class PlayerInteraction : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(rayOrigin, rayDirection, out hit, rayDistance, targetLayer))
         {
-            Debug.Log($"상호작용 성공: {hit.collider.name}");
+            Debug.Log($"범위내에 들어옴: {hit.collider.name}");
+            crossHiair.SetActive(true);
 
-            // 여기에 문 열기, 아이템 줍기 등의 로직 추가
         }
+        else
+        {
+            crossHiair.SetActive(false);
+
+        }
+    }
+
+    private void Interact()
+    {
+        // e키 눌렀을 때 구현
     }
 }
