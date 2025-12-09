@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -18,6 +19,8 @@ public class PlayerMove : MonoBehaviour
     private Vector2 currentMoveInput;
     private Vector2 currentLookDelta;
     private float currentXRotation = 0f;
+
+    public Action OnInteractEvent;
 
     private void Awake()
     {
@@ -118,7 +121,7 @@ public class PlayerMove : MonoBehaviour
         // 버튼이 확실히 눌린 상태(performed)인지 확인
         if (context.performed)
         {
-            Debug.Log("Interaction (E Key) with Context!");
+            OnInteractEvent?.Invoke();
         }
     }
 }
