@@ -476,7 +476,7 @@ GameObject:
   - component: {fileID: 5166633022690514456}
   - component: {fileID: 7295266564363513482}
   - component: {fileID: 1569996443830505029}
-  m_Layer: 7
+  m_Layer: 9
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -635,7 +635,7 @@ MonoBehaviour:
   rayDistance: 2
   targetLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
   cameraRoot: {fileID: 0}
 --- !u!1 &6025288177002917330
 GameObject:

@@ -1322,9 +1322,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8610770164367743954}
     m_Modifications:
+    - target: {fileID: 1274661452001655582, guid: 3e93321d69d757d4197caad566bc1068, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6361661194741233652, guid: 3e93321d69d757d4197caad566bc1068, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6362724665350137962, guid: 3e93321d69d757d4197caad566bc1068, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 6363061078321415962, guid: 3e93321d69d757d4197caad566bc1068, type: 3}
       propertyPath: m_Name
       value: Door
+      objectReference: {fileID: 0}
+    - target: {fileID: 6363061078321415962, guid: 3e93321d69d757d4197caad566bc1068, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6366870125750228884, guid: 3e93321d69d757d4197caad566bc1068, type: 3}
       propertyPath: m_LocalPosition.x
