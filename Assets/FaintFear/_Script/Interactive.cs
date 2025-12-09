@@ -2,15 +2,8 @@ using UnityEngine;
 
 public class Interactive : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public virtual void Interaction()
     {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

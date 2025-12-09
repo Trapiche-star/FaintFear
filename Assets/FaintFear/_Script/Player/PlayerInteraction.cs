@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class PlayerInteraction : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class PlayerInteraction : MonoBehaviour
     bool isOnLay = false;
 
     GameObject crossHiair;
+
+    GameObject target;
     #endregion
 
     #region Unity Event Method
@@ -55,23 +58,34 @@ public class PlayerInteraction : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(rayOrigin, rayDirection, out hit, rayDistance, targetLayer))
         {
-            Debug.Log($"범위내에 들어옴: {hit.collider.name}");
+//            Debug.Log($"범위내에 들어옴: {hit.collider.name}");
+            target = hit.transform.gameObject;
+            Debug.Log(target);
             crossHiair.SetActive(true);
             isOnLay = true;
         }
         else
         {
             crossHiair.SetActive(false);
+            target = null;
             isOnLay = false;
         }
     }
 
     private void Interact()
     {
+        Debug.Log("e키눌림");
         // e키 눌렀을 때 구현
-        if(!isOnLay)
+        if(isOnLay && target != null)
         {
-
+            Interactive interactive = target.GetComponentInParent<Interactive>();
+            Debug.Log(interactive);
+            if (interactive != null)
+            {
+                interactive.Interaction();
+                Debug.Log("실행됨");
+            }
+            
         }
     }
     #endregion
