@@ -2,10 +2,15 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+// 이 컴포넌트가 있으면 CharacterController를 자동으로 추가함
+[RequireComponent(typeof(CharacterController))]
 public class PlayerMove : MonoBehaviour
 {
+    #region Variables
     [Header("Movement Settings")]
     [SerializeField] private float speed = 3f;
+    [SerializeField] private float gravity = -9.81f; // 중력 가속도 추가
+    [SerializeField] private float jumpHeight = 1.0f; // 필요시 점프 높이
 
     [Header("Look Settings")]
     [SerializeField] private Transform cameraRoot;
@@ -13,6 +18,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private float minXRotation = -85f;
     [SerializeField] private float maxXRotation = 85f;
 
+    private CharacterController controller; // CharacterController 참조 변수
     private PlayerInputAction inputActions;
 
     // 입력을 저장해둘 변수들
@@ -20,22 +26,27 @@ public class PlayerMove : MonoBehaviour
     private Vector2 currentLookDelta;
     private float currentXRotation = 0f;
 
+    // 중력 처리를 위한 속도 변수
+    private Vector3 velocity;
+
     public Action OnInteractEvent;
 
+    #endregion
+
+    #region Unity Event Method
     private void Awake()
     {
-        if (cameraRoot == null) cameraRoot = transform.GetChild(0);
+        // CharacterController 컴포넌트 가져오기
+        controller = GetComponent<CharacterController>();
 
+        if (cameraRoot == null) cameraRoot = transform.GetChild(0);
         inputActions = new PlayerInputAction();
     }
 
     private void OnEnable()
     {
-
         var playerMap = inputActions.Player;
-
         playerMap.Enable();
-
 
         playerMap.Move.performed += OnMove;
         playerMap.Move.canceled += OnMove;
@@ -70,21 +81,34 @@ public class PlayerMove : MonoBehaviour
     private void Update()
     {
         Look();
-    }
-
-    private void FixedUpdate()
-    {
         Move();
     }
 
+    #endregion
+
+    #region Custom Method
     void Move()
     {
-        // 저장된 입력값으로 이동 처리
+        //  바닥 체크 및 중력 초기화
+        if (controller.isGrounded && velocity.y < 0)
+        {
+            velocity.y = -2f;
+        }
+
+        // 입력에 따른 수평 이동 처리
         if (currentMoveInput != Vector2.zero)
         {
-            Vector3 movement = (transform.right * currentMoveInput.x + transform.forward * currentMoveInput.y) * speed * Time.fixedDeltaTime;
-            transform.Translate(movement, Space.World);
+            // 방향 계산
+            Vector3 moveDir = transform.right * currentMoveInput.x + transform.forward * currentMoveInput.y;
+
+            controller.Move(moveDir * speed * Time.deltaTime);
         }
+
+        // 중력 적용 (수직 이동)
+        velocity.y += gravity * Time.deltaTime;
+
+        // 중력 이동 적용 (낙하)
+        controller.Move(velocity * Time.deltaTime);
     }
 
     void Look()
@@ -103,25 +127,22 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-
     public void OnMove(InputAction.CallbackContext context)
     {
-        // Vector2 값을 읽어서 변수에 저장
         currentMoveInput = context.ReadValue<Vector2>();
     }
 
     public void OnLook(InputAction.CallbackContext context)
     {
-        // Vector2 Delta 값을 읽어서 변수에 저장
         currentLookDelta = context.ReadValue<Vector2>();
     }
 
     public void OnInteraction(InputAction.CallbackContext context)
     {
-        // 버튼이 확실히 눌린 상태(performed)인지 확인
         if (context.performed)
         {
             OnInteractEvent?.Invoke();
         }
     }
+    #endregion
 }
