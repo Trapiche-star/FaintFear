@@ -19,7 +19,7 @@ public class Flashlight : MonoBehaviour
         inputActions = new PlayerInputAction();
 
         // Flashlight Action이 눌렸을 때
-        inputActions.Player.Interaction.performed += ctx => ToggleLight();
+        inputActions.Player.Flashlight.performed += ctx => ToggleLight();
     }
 
     private void Start()
