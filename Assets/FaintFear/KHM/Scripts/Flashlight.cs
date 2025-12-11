@@ -25,7 +25,7 @@ public class Flashlight : MonoBehaviour
     private void Start()
     {
         //초기화
-        currentBattery = maxBattery;
+        currentBattery = 0f;
         isOn = false;
         spotLight.enabled = false;
     }
@@ -74,5 +74,14 @@ public class Flashlight : MonoBehaviour
             spotLight.enabled = false;
             isOn = false;
         }
+    }
+    //배터리 충전
+    public void AddBattery(float amount)
+    {
+        currentBattery += amount;
+
+        //최대값 넘지 않게
+        if (currentBattery > maxBattery)
+            currentBattery = maxBattery;
     }
 }
