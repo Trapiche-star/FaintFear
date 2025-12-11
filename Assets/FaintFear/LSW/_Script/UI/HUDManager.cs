@@ -21,10 +21,10 @@ public class HUDManager : MonoBehaviour
 
         fader.FadeOutToZero(() =>
         {
-            if (textManager != null)
+            /*if (textManager != null)
             {
                 textManager.ShowMessage("Where i am?");
-            }
+            }*/
         });
     }
 

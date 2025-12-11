@@ -1,5 +1,4 @@
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace FaintFear
 {
@@ -9,15 +8,17 @@ namespace FaintFear
     public class PlayerInteraction : MonoBehaviour
     {
         #region Variables
-        [SerializeField] private float rayDistance = 2f;
-        [SerializeField] private LayerMask targetLayer;
+        [SerializeField] private float rayDistance = 2f;        
         [SerializeField] private Transform cameraRoot; // 레이 발사 원점 (카메라 위치 권장)
+
+        [SerializeField] private GameObject crossHiair;
+        [SerializeField] private LayerMask targetLayer;
 
         private PlayerMove playerMove;
 
         bool isOnLay = false;
 
-        GameObject crossHiair;
+        
 
         GameObject target;
         #endregion
@@ -101,6 +102,5 @@ namespace FaintFear
             }
         }
         #endregion
-
     }
 }
