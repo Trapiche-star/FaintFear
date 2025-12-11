@@ -1,35 +1,42 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HUDManager : MonoBehaviour
+namespace FaintFear
 {
-    // 텍스트 매니저를 연결하기 위한 변수
-    public SequenceTextManager textManager;
+    /// <summary>
+    /// HUD 매니저
+    /// </summary>
 
-    void Start()
+    public class HUDManager : MonoBehaviour
     {
-        Transform targetObj = transform.GetChild(1);
-        Image targetImage = targetObj.GetChild(0).GetComponent<Image>();
-        SceneFader fader = targetObj.GetComponent<SceneFader>();
+        // 텍스트 매니저를 연결하기 위한 변수
+        public SequenceTextManager textManager;
 
-        Color tempColor = targetImage.color;
-        tempColor.a = 1f;
-        targetImage.color = tempColor;
-
-        if (textManager == null)
-            textManager = transform.GetChild(0).GetComponent<SequenceTextManager>();
-
-        fader.FadeOutToZero(() =>
+        void Start()
         {
-            /*if (textManager != null)
+            Transform targetObj = transform.GetChild(1);
+            Image targetImage = targetObj.GetChild(0).GetComponent<Image>();
+            SceneFader fader = targetObj.GetComponent<SceneFader>();
+
+            Color tempColor = targetImage.color;
+            tempColor.a = 1f;
+            targetImage.color = tempColor;
+
+            if (textManager == null)
+                textManager = transform.GetChild(0).GetComponent<SequenceTextManager>();
+
+            fader.FadeOutToZero(() =>
             {
-                textManager.ShowMessage("Where i am?");
-            }*/
-        });
-    }
+                /*if (textManager != null)
+                {
+                    textManager.ShowMessage("Where i am?");
+                }*/
+            });
+        }
 
-    void Update()
-    {
+        void Update()
+        {
 
+        }
     }
 }
