@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Flashlight : MonoBehaviour
 {
+    #region Variables
     public Light spotLight;              // 손전등
     private bool isOn = false;            // 현재 상태
 
@@ -14,6 +15,11 @@ public class Flashlight : MonoBehaviour
 
     private PlayerInputAction inputActions;
 
+    #endregion
+
+    #region Property
+    public float CurrentBattery { get { return currentBattery; } }
+    #endregion
     private void Awake()
     {
         inputActions = new PlayerInputAction();
