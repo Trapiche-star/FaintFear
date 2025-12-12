@@ -1,5 +1,4 @@
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace FaintFear
 {
@@ -9,15 +8,15 @@ namespace FaintFear
     public class PlayerInteraction : MonoBehaviour
     {
         #region Variables
-        [SerializeField] private float rayDistance = 2f;
-        [SerializeField] private LayerMask targetLayer;
+        [SerializeField] private float rayDistance = 2f;        
         [SerializeField] private Transform cameraRoot; // 레이 발사 원점 (카메라 위치 권장)
+
+        [SerializeField] private GameObject crossHiair;
+        [SerializeField] private LayerMask targetLayer;
 
         private PlayerMove playerMove;
 
-        bool isOnLay = false;
-
-        GameObject crossHiair;
+        bool isOnLay = false;        
 
         GameObject target;
         #endregion
@@ -55,6 +54,17 @@ namespace FaintFear
         }
         private void Update()
         {
+            // 플레이어 이동이 비활성화된 경우, 즉 OpeningTrigger 등으로 잠금 중이라면
+            if (!playerMove.enabled)
+            {
+                // 교차선 비활성화 후 Raycast 중지
+                if (crossHiair != null)
+                    crossHiair.SetActive(false);
+
+                return; // 조작 잠금 중에는 Raycast 실행하지 않음
+            }
+
+            // 평상시에는 상호작용 레이 실행
             ShootRay();
         }
 
@@ -101,6 +111,5 @@ namespace FaintFear
             }
         }
         #endregion
-
     }
 }

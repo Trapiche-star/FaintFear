@@ -1,76 +1,87 @@
+
 using UnityEngine;
 
 namespace FaintFear
 {
     /// <summary>
-    /// 플레이어가 트리거 영역(예: LightZone) 밖으로 나가지 못하도록 제한하는 스크립트
+    /// 플레이어가 트리거 영역 밖으로 나가지 못하도록 제한한다.
+    /// 단, 손전등에 배터리가 충전되면 이동 제한이 해제된다.
     /// </summary>
     [RequireComponent(typeof(BoxCollider))]
     public class TriggerRestrict : MonoBehaviour
     {
-        [Header("트리거 내부에 있어야 하는 대상 (Player 등)")]
-        public Transform target; // 플레이어 Transform을 드래그해서 연결
+        #region Variables
 
-        [Header("트리거의 경계 여유 거리 (안쪽으로 밀어넣는 거리)")]
-        public float pushBackOffset = 0.2f; // 살짝 안쪽으로 되돌리기 위한 오프셋
+        [Header("플레이어 오브젝트 (CharacterController가 붙어 있음)")]
+        public Transform player; // Player 오브젝트 연결
+
+        [Header("플레이어의 손전등 (Flashlight 스크립트)")]
+        public Flashlight flashlight; // Player 자식 오브젝트에 있는 Flashlight 연결
+
+        [Header("트리거 경계 여유 거리 (플레이어를 안쪽으로 되돌릴 거리)")]
+        public float pushBackOffset = 0.15f;
 
         private BoxCollider boxCollider;
+        private bool restrictionActive = true; // true일 때 이동 제한 활성
 
-        void Start()
+        #endregion
+
+
+        #region Unity Event Method
+
+        private void Start()
         {
-            // BoxCollider 가져오기
             boxCollider = GetComponent<BoxCollider>();
-            // 트리거로 설정되어 있어야 함
             boxCollider.isTrigger = true;
+
+            if (player == null)
+                Debug.LogWarning("TriggerRestrict: Player가 지정되지 않았습니다.");
+
+            if (flashlight == null)
+                Debug.LogWarning("TriggerRestrict: Flashlight 스크립트가 지정되지 않았습니다.");
         }
 
-        void Update()
+        private void LateUpdate()
         {
-            if (target == null || boxCollider == null)
+            if (player == null || boxCollider == null)
                 return;
 
-            // ──────────────────────────────────────────────
-            // 트리거 범위를 벗어났는지 검사
-            // BoxCollider의 중심과 사이즈를 이용해 AABB 검사
-            // ──────────────────────────────────────────────
-            Vector3 worldCenter = transform.TransformPoint(boxCollider.center);
-            Vector3 halfSize = boxCollider.size * 0.5f;
+            // 손전등이 존재하고 배터리가 있으면 제한 해제
+            if (flashlight != null && HasBattery())
+            {
+                if (restrictionActive)
+                {
+                    restrictionActive = false;
+                    Debug.Log("TriggerRestrict: 손전등 배터리 감지됨, 이동 제한 해제");
+                }
+                return;
+            }
 
-            // 경계 계산 (BoxCollider는 로컬 기준이므로 TransformPoint로 변환)
+            // 배터리 없으면 이동 제한 유지
+            restrictionActive = true;
+
+            // 트리거 경계 계산
+            Vector3 worldCenter = transform.TransformPoint(boxCollider.center);
             Bounds bounds = new Bounds(worldCenter, boxCollider.size);
 
-            // 대상(플레이어) 위치
-            Vector3 playerPos = target.position;
+            Vector3 playerPos = player.position;
 
-            // ──────────────────────────────────────────────
-            // 플레이어가 범위 밖이면, 가장 가까운 점으로 이동시켜 되돌림
-            // ──────────────────────────────────────────────
-            if (!bounds.Contains(playerPos))
+            // 플레이어가 경계 밖이라면 안쪽으로 되돌림
+            if (restrictionActive && !bounds.Contains(playerPos))
             {
-                // BoxCollider 경계 안쪽의 가장 가까운 점 계산
                 Vector3 closestPoint = bounds.ClosestPoint(playerPos);
-
-                // 안쪽으로 살짝 밀어넣기 (옵션)
                 Vector3 direction = (closestPoint - worldCenter).normalized;
                 Vector3 correctedPosition = closestPoint - direction * pushBackOffset;
 
-                // 플레이어 위치를 수정
-                target.position = correctedPosition;
+                player.position = correctedPosition;
 
-                // 디버그 표시 (선택 사항)
                 Debug.DrawLine(playerPos, correctedPosition, Color.red, 0.2f);
-
-                // 콘솔 로그 (디버그용)
-                // Debug.Log("Player attempted to leave TriggerRestrict zone — corrected position.");
             }
         }
 
-        // ──────────────────────────────────────────────
-        // 에디터에서 트리거 영역 시각화 (디버그용)
-        // ──────────────────────────────────────────────
         private void OnDrawGizmosSelected()
         {
-            Gizmos.color = new Color(0f, 0.7f, 1f, 0.3f);
+            Gizmos.color = new Color(0f, 0.6f, 1f, 0.3f);
             BoxCollider col = GetComponent<BoxCollider>();
             if (col != null)
             {
@@ -78,5 +89,39 @@ namespace FaintFear
                 Gizmos.DrawCube(col.center, col.size);
             }
         }
+
+        #endregion
+
+
+        #region Custom Method
+
+        /// <summary>
+        /// 손전등의 배터리 잔량이 남아 있는지 확인한다.
+        /// </summary>
+        private bool HasBattery()
+        {
+            var batteryField = typeof(Flashlight).GetField("currentBattery",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+
+            if (batteryField != null)
+            {
+                float currentBattery = (float)batteryField.GetValue(flashlight);
+                return currentBattery > 0f;
+            }
+
+            return false;
+        }
+
+        #endregion
+
+
+        #region Property
+
+        /// <summary>
+        /// 외부에서 현재 제한 상태를 확인할 수 있도록 제공
+        /// </summary>
+        public bool IsRestricted => restrictionActive;
+
+        #endregion
     }
 }
