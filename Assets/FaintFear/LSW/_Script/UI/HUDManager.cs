@@ -27,10 +27,10 @@ namespace FaintFear
 
             fader.FadeOutToZero(() =>
             {
-                /*if (textManager != null)
+                if (textManager != null)
                 {
                     textManager.ShowMessage("Where i am?");
-                }*/
+                }
             });
         }
 

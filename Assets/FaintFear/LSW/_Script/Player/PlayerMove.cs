@@ -36,6 +36,7 @@ namespace FaintFear
         private Vector3 velocity;
 
         public Action OnInteractEvent;
+        public Action OnFlashLightEvent;
 
         #endregion
 
@@ -61,7 +62,9 @@ namespace FaintFear
             playerMap.Look.canceled += OnLook;
 
             playerMap.Interaction.performed += OnInteraction;
+            playerMap.Flashlight.performed += OnFlashLightInteraction;
         }
+
 
         private void OnDisable()
         {
@@ -74,7 +77,7 @@ namespace FaintFear
             playerMap.Look.canceled -= OnLook;
 
             playerMap.Interaction.performed -= OnInteraction;
-
+            playerMap.Flashlight.performed -= OnFlashLightInteraction;
             playerMap.Disable();
         }
 
@@ -149,6 +152,14 @@ namespace FaintFear
             {
                 OnInteractEvent?.Invoke();
             }
+        }
+
+        private void OnFlashLightInteraction(InputAction.CallbackContext context)
+        {
+            if(context.performed)
+            {
+                OnFlashLightEvent?.Invoke();
+            }    
         }
         #endregion
     }

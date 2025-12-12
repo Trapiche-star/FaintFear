@@ -16,8 +16,8 @@ namespace FaintFear
 
         private PlayerMove playerMove;
 
-        bool isOnLay = false;        
-
+        bool isOnLay = false;
+        bool isWall = false;
         GameObject target;
         #endregion
 
@@ -82,32 +82,49 @@ namespace FaintFear
             if (Physics.Raycast(rayOrigin, rayDirection, out hit, rayDistance, targetLayer))
             {
                 target = hit.transform.gameObject;
-                crossHiair.SetActive(true);
                 isOnLay = true;
+
+                // 벽인지 확인
+                if (target.CompareTag("Wall"))
+                {
+                    isWall = true;           
+                    crossHiair.SetActive(false); 
+                }
+                else
+                {
+                    isWall = false;          
+                    crossHiair.SetActive(true); 
+                }
             }
             else
             {
+                
                 crossHiair.SetActive(false);
                 target = null;
                 isOnLay = false;
+                isWall = false; 
             }
         }
+        
 
 
         private void Interact()
         {
             Debug.Log("e키눌림");
             // e키 눌렀을 때 구현
-            if (isOnLay && target != null)
+            if (!isWall)
             {
-                Interactive interactive = target.GetComponentInParent<Interactive>();
-                Debug.Log(interactive);
-                if (interactive != null)
+                if (isOnLay && target != null)
                 {
-                    interactive.Interaction();
-                    Debug.Log("실행됨");
-                }
+                    Interactive interactive = target.GetComponentInParent<Interactive>();
+                    Debug.Log(interactive);
+                    if (interactive != null)
+                    {
+                        interactive.Interaction();
+                        Debug.Log("실행됨");
+                    }
 
+                }
             }
         }
         #endregion
