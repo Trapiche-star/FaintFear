@@ -7,6 +7,7 @@ namespace FaintFear
     /// </summary>
     public class Flashlight : MonoBehaviour
     {
+        #region Variabels
         public Light spotLight;              // 손전등
         private bool isOn = false;            // 현재 상태
 
@@ -18,7 +19,13 @@ namespace FaintFear
         private float batteryDrainRate = 10f; // 1초에 감소할 배터리량
 
         private PlayerInputAction inputActions;
+        #endregion
 
+        #region Property
+        public float CurrentBattery { get { return currentBattery; } }
+        #endregion
+
+        #region Unity Event Method
         private void Awake()
         {
             inputActions = new PlayerInputAction();
@@ -52,7 +59,9 @@ namespace FaintFear
                 DrainBattery();
             }
         }
+        #endregion
 
+        #region Custom Method
         void ToggleLight()
         {
             // 배터리가 없으면 못 켠다
@@ -89,6 +98,7 @@ namespace FaintFear
             if (currentBattery > maxBattery)
                 currentBattery = maxBattery;
         }
+        #endregion
     }
 }
 
