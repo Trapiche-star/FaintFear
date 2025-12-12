@@ -6,7 +6,6 @@ namespace FaintFear
     /// <summary>
     /// HUD 매니저
     /// </summary>
-
     public class HUDManager : MonoBehaviour
     {
         // 텍스트 매니저를 연결하기 위한 변수
