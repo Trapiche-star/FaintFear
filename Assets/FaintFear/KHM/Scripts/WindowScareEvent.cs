@@ -1,5 +1,4 @@
 using System.Collections;
-using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -23,7 +22,10 @@ namespace FaintFear
         public Transform moveTarget;            // 귀신이 이동할 타겟
 
         //시퀀스 텍스트
-        public TextMeshProUGUI sequenceText;
+        public SequenceTextManager sequenceText;
+        private string dialogueLine01 = "...방금 뭐였지?";
+        private string dialogueLine02 = "[F]를 눌러서 손전등을 켜고 끌 수 있다.";
+
 
         private bool eventTriggered = false;
         #endregion
@@ -56,11 +58,11 @@ namespace FaintFear
             yield return StartCoroutine(LookAtTarget());
             //귀신 지나가기
             yield return StartCoroutine(MoveGhost());
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
 
-            sequenceText.text = "...방금 뭐였지?";
+            sequenceText.gameObject.SetActive(true);
+            sequenceText.ShowMessage(dialogueLine01);
             yield return new WaitForSeconds(2f);
-            sequenceText.text = "";
 
             playerMove.enabled = true;
             vcam.enabled = true;
@@ -70,9 +72,9 @@ namespace FaintFear
             triggerRestrict.SetRestriction(false);
 
             //손전등 튜토리얼 대사 출력
-            sequenceText.text = "“[F]를 눌러서 손전등을 켜고 끌 수 있다.";
-            yield return new WaitForSeconds(3f);
-            sequenceText.text = "";
+            sequenceText.gameObject.SetActive(true);
+            sequenceText.ShowMessage(dialogueLine02);
+
         }
         //창문으로 강제 시점 이동
         IEnumerator LookAtTarget()

@@ -1,4 +1,5 @@
 
+using TMPro;
 using UnityEngine;
 
 namespace FaintFear
@@ -10,7 +11,11 @@ namespace FaintFear
     public class TriggerRestrict : MonoBehaviour
     {
         public Transform player;
-        public float pushBackOffset = 0.15f;
+        [SerializeField]
+        private float pushBackOffset = 0.15f;
+        public SequenceTextManager sequenceText;
+
+        private string dialogueLine = "너무 어두워서 손전등 없이는 더 이상 나아갈 수 없다.";
 
         private BoxCollider boxCollider;
         private bool restrictionActive = true;
@@ -34,12 +39,17 @@ namespace FaintFear
 
             if (!bounds.Contains(playerPos))
             {
+                //경고 텍스트 출력
+                sequenceText.gameObject.SetActive(true);
+                sequenceText.ShowMessage(dialogueLine);
+
                 Vector3 closestPoint = bounds.ClosestPoint(playerPos);
                 Vector3 direction = (closestPoint - worldCenter).normalized;
                 Vector3 correctedPosition = closestPoint - direction * pushBackOffset;
 
                 player.position = correctedPosition;
             }
+
         }
 
         private void OnDrawGizmosSelected()
