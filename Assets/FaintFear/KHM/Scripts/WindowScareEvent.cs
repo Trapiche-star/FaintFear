@@ -9,6 +9,8 @@ namespace FaintFear
     {
         #region Variables
         private PlayerMove playerMove;
+        public LightZone01 lightZone;
+        public TriggerRestrict triggerRestrict;
 
         public CinemachineCamera vcam;
         public Transform playerCamera;
@@ -63,6 +65,9 @@ namespace FaintFear
             playerMove.enabled = true;
             vcam.enabled = true;
 
+            //조명 끄기
+            lightZone.SetLightsActive(false);
+            triggerRestrict.SetRestriction(false);
 
             //손전등 튜토리얼 대사 출력
             sequenceText.text = "“[F]를 눌러서 손전등을 켜고 끌 수 있다.";
