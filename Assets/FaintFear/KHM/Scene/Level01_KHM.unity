@@ -1072,7 +1072,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80feb2b5c68ee314abd12e3ecfe62a2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flashlight: {fileID: 1195661295}
   vcam: {fileID: 418677926}
   playerCamera: {fileID: 1866099134}
   windowLookPoint: {fileID: 1239732312}
@@ -6542,7 +6541,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 636cb40ddb0526842b228645e6341e3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  player: {fileID: 0}
+  flashlight: {fileID: 0}
   pushBackOffset: 0.2
 --- !u!1 &804914822
 GameObject:
@@ -7037,6 +7037,10 @@ PrefabInstance:
     - target: {fileID: 8817918803416762565, guid: 1314fa248f727fd49a41f4096da5ff03, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8917519622233418153, guid: 1314fa248f727fd49a41f4096da5ff03, type: 3}
+      propertyPath: m_Cameras.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8917519622233418153, guid: 1314fa248f727fd49a41f4096da5ff03, type: 3}
       propertyPath: 'm_Cameras.Array.data[0]'
@@ -8185,17 +8189,6 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
---- !u!114 &1195661295 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 85205194275882025, guid: ab598e8f39346d64da5b48cd78cf8a6c, type: 3}
-  m_PrefabInstance: {fileID: 390968770}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e0e5bbfd12972b4897617060e368705, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1202666666
 GameObject:
   m_ObjectHideFlags: 0

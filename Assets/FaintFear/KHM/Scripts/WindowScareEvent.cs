@@ -8,7 +8,6 @@ namespace FaintFear
     public class WindowScareEvent : MonoBehaviour
     {
         #region Variables
-        public Flashlight flashlight;   //나중에 플레이어스탯 싱글톤으로 바꾸기
         private PlayerMove playerMove;
 
         public CinemachineCamera vcam;
@@ -34,7 +33,7 @@ namespace FaintFear
         }
         private void Update()
         {
-            if (!eventTriggered && flashlight.CurrentBattery > 0f)
+            if (!eventTriggered && PlayerStatus.Instance.currentBattery > 0f)
             {
                 //딱 한 번만 이벤트 실행
                 eventTriggered = true;
