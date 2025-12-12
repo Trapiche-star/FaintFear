@@ -1,5 +1,4 @@
 using FaintFear;
-using System;
 using UnityEngine;
 
 public class PlayerFlashLightInteraction : MonoBehaviour
