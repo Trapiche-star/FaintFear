@@ -82,7 +82,7 @@ namespace FaintFear
         // 🔸 라이트 상태를 일괄로 변경하는 함수
         //      state = true → 켜기 / false → 끄기
         // ──────────────────────────────────────────────
-        private void SetLightsActive(bool state)
+        public void SetLightsActive(bool state)
         {
             if (lights == null) return; // 배열이 비어있으면 중단
 

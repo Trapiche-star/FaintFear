@@ -1037,6 +1037,7 @@ GameObject:
   m_Component:
   - component: {fileID: 184606884}
   - component: {fileID: 184606885}
+  - component: {fileID: 184606886}
   m_Layer: 0
   m_Name: WindowScareEvent
   m_TagString: Untagged
@@ -1072,6 +1073,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80feb2b5c68ee314abd12e3ecfe62a2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lightZone: {fileID: 803317310}
+  triggerRestrict: {fileID: 803317311}
   vcam: {fileID: 418677926}
   playerCamera: {fileID: 1866099134}
   windowLookPoint: {fileID: 1239732312}
@@ -1080,6 +1083,27 @@ MonoBehaviour:
   ghostSpeed: 10
   moveTarget: {fileID: 1682318034}
   sequenceText: {fileID: 3273414022682735681}
+--- !u!65 &184606886
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 184606883}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &185158119
 GameObject:
   m_ObjectHideFlags: 0
@@ -2512,6 +2536,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab598e8f39346d64da5b48cd78cf8a6c, type: 3}
+--- !u!4 &390968771 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1199522785173185716, guid: ab598e8f39346d64da5b48cd78cf8a6c, type: 3}
+  m_PrefabInstance: {fileID: 390968770}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &392457105
 GameObject:
   m_ObjectHideFlags: 0
@@ -6541,9 +6570,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 636cb40ddb0526842b228645e6341e3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  flashlight: {fileID: 0}
-  pushBackOffset: 0.2
+  player: {fileID: 390968771}
+  pushBackOffset: 0.15
 --- !u!1 &804914822
 GameObject:
   m_ObjectHideFlags: 0
