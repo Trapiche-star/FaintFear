@@ -11,8 +11,8 @@ namespace FaintFear
     {
         [Header("참조 대상")]
         [SerializeField] private Transform lookTarget;         // 카메라가 바라볼 대상 (예: 배터리)
-        [SerializeField] private TextMeshProUGUI sequenceText; // 대사 출력용 텍스트
-        [SerializeField] private GameObject sequenceUI;         // 대사 UI 전체 패널
+        public TextMeshProUGUI sequenceText; // 대사 출력용 텍스트
+
 
         [Header("설정값")]
         [SerializeField] private float lookRotateDuration = 1.0f;  // 카메라 회전 시간
@@ -20,12 +20,6 @@ namespace FaintFear
         [SerializeField, TextArea] private string dialogueLine = "내 손전등과 호환되는 배터리가 있다.";
 
         private bool hasPlayed = false;
-
-        private void Awake()
-        {
-            if (sequenceUI != null)
-                sequenceUI.SetActive(false);
-        }
 
         private void OnTriggerEnter(Collider other)
         {
@@ -79,14 +73,19 @@ namespace FaintFear
                 cameraTransform.rotation = targetRot;
             }
 
-            // 회전이 끝난 후 텍스트 출력
-            if (sequenceUI != null) sequenceUI.SetActive(true);
+            // **텍스트 오브젝트 강제 활성화 및 출력**
             if (sequenceText != null)
+            {
+                sequenceText.gameObject.SetActive(true);
                 sequenceText.text = dialogueLine;
+            }
 
-            yield return new WaitForSeconds(dialogueHoldTime);
+            // 대사 유지 시간
+            yield return new WaitForSeconds(dialogueHoldTime + 2f); // 🔥 2초 추가 대기
 
-            if (sequenceUI != null) sequenceUI.SetActive(false);
+            // **텍스트 비활성화**
+            if (sequenceText != null)
+                sequenceText.gameObject.SetActive(false);
 
             // 다시 플레이어 조작 복귀
             if (playerMove != null)
