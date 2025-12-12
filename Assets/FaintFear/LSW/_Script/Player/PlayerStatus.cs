@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
 
 namespace FaintFear
 {
@@ -7,6 +8,11 @@ namespace FaintFear
         [Header("Player Data")]
         public float maxMentalPower = 100f;
         public float currentMentalPower;
+
+
+        //손전등
+        public float maxBattery = 100f;       // 최대 배터리  
+        public float currentBattery;          // 현재 배터리  
 
         /// <summary>
         /// [최초 1회 실행]
@@ -18,6 +24,7 @@ namespace FaintFear
 
             // 체력 초기화
             currentMentalPower = maxMentalPower;
+            currentBattery = 0f;
         }
 
         /// <summary>
@@ -34,6 +41,14 @@ namespace FaintFear
             currentMentalPower = value;
         }
 
+        //배터리 충전
+        public void AddBattery(float amount)
+        {
+            currentBattery += amount;
 
+            //최대값 넘지 않게
+            if (currentBattery > maxBattery)
+                currentBattery = maxBattery;
+        }
     }
 }

@@ -15,12 +15,8 @@ namespace FaintFear
         #region Custom Method
         public override void Interaction()
         {
-            Flashlight flashlight = FindFirstObjectByType<Flashlight>();
-
-            if (flashlight != null)
-            {
-                flashlight.AddBattery(chargeBattery);
-            }
+            //배터리 충전
+            PlayerStatus.Instance.AddBattery(chargeBattery);
 
             //아이템 킬
             Destroy(gameObject);

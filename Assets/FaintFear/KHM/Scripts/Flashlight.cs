@@ -12,17 +12,9 @@ namespace FaintFear
         private bool isOn = false;            // 현재 상태
 
         [SerializeField]
-        private float maxBattery = 100f;       // 최대 배터리  
-        [SerializeField]
-        private float currentBattery;          // 현재 배터리  
-        [SerializeField]
         private float batteryDrainRate = 10f; // 1초에 감소할 배터리량
 
         private PlayerInputAction inputActions;
-        #endregion
-
-        #region Property
-        public float CurrentBattery { get { return currentBattery; } }
         #endregion
 
         #region Unity Event Method
@@ -37,7 +29,6 @@ namespace FaintFear
         private void Start()
         {
             //초기화
-            currentBattery = 0f;
             isOn = false;
             spotLight.enabled = false;
         }
@@ -65,7 +56,7 @@ namespace FaintFear
         void ToggleLight()
         {
             // 배터리가 없으면 못 켠다
-            if (currentBattery <= 0f)
+            if (PlayerStatus.Instance.currentBattery <= 0f)
             {
                 spotLight.enabled = false;
                 isOn = false;
@@ -80,23 +71,14 @@ namespace FaintFear
         //손전등 배터리 소모
         void DrainBattery()
         {
-            currentBattery -= batteryDrainRate * Time.deltaTime;
+            PlayerStatus.Instance.currentBattery -= batteryDrainRate * Time.deltaTime;
 
-            if (currentBattery <= 0f)
+            if (PlayerStatus.Instance.currentBattery <= 0f)
             {
-                currentBattery = 0f;
+                PlayerStatus.Instance.currentBattery = 0f;
                 spotLight.enabled = false;
                 isOn = false;
             }
-        }
-        //배터리 충전
-        public void AddBattery(float amount)
-        {
-            currentBattery += amount;
-
-            //최대값 넘지 않게
-            if (currentBattery > maxBattery)
-                currentBattery = maxBattery;
         }
         #endregion
     }
