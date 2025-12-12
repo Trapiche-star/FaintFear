@@ -1,6 +1,7 @@
 using System.Collections;
-using UnityEngine;
 using TMPro;
+using Unity.Cinemachine;
+using UnityEngine;
 
 namespace FaintFear
 {
@@ -20,6 +21,9 @@ namespace FaintFear
         [SerializeField, TextArea] private string dialogueLine = "내 손전등과 호환되는 배터리가 있다.";
 
         private bool hasPlayed = false;
+        public CinemachineCamera vcam;
+        public Transform playerCamera;
+
 
         private void OnTriggerEnter(Collider other)
         {
@@ -42,23 +46,15 @@ namespace FaintFear
                 // 이동 중일 수 있으니 즉시 입력값 초기화
                 playerMove.OnMove(new UnityEngine.InputSystem.InputAction.CallbackContext());
                 // 플레이어 조작 비활성화 (정지)
+                vcam.enabled = false;
                 playerMove.enabled = false;
             }
 
-            // 카메라 가져오기
-            Transform cameraTransform = null;
-            if (playerMove != null)
-            {
-                Camera cam = playerMove.GetComponentInChildren<Camera>();
-                if (cam != null)
-                    cameraTransform = cam.transform;
-            }
-
             // 회전 처리
-            if (lookTarget != null && cameraTransform != null)
+            if (lookTarget != null && playerCamera != null)
             {
-                Quaternion startRot = cameraTransform.rotation;
-                Vector3 dir = (lookTarget.position - cameraTransform.position).normalized;
+                Quaternion startRot = playerCamera.rotation;
+                Vector3 dir = (lookTarget.position - playerCamera.position).normalized;
                 Quaternion targetRot = Quaternion.LookRotation(dir, Vector3.up);
 
                 float elapsed = 0f;
@@ -66,11 +62,11 @@ namespace FaintFear
                 {
                     elapsed += Time.deltaTime;
                     float t = Mathf.Clamp01(elapsed / lookRotateDuration);
-                    cameraTransform.rotation = Quaternion.Slerp(startRot, targetRot, t);
+                    playerCamera.rotation = Quaternion.Slerp(startRot, targetRot, t);
                     yield return null;
                 }
 
-                cameraTransform.rotation = targetRot;
+                playerCamera.rotation = targetRot;
             }
 
             // **텍스트 오브젝트 강제 활성화 및 출력**
@@ -89,7 +85,10 @@ namespace FaintFear
 
             // 다시 플레이어 조작 복귀
             if (playerMove != null)
+            {
+                vcam.enabled = true;
                 playerMove.enabled = true;
+            }
         }
     }
 }
