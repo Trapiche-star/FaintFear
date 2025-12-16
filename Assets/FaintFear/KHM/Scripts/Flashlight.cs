@@ -1,4 +1,5 @@
 using UnityEngine;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 namespace FaintFear
 {
@@ -15,6 +16,12 @@ namespace FaintFear
         private float batteryDrainRate = 10f; // 1초에 감소할 배터리량
 
         private PlayerInputAction inputActions;
+
+
+        #endregion
+
+        #region Property
+        public bool IsOn => isOn;
         #endregion
 
         #region Unity Event Method
@@ -55,29 +62,36 @@ namespace FaintFear
         #region Custom Method
         void ToggleLight()
         {
-            // 배터리가 없으면 못 켠다
-            if (PlayerStatus.Instance.currentBattery <= 0f)
+            // 배터리도 없고, 충전된 것도 없으면 사용 불가
+            if (PlayerStatus.Instance.batteryCount <= 0 &&
+                PlayerStatus.Instance.currentBattery <= 0f)
             {
                 spotLight.enabled = false;
                 isOn = false;
                 return;
             }
-
             //손전등 토글
             isOn = !isOn;
             spotLight.enabled = isOn;
         }
 
         //손전등 배터리 소모
-        void DrainBattery()
-        {
+        void DrainBattery() 
+        { 
             PlayerStatus.Instance.currentBattery -= batteryDrainRate * Time.deltaTime;
-
             if (PlayerStatus.Instance.currentBattery <= 0f)
             {
                 PlayerStatus.Instance.currentBattery = 0f;
-                spotLight.enabled = false;
-                isOn = false;
+
+                if (PlayerStatus.Instance.UseBattery())
+                {
+                    // 충전만 됨
+                }
+                else
+                {
+                    isOn = false;
+                    spotLight.enabled = false;
+                }
             }
         }
         #endregion
