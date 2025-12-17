@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PowerGaugePlayer : Interactive
+public class PowerGaugePlayer : MonoBehaviour
 {
     public PushGaugeUI gaugeUI;
 

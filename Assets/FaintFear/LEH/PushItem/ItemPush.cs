@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ItemPush : MonoBehaviour
+public class ItemPush : Interactive
 {
     public float pushForce = 5f;
 
