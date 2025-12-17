@@ -4,74 +4,53 @@ namespace FaintFear
 {
     /// <summary>
     /// 열쇠 아이템 획득 처리
-    /// 플레이어의 PlayerInteraction 시스템을 통해 상호작용됨
     /// </summary>
-    public class KeyItem : Interactive
+    public class KeyItem : Interactive, IActionProvider
     {
-        #region Variables
-        [Header("획득 후 메시지 설정")]
-        [SerializeField] private string messageText = "이걸로 저쪽 문을 열 수 있을지도 모른다."; // 시퀀스 메시지
-        [SerializeField] private float messageDuration = 2.0f; // 메시지 유지 시간
+        // 이 열쇠의 타입
+        [SerializeField] private RoomKeyType keyType = RoomKeyType.None;
 
-        [Header("UI 연결 (수동 지정)")]
-        [SerializeField] private SequenceTextManager sequenceTextManager; // 대사 텍스트 출력용
-        [SerializeField] private ActionUI actionUI; // Press [E] UI 표시용
-        #endregion
+        // 획득 시 출력할 메시지
+        [SerializeField] private string messageText = "이걸로 저쪽 문을 열 수 있을지도 모른다.";
 
-        #region Unity Event
+        // 메시지 표시 시간
+        [SerializeField] private float messageDuration = 2.0f;
+
+        // 시퀀스 텍스트 출력용
+        [SerializeField] private SequenceTextManager sequenceTextManager;
+
         private void Awake()
         {
-            // 자동 탐색 대신 경고만 출력 (씬에서 수동 연결 권장)
+            // 시퀀스 텍스트 연결 확인
             if (sequenceTextManager == null)
-                Debug.LogWarning("PickupKey: SequenceTextManager가 인스펙터에 연결되어 있지 않습니다.");
-
-            if (actionUI == null)
-                Debug.LogWarning("PickupKey: ActionUI가 인스펙터에 연결되어 있지 않습니다.");
+                Debug.LogWarning("KeyItem: SequenceTextManager가 연결되지 않음");
         }
-        #endregion
 
-        #region Custom Method
-        /// <summary>
-        /// 플레이어가 상호작용(E) 키를 눌렀을 때 실행됨
-        /// </summary>
+        // E 키 상호작용 시 호출
         public override void Interaction()
         {
-            // 플레이어 객체 찾기
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            if (player == null)
-            {
-                Debug.LogWarning("PickupKey: Player를 찾을 수 없습니다.");
+            // 플레이어 상태 가져오기
+            PlayerStatus_DY playerStatus = PlayerStatus_DY.Instance;
+            if (playerStatus == null)
                 return;
-            }
 
-            // PlayerStatus 또는 다른 인벤토리 매니저를 통해 열쇠 보유 상태 설정
-            PlayerStatus status = player.GetComponent<PlayerStatus>();
-            if (status != null)
-                status.hasKey = true;
-            else
-                Debug.Log("PickupKey: PlayerStatus가 없어서 hasKey를 저장하지 못했습니다.");
+            // 열쇠 타입이 유효하면 플레이어에게 추가
+            if (keyType != RoomKeyType.None)
+                playerStatus.AcquireKey(keyType);
 
-            // 대사 텍스트 출력
+            // 획득 메시지 출력
             if (sequenceTextManager != null)
             {
                 sequenceTextManager.gameObject.SetActive(true);
                 sequenceTextManager.ShowMessage(messageText);
-                player.GetComponent<MonoBehaviour>().StartCoroutine(HideMessageAfterDelay());
+                StartCoroutine(HideMessageAfterDelay());
             }
 
-            // 액션 UI 숨김
-            if (actionUI != null)
-                actionUI.HideAction();
-
-            // 아이템 제거
+            // 열쇠 오브젝트 제거
             Destroy(gameObject);
-
-            Debug.Log("열쇠를 획득했습니다!");
         }
 
-        /// <summary>
-        /// 일정 시간 후 시퀀스 텍스트 자동 비활성화
-        /// </summary>
+        // 일정 시간 후 메시지 숨김
         private System.Collections.IEnumerator HideMessageAfterDelay()
         {
             yield return new WaitForSeconds(messageDuration);
@@ -79,6 +58,11 @@ namespace FaintFear
             if (sequenceTextManager != null)
                 sequenceTextManager.gameObject.SetActive(false);
         }
-        #endregion
+
+        // ActionUI에 표시할 문구 제공
+        public string GetActionText()
+        {
+            return "열쇠 줍기";
+        }
     }
 }
