@@ -11,10 +11,14 @@ namespace FaintFear
         [Header("Player Data")]
         public float maxMentalPower = 100f;
         public float currentMentalPower;
+        public bool isMentalSystemActive = false;   //정신력 시스템 on/off
 
         [Header("Flashlight Battery")]
         public float maxBattery = 100f;   // 최대 배터리  
-        public float currentBattery;      // 현재 배터리  
+        public float currentBattery;      // 현재 배터리
+        public float BatteryNormalized
+        => currentBattery / maxBattery;
+        public int batteryCount;          // 소지 중인 배터리 갯수  
 
         [Header("Key / Inventory")]
         public bool hasKey = false;       // 열쇠 보유 여부 (true면 이미 획득한 상태)
@@ -31,6 +35,8 @@ namespace FaintFear
             currentMentalPower = maxMentalPower;
             currentBattery = 0f;
             hasKey = false;
+            isMentalSystemActive = false;
+            batteryCount = 0;
         }
 
         /// <summary>
@@ -49,12 +55,30 @@ namespace FaintFear
             currentMentalPower = Mathf.Clamp(value, 0f, maxMentalPower);
         }
 
-        // 배터리 충전
-        public void AddBattery(float amount)
+        // 배터리 획득
+        public void AddBattery(int amount = 1)
         {
-            currentBattery += amount;
-            if (currentBattery > maxBattery)
+            batteryCount += amount;
+            //배터리가 0일 때 자동충전
+            if (currentBattery <= 0f)
+            {
+                UseBattery();
+            }
+        }
+
+        // 배터리 사용
+        public bool UseBattery() 
+        {
+            if (batteryCount <= 0)
+            {
+                return false;
+            }
+            else
+            {
+                batteryCount--;
                 currentBattery = maxBattery;
+                return true;
+            }
         }
 
         // 열쇠 획득

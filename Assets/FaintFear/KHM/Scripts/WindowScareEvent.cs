@@ -21,6 +21,7 @@ namespace FaintFear
         private float ghostSpeed = 10f;         // 귀신 이동 속도
         public Transform moveTarget;            // 귀신이 이동할 타겟
 
+
         //시퀀스 텍스트
         public SequenceTextManager sequenceText;
         private string dialogueLine01 = "...방금 뭐였지?";
@@ -40,6 +41,7 @@ namespace FaintFear
             if (!eventTriggered && PlayerStatus.Instance.currentBattery > 0f)
             {
                 //딱 한 번만 이벤트 실행
+
                 eventTriggered = true;
                 StartCoroutine(SequencePlay());
             }
@@ -74,6 +76,9 @@ namespace FaintFear
             //손전등 튜토리얼 대사 출력
             sequenceText.gameObject.SetActive(true);
             sequenceText.ShowMessage(dialogueLine02);
+
+            //정신력 시스템 활성화
+            PlayerStatus.Instance.isMentalSystemActive = true;
 
         }
         //창문으로 강제 시점 이동
