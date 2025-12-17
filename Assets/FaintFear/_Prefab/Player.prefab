@@ -615,6 +615,7 @@ GameObject:
   - component: {fileID: 8351846713739902933}
   - component: {fileID: 6885628749521097876}
   - component: {fileID: 8684962116225627029}
+  - component: {fileID: 701176825125162056}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -791,9 +792,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxMentalPower: 100
   currentMentalPower: 0
+  isMentalSystemActive: 0
   maxBattery: 100
   currentBattery: 0
+  isBatteryActive: 0
+  batteryCount: 0
   hasKey: 0
+--- !u!114 &701176825125162056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4679641284391280309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 258c96be02caa0741b4bf9c761dd952f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4942544897766904401
 GameObject:
   m_ObjectHideFlags: 0

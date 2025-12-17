@@ -114,7 +114,8 @@ namespace FaintFear
         }
         
 
-
+ 
+        
         private void Interact()
         {
             Debug.Log("e키눌림");

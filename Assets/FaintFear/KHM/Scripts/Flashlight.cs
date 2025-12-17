@@ -30,7 +30,7 @@ namespace FaintFear
             inputActions = new PlayerInputAction();
 
             // Flashlight Action이 눌렸을 때
-            inputActions.Player.Flashlight.performed += ctx => ToggleLight();
+            //inputActions.Player.Flashlight.performed += ctx => ToggleLight();
         }
 
         private void Start()
@@ -43,12 +43,12 @@ namespace FaintFear
 
         private void OnEnable()
         {
-            inputActions.Enable();
+            //inputActions.Enable();
         }
 
         private void OnDisable()
         {
-            inputActions.Disable();
+            //inputActions.Disable();
         }
 
         private void Update()
@@ -61,7 +61,7 @@ namespace FaintFear
         #endregion
 
         #region Custom Method
-        void ToggleLight()
+        public void ToggleLight()
         {
             // 배터리도 없고, 충전된 것도 없으면 사용 불가
             if (PlayerStatus.Instance.batteryCount <= 0 &&
