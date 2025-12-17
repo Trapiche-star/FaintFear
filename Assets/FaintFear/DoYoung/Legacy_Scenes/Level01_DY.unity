@@ -6497,8 +6497,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 6264263604394344605}
-  flashlight: {fileID: 0}
   pushBackOffset: 0.2
+  sequenceText: {fileID: 224630055}
 --- !u!1 &804914822
 GameObject:
   m_ObjectHideFlags: 0
