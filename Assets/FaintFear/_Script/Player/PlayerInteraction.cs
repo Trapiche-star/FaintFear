@@ -3,138 +3,183 @@ using UnityEngine;
 namespace FaintFear
 {
     /// <summary>
-    /// 카메라 시점에서 레이를 발사하여 상호작용 가능한 오브젝트 감지 및 상호작용 처리
+    /// 플레이어 상호작용 처리
+    /// 카메라 전방으로 Raycast를 발사하여 상호작용 대상 감지 및 처리
     /// </summary>
     public class PlayerInteraction : MonoBehaviour
     {
         #region Variables
-        [SerializeField] private float rayDistance = 2f;        
-        [SerializeField] private Transform cameraRoot; // 레이 발사 원점 (카메라 위치 권장)
 
+        // Raycast 최대 거리
+        [SerializeField] private float rayDistance = 2f;
+
+        // Raycast 발사 기준 (카메라)
+        [SerializeField] private Transform cameraRoot;
+
+        // 화면 중앙 크로스헤어 UI
         [SerializeField] private GameObject crossHiair;
+
+        // 상호작용 가능한 레이어 마스크
         [SerializeField] private LayerMask targetLayer;
 
+        // 상호작용 문구 UI
+        [SerializeField] private ActionUI actionUI;
+
+        // 플레이어 이동 및 입력 이벤트 처리용
         private PlayerMove playerMove;
 
-        bool isOnLay = false;
-        bool isWall = false;
-        GameObject target;
+        // Ray가 대상에 맞았는지 여부
+        private bool isOnLay = false;
+
+        // 현재 대상이 벽인지 여부
+        private bool isWall = false;
+
+        // Ray에 맞은 오브젝트
+        private GameObject target;
+
+        // 현재 바라보는 상호작용 대상 (문, 열쇠 등)
+        private IActionProvider currentAction;
+
         #endregion
 
+
         #region Unity Event Method
+
         private void Awake()
         {
-
-            // 같은 오브젝트에 있는 PlayerMove 컴포넌트 가져오기
+            // PlayerMove 컴포넌트 가져오기
             playerMove = GetComponent<PlayerMove>();
 
-            // 인스펙터에서 직접 연결했다면 이건 건너뜀
+            // 카메라가 지정되지 않았으면 자동 탐색
             if (cameraRoot == null)
                 cameraRoot = GetComponentInChildren<Camera>().transform;
 
+            // 크로스헤어 자동 연결 (플레이어 하위 구조 기준)
             crossHiair = transform.GetChild(1).GetChild(0).gameObject;
 
+            // ActionUI 자동 탐색 (씬에 하나만 있다고 가정)
+            if (actionUI == null)
+                actionUI = FindFirstObjectByType<ActionUI>();
 
-            // crossHiair만 꺼지게 함 (카메라 구조에 영향 X)
+            // 시작 시 크로스헤어 비활성화
             if (crossHiair != null)
                 crossHiair.SetActive(false);
         }
 
         private void OnEnable()
         {
-
+            // E 키 입력 이벤트 구독
             if (playerMove != null)
                 playerMove.OnInteractEvent += Interact;
         }
 
         private void OnDisable()
         {
+            // E 키 입력 이벤트 해제
             if (playerMove != null)
                 playerMove.OnInteractEvent -= Interact;
         }
+
         private void Update()
         {
+            // UI가 열려 있으면 상호작용 중단
             if (UIState.IsUIOpen)
             {
-                if (crossHiair != null)
-                    crossHiair.SetActive(false);
+                crossHiair?.SetActive(false);
+                actionUI?.HideAction();
                 return;
             }
 
-            // 플레이어 이동이 비활성화된 경우, 즉 OpeningTrigger 등으로 잠금 중이라면
+            // 플레이어 이동이 잠겨 있으면 상호작용 중단
             if (!playerMove.enabled)
             {
-                // 교차선 비활성화 후 Raycast 중지
-                if (crossHiair != null)
-                    crossHiair.SetActive(false);
-
-                return; // 조작 잠금 중에는 Raycast 실행하지 않음
+                crossHiair?.SetActive(false);
+                actionUI?.HideAction();
+                return;
             }
 
-            // 평상시에는 상호작용 레이 실행
+            // 상호작용 Raycast 실행
             ShootRay();
         }
 
         #endregion
 
+
         #region Custom Method
+
+        // 카메라 전방으로 Raycast를 발사하여 상호작용 대상 감지
         private void ShootRay()
         {
             Vector3 rayOrigin = cameraRoot.position;
             Vector3 rayDirection = cameraRoot.forward;
 
+            // Scene 뷰 디버그용 Ray
             Debug.DrawRay(rayOrigin, rayDirection * rayDistance, Color.green, 1f);
 
             RaycastHit hit;
             if (Physics.Raycast(rayOrigin, rayDirection, out hit, rayDistance, targetLayer))
             {
+                // Ray가 무언가에 맞았을 때
                 target = hit.transform.gameObject;
                 isOnLay = true;
 
-                // 벽인지 확인
+                // 벽이면 상호작용 차단
                 if (target.CompareTag("Wall"))
                 {
-                    isWall = true;           
-                    crossHiair.SetActive(false); 
+                    isWall = true;
+                    crossHiair.SetActive(false);
+                    actionUI?.HideAction();
+                    currentAction = null;
                 }
                 else
                 {
-                    isWall = false;          
-                    crossHiair.SetActive(true); 
+                    // 상호작용 가능한 대상
+                    isWall = false;
+                    crossHiair.SetActive(true);
+
+                    // IActionProvider 구현 여부 확인
+                    IActionProvider action = target.GetComponentInParent<IActionProvider>();
+                    if (action != null)
+                    {
+                        // 대상이 제공하는 문구 표시
+                        actionUI?.ShowAction(action.GetActionText());
+                        currentAction = action;
+                    }
+                    else
+                    {
+                        // 상호작용 대상이 아니면 UI 숨김
+                        actionUI?.HideAction();
+                        currentAction = null;
+                    }
                 }
             }
             else
             {
-                
+                // 아무것도 맞지 않았을 때 상태 초기화
                 crossHiair.SetActive(false);
+                actionUI?.HideAction();
+
                 target = null;
                 isOnLay = false;
-                isWall = false; 
+                isWall = false;
+                currentAction = null;
             }
         }
-        
 
- 
-        
+        // E 키 입력 시 호출
         private void Interact()
         {
-            Debug.Log("e키눌림");
-            // e키 눌렀을 때 구현
-            if (!isWall)
+            // 벽이 아니고 상호작용 대상이 있을 때만 실행
+            if (!isWall && isOnLay && target != null)
             {
-                if (isOnLay && target != null)
+                Interactive interactive = target.GetComponentInParent<Interactive>();
+                if (interactive != null)
                 {
-                    Interactive interactive = target.GetComponentInParent<Interactive>();
-                    Debug.Log(interactive);
-                    if (interactive != null)
-                    {
-                        interactive.Interaction();
-                        Debug.Log("실행됨");
-                    }
-
+                    interactive.Interaction();
                 }
             }
         }
+
         #endregion
     }
 }

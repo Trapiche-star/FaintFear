@@ -30,7 +30,7 @@ namespace FaintFear
         public override void Interaction()
         {
             // 플레이어 상태 가져오기
-            PlayerStatus_DY playerStatus = PlayerStatus_DY.Instance;
+            PlayerStatus playerStatus = PlayerStatus.Instance;
             if (playerStatus == null)
                 return;
 
