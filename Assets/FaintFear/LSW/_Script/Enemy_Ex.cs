@@ -42,7 +42,6 @@ namespace FaintFear
         // 상태 변수
         private EnemyState currentState;
         private CharacterController controller;
-        private Animator ani;
         private SphereCollider detectTrigger;
         private Transform target;
         private Vector3 lastKnownPos;
@@ -65,7 +64,6 @@ namespace FaintFear
             detectTrigger = GetComponent<SphereCollider>();
             detectTrigger.isTrigger = true;
             startPos = transform.position;
-            ani = GetComponent<Animator>();
         }
 
         private void Start()
@@ -101,9 +99,6 @@ namespace FaintFear
             // 1. 대기(Idle) 상태: 목적지 도착 후 멈춰서 주변을 두리번거림
             if (isWanderIdle)
             {
-                // [애니메이션] 멈춤 상태 (State = 0)
-                ani.SetInteger("State", 0);
-
                 currentIdleTimer -= Time.deltaTime;
                 nextLookTimer -= Time.deltaTime;
 
@@ -131,9 +126,6 @@ namespace FaintFear
             // 2. 이동 상태: 다음 배회 지점으로 이동
             else
             {
-                // [애니메이션] 이동 상태 (State = 1)
-                ani.SetInteger("State", 1);
-
                 wanderTimer += Time.deltaTime;
                 float dist = Vector3.Distance(transform.position, currentDestination);
 
@@ -160,9 +152,6 @@ namespace FaintFear
 
         private void ChaseUpdate()
         {
-            // [애니메이션] 추적 중 이동 (State = 1)
-            ani.SetInteger("State", 1);
-
             // 추적 중일 때는 ignoreAngle: true를 전달하여 시야각을 무시
             // 즉, 플레이어가 등 뒤로 가더라도 사거리 내에 있고 벽이 없다면 계속 추적
             if (CheckLineOfSight(ignoreAngle: true))
@@ -192,9 +181,6 @@ namespace FaintFear
 
         private void SearchUpdate()
         {
-            // [애니메이션] 수색 중 이동 (State = 1)
-            ani.SetInteger("State", 1);
-
             // 수색 중 다시 발견하면 추적 재개
             // (기본값 false 사용)
             if (CheckLineOfSight())
@@ -216,9 +202,6 @@ namespace FaintFear
 
         private void AttackUpdate()
         {
-            // [애니메이션] 공격 대기/공격 중 멈춤 (State = 0)
-            ani.SetInteger("State", 0);
-
             float dist = Vector3.Distance(transform.position, target.position);
 
             // 추적과 마찬가지로 시야각을 무시(true)하고 거리와 장애물만 체크.
@@ -234,7 +217,6 @@ namespace FaintFear
             LookAtTarget(target.position);
 
             // 공격 로직 (애니메이션 실행 등)
-            // 예: ani.SetTrigger("Attack");
         }
 
         // --- 기능 메서드 ---

@@ -4579,7 +4579,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1.1, y: 1.1, z: 1.1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &747373278
 GameObject:
@@ -4940,6 +4940,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allPointLights: {fileID: 1298566637}
+  allEmissiveObjects: {fileID: 0}
   activeRange: 8
   inactiveRange: 0
   triggerLightDistance: 10
@@ -8843,7 +8844,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isLocked: 1
-  requiredTag: Player
+  requiredKey: 0
   sequenceTextManager: {fileID: 2312052754214785565}
   actionUI: {fileID: 0}
   messageDuration: 2
@@ -10915,7 +10916,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 997ceef848678ec418a0cd58240b76b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chargeBattery: 20
 --- !u!65 &1528933198
 BoxCollider:
   m_ObjectHideFlags: 0
