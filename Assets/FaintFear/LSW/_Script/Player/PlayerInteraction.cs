@@ -54,6 +54,13 @@ namespace FaintFear
         }
         private void Update()
         {
+            if (UIState.IsUIOpen)
+            {
+                if (crossHiair != null)
+                    crossHiair.SetActive(false);
+                return;
+            }
+
             // 플레이어 이동이 비활성화된 경우, 즉 OpeningTrigger 등으로 잠금 중이라면
             if (!playerMove.enabled)
             {

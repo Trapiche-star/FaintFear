@@ -38,6 +38,7 @@ namespace FaintFear
             //초기화
             isOn = false;
             spotLight.enabled = false;
+            PlayerStatus.Instance.isBatteryActive = true;
         }
 
         private void OnEnable()
@@ -77,7 +78,10 @@ namespace FaintFear
 
         //손전등 배터리 소모
         void DrainBattery() 
-        { 
+        {
+            if (PlayerStatus.Instance.isBatteryActive == false)
+                return;
+           
             PlayerStatus.Instance.currentBattery -= batteryDrainRate * Time.deltaTime;
             if (PlayerStatus.Instance.currentBattery <= 0f)
             {

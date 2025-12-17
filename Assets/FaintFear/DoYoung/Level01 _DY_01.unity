@@ -8668,9 +8668,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isLocked: 1
-  requiredKey: 0
+  requiredKey: 1
   sequenceTextManager: {fileID: 2312052754214785565}
-  actionUI: {fileID: 0}
+  actionUI: {fileID: 9082049715431080301}
   messageDuration: 2
 --- !u!1 &1256880563
 GameObject:
@@ -9605,6 +9605,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a226c85f76dceab41a2e57d6e1e5dac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  keyType: 1
   messageText: "\uC774\uAC78\uB85C \uC800\uCABD \uBB38\uC744 \uC5F4 \uC218 \uC788\uC744\uC9C0\uB3C4
     \uBAA8\uB978\uB2E4."
   messageDuration: 2
@@ -9686,10 +9687,14 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -458917195589454949, guid: 3e93321d69d757d4197caad566bc1068, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6363061078321415962, guid: 3e93321d69d757d4197caad566bc1068, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1891890649}
   m_SourcePrefab: {fileID: 100100000, guid: 3e93321d69d757d4197caad566bc1068, type: 3}
 --- !u!1 &1378012228
 GameObject:
@@ -12041,6 +12046,28 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!1 &1891890648 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6363061078321415962, guid: 3e93321d69d757d4197caad566bc1068, type: 3}
+  m_PrefabInstance: {fileID: 1367687768}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1891890649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1891890648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0db226948e449c45b1276a935162a53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLocked: 0
+  requiredKey: 0
+  sequenceTextManager: {fileID: 2312052754214785565}
+  actionUI: {fileID: 9082049715431080301}
+  messageDuration: 2
 --- !u!1 &1895512613
 GameObject:
   m_ObjectHideFlags: 0
@@ -25999,7 +26026,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '[E]'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e3039df8ac8829c4bb38c2013bad93c6, type: 2}
   m_sharedMaterial: {fileID: -5658785806089299815, guid: e3039df8ac8829c4bb38c2013bad93c6, type: 2}
@@ -68602,9 +68629,9 @@ GameObject:
   - component: {fileID: 6319819863269100169}
   - component: {fileID: 8257001905768644375}
   - component: {fileID: 6002705432019003052}
-  - component: {fileID: 6704390117447561596}
   - component: {fileID: 1819944884000034879}
-  - component: {fileID: 3830501361318525822}
+  - component: {fileID: 6704390117447561596}
+  - component: {fileID: 8257001905768644377}
   - component: {fileID: 8257001905768644376}
   m_Layer: 9
   m_Name: Player
@@ -81987,24 +82014,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!114 &3830501361318525822
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3051024476302176607}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7019042d40df8749aec41b05ba6cc3a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rayDistance: 2
-  cameraRoot: {fileID: 0}
-  crossHiair: {fileID: 6453719889796055534}
-  targetLayer:
-    serializedVersion: 2
-    m_Bits: 4416
 --- !u!33 &3830901832476616606
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -161851,6 +161860,24 @@ MonoBehaviour:
   currentMentalPower: 0
   maxBattery: 100
   currentBattery: 0
+--- !u!114 &8257001905768644377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3051024476302176607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5593626c2416084db11638b0de5d8b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rayDistance: 2
+  cameraRoot: {fileID: 0}
+  crossHiair: {fileID: 6453719889796055534}
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 6464
 --- !u!4 &8258921229275239584
 Transform:
   m_ObjectHideFlags: 0
@@ -177059,6 +177086,7 @@ GameObject:
   - component: {fileID: 8894101032838720737}
   - component: {fileID: 8943776041728294501}
   - component: {fileID: 628326275534736126}
+  - component: {fileID: 9082049715431080301}
   m_Layer: 5
   m_Name: ActionText
   m_TagString: Untagged
@@ -177066,6 +177094,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &9082049715431080301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9082049715431080300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09a03b827f402484c8a0ce2afc196f69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionText: {fileID: 628326275534736126}
 --- !u!64 &9087565175640429730
 MeshCollider:
   m_ObjectHideFlags: 0

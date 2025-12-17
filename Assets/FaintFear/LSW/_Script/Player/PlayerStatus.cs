@@ -16,6 +16,8 @@ namespace FaintFear
         [Header("Flashlight Battery")]
         public float maxBattery = 100f;   // 최대 배터리  
         public float currentBattery;      // 현재 배터리
+        public bool isBatteryActive = false;   //배터리 시스템 on/off
+
         public float BatteryNormalized
         => currentBattery / maxBattery;
         public int batteryCount;          // 소지 중인 배터리 갯수  
