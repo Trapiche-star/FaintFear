@@ -52,10 +52,10 @@ public class PowerGaugePlayer : Interactive
 
     void PushObject()
     {
-        Debug.Log("밀기 발동");
+       //
     }
 
-    // 🔥 Trigger로 감지
+    //Trigger로 감지
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("PushItem"))

@@ -37,6 +37,8 @@ namespace FaintFear
 
         public Action OnInteractEvent;
         public Action OnFlashLightEvent;
+        public Action OnPushEvent;
+
 
         #endregion
 
@@ -63,6 +65,8 @@ namespace FaintFear
 
             playerMap.Interaction.performed += OnInteraction;
             playerMap.Flashlight.performed += OnFlashLightInteraction;
+
+            playerMap.Push.performed += OnPushInteraction;
         }
 
 
@@ -78,7 +82,7 @@ namespace FaintFear
 
             playerMap.Interaction.performed -= OnInteraction;
             playerMap.Flashlight.performed -= OnFlashLightInteraction;
-            playerMap.Disable();
+            playerMap.Push.performed -= OnPushInteraction;
         }
 
         private void Start()
@@ -160,6 +164,14 @@ namespace FaintFear
             {
                 OnFlashLightEvent?.Invoke();
             }    
+        }
+
+        private void OnPushInteraction(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                OnPushEvent?.Invoke();
+            }
         }
         #endregion
     }
