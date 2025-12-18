@@ -54,7 +54,7 @@ namespace FaintFear
                 return;
 
             // 플레이어 상태 가져오기
-            PlayerStatus_DY player = PlayerStatus_DY.Instance;
+            PlayerStatus player = PlayerStatus.Instance;
             if (player == null)
                 return;
 

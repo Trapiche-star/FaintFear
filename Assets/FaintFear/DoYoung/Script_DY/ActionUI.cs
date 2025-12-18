@@ -4,7 +4,7 @@ using TMPro;
 namespace FaintFear
 {
     /// <summary>
-    /// "Press [E]" 형태의 상호작용 안내 텍스트 UI 제어
+    /// 상호작용 안내 텍스트 UI 제어
     /// </summary>
     public class ActionUI : MonoBehaviour
     {
@@ -24,8 +24,8 @@ namespace FaintFear
         // 상호작용 문구 표시
         public void ShowAction(string text)
         {
-            // "Press [E] + 전달받은 문구" 형태로 텍스트 설정
-            actionText.text = $"Press [E] {text}";
+            // "문 열기 [E]" 형태로 텍스트 설정
+            actionText.text = $"{text} [E]";
 
             // 텍스트 오브젝트 활성화
             actionText.gameObject.SetActive(true);

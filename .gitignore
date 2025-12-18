@@ -97,3 +97,7 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+Assets/Fonts/KoPubWorld Batang Light SDF Kor_BACKUP_1165.asset
+Assets/Fonts/KoPubWorld Batang Light SDF Kor_BASE_1165.asset
+Assets/Fonts/KoPubWorld Batang Light SDF Kor_LOCAL_1165.asset
+Assets/Fonts/KoPubWorld Batang Light SDF Kor_REMOTE_1165.asset
