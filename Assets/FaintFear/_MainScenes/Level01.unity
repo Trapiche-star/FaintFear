@@ -279,6 +279,10 @@ PrefabInstance:
       propertyPath: DocumentUI
       value: 
       objectReference: {fileID: 2060525237}
+    - target: {fileID: 8072504086039504652, guid: 4b05a736cd6cb704ca14b326ee2c5362, type: 3}
+      propertyPath: documentSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 367aedb99368400488a1252a4fd244db, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

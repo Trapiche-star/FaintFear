@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 namespace FaintFear
 {
     /// <summary>
@@ -10,17 +11,22 @@ namespace FaintFear
         private PlayerMove playerMove;
 
         public GameObject DocumentUI;
+        public Sprite documentSprite;   //적용할 문서 이미지
+        private Image documentUIImage;  //문서 이미지 UI 
 
         #endregion
         private void Awake()
         {
             //참조
             playerMove = GameObject.Find("Player").GetComponent<PlayerMove>();
+            documentUIImage = DocumentUI.GetComponentInChildren<Image>();
         }
         public override void Interaction()
         {
             //플레이어 움직임 막기
             playerMove.enabled = false;
+            //문서 이미지 교체
+            documentUIImage.sprite = documentSprite;
             //문서 UI 보이게
             DocumentUI.SetActive(true);
             //정신력 시스템 off
