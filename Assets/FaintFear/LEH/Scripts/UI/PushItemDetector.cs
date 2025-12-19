@@ -27,7 +27,7 @@ public class PushItemDetector : MonoBehaviour
 
     void Detect()
     {
-        // 🔥 게이지가 남아 있거나 충전 중이면 무조건 텍스트 숨김
+        //게이지가 남아 있거나 충전 중이면 무조건 텍스트 숨김
         if (powerGaugePlayer != null &&
             (powerGaugePlayer.IsCharging || powerGaugePlayer.HasRemainingCharge))
         {
@@ -59,7 +59,7 @@ public class PushItemDetector : MonoBehaviour
             return;
         }
 
-        // ✅ 텍스트 표시
+        //텍스트 표시
         crosshairText.gameObject.SetActive(true);
         screenText.gameObject.SetActive(true);
 

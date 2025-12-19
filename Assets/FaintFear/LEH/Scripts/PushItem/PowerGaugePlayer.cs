@@ -15,32 +15,28 @@ namespace FaintFear
         public float detectRadius = 0.8f;
         public LayerMask pushItemLayer;
 
-        [Header("Camera Zoom")]
-        public Camera playerCamera;
-        public float zoomFOV = 40f;
-        public float zoomSpeed = 10f;
-
         float currentCharge;
-        float defaultFOV;
 
         bool isPushHeld;
         bool isTouchingPushItem;
 
-        //외부 공개 상태
+        // 외부 공개 상태
         public bool IsCharging { get; private set; }
         public bool HasRemainingCharge => currentCharge > 0f;
 
         PushItem currentItem;
         PlayerMove playerMove;
 
+        //카메라용 공개 정보
+        public bool CanZoom =>
+            isPushHeld && isTouchingPushItem && currentItem != null;
+
+        public Transform ZoomTarget =>
+            currentItem != null ? currentItem.transform : null;
+
         void Awake()
         {
             playerMove = GetComponent<PlayerMove>();
-
-            if (playerCamera == null)
-                playerCamera = Camera.main;
-
-            defaultFOV = playerCamera.fieldOfView;
 
             IsCharging = false;
             currentCharge = 0f;
@@ -63,7 +59,6 @@ namespace FaintFear
         {
             DetectPushItem();
             HandleCharge();
-            HandleZoom();
         }
 
         #region Input
@@ -104,7 +99,6 @@ namespace FaintFear
         #region Charge
         void HandleCharge()
         {
-            // PushItem과 접촉 중이 아니면 충전 불가
             if (!isTouchingPushItem || currentItem == null)
             {
                 IsCharging = false;
@@ -127,7 +121,6 @@ namespace FaintFear
             currentCharge = Mathf.Clamp01(currentCharge);
             gaugeUI.SetGauge(currentCharge);
 
-            // 충전 완료
             if (currentCharge >= 1f)
             {
                 currentItem.MoveToTarget();
@@ -162,23 +155,6 @@ namespace FaintFear
             IsCharging = false;
             gaugeUI.SetGauge(0f);
             gaugeUI.Show(false);
-        }
-        #endregion
-
-        #region Camera
-        void HandleZoom()
-        {
-            float targetFOV =
-                (isPushHeld && isTouchingPushItem)
-                ? zoomFOV
-                : defaultFOV;
-
-            playerCamera.fieldOfView =
-                Mathf.Lerp(
-                    playerCamera.fieldOfView,
-                    targetFOV,
-                    Time.deltaTime * zoomSpeed
-                );
         }
         #endregion
 
