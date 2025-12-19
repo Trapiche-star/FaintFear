@@ -380,8 +380,8 @@ MonoBehaviour:
   playerCrossHair: {fileID: 1981718588793620915}
   targetLayer:
     serializedVersion: 2
-    m_Bits: 14656
-  actionUI: {fileID: 0}
+    m_Bits: 14784
+  actionUI: {fileID: 6644771746777386345}
 --- !u!114 &8613019285101603701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -417,7 +417,7 @@ MonoBehaviour:
   enemyChaseDrain: 1.6
   corpseRoomDrain: 0.4
   flashlightDamage: 0.6
-  flashlightheal: 5
+  flashlightheal: 1.6
 --- !u!114 &1563633127144959883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1012,8 +1012,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: '[E]'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e3039df8ac8829c4bb38c2013bad93c6, type: 2}
-  m_sharedMaterial: {fileID: -5658785806089299815, guid: e3039df8ac8829c4bb38c2013bad93c6, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c42d67540ff0b8645ac81c5807b50811, type: 2}
+  m_sharedMaterial: {fileID: -5658785806089299815, guid: c42d67540ff0b8645ac81c5807b50811, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
