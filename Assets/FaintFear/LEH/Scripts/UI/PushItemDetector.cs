@@ -4,69 +4,89 @@ using UnityEngine;
 
 public class PushItemDetector : MonoBehaviour
 {
-    public Camera playerCamera;
+    [Header("Detect")]
+    public float detectDistance = 3f;
+    public LayerMask pushItemLayer;
+
+    [Header("UI")]
     public TMP_Text crosshairText;
     public TMP_Text screenText;
-    public float rayDistance = 5f;
 
-    public PowerGaugePlayer gaugePlayer; //상태만 참조
+    [Header("Reference")]
+    public PowerGaugePlayer powerGaugePlayer; // Inspector에서 연결
 
-    void Start()
+    void Awake()
     {
-        HideTexts();
+        HideText();
     }
 
     void Update()
     {
-        //이미 밀기(게이지 충전) 중이면 텍스트 숨김
-        if (gaugePlayer != null && gaugePlayer.IsCharging)
+        Detect();
+    }
+
+    void Detect()
+    {
+        // 🔥 게이지가 남아 있거나 충전 중이면 무조건 텍스트 숨김
+        if (powerGaugePlayer != null &&
+            (powerGaugePlayer.IsCharging || powerGaugePlayer.HasRemainingCharge))
         {
-            HideTexts();
+            HideText();
             return;
         }
 
-        Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+        Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, rayDistance))
+        if (!Physics.Raycast(ray, out hit, detectDistance, pushItemLayer))
         {
-            if (!hit.collider.CompareTag("PushItem"))
-            {
-                HideTexts();
-                return;
-            }
-
-            PushItem item = hit.collider.GetComponent<PushItem>();
-
-            //이미 치운 오브젝트면 x
-            if (item == null || item.isCleared)
-            {
-                HideTexts();
-                return;
-            }
-
-            PushItemInfo info = hit.collider.GetComponent<PushItemInfo>();
-            if (info != null)
-            {
-                ShowTexts(info.crosshairText, info.screenText);
-                return;
-            }
+            HideText();
+            return;
         }
 
-        HideTexts();
-    }
+        if (!hit.collider.CompareTag("PushItem"))
+        {
+            HideText();
+            return;
+        }
 
-    void ShowTexts(string crosshair, string screen)
-    {
+        PushItemInfo info = hit.collider.GetComponent<PushItemInfo>();
+        PushItem item = hit.collider.GetComponent<PushItem>();
+
+        if (info == null || item == null || item.isCleared)
+        {
+            HideText();
+            return;
+        }
+
+        // ✅ 텍스트 표시
         crosshairText.gameObject.SetActive(true);
         screenText.gameObject.SetActive(true);
-        crosshairText.text = crosshair;
-        screenText.text = screen;
+
+        crosshairText.text = info.crosshairText;
+        screenText.text = info.screenText;
     }
 
-    void HideTexts()
+    void HideText()
     {
-        crosshairText.gameObject.SetActive(false);
-        screenText.gameObject.SetActive(false);
+        if (crosshairText != null)
+        {
+            crosshairText.text = "";
+            crosshairText.gameObject.SetActive(false);
+        }
+
+        if (screenText != null)
+        {
+            screenText.text = "";
+            screenText.gameObject.SetActive(false);
+        }
     }
+
+#if UNITY_EDITOR
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position, transform.forward * detectDistance);
+    }
+#endif
 }
