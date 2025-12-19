@@ -1,76 +1,101 @@
 using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
+using System;
 
 namespace FaintFear
 {
     /// <summary>
-    /// HUD 매니저
-    /// 페이드 및 대사 출력 중에는 플레이어의 이동/회전을 일시적으로 비활성화함
+    /// HUD 텍스트 시퀀스와 화면 페이드 기능을 제공하는 도구
     /// </summary>
     public class HUDManager : MonoBehaviour
     {
-        // 텍스트 매니저 참조
-        public SequenceTextManager textManager;
+        #region Variables
 
-        // 대사 유지 시간 (필요 시 인스펙터에서 조정 가능)
-        [SerializeField] private float dialogueHoldTime = 3f;
+        [SerializeField] private SequenceTextManager textManager; // 텍스트 출력과 시퀀스를 담당
+        private SceneFader fader;                                 // 화면 페이드 연출 담당
 
-        void Start()
+        #endregion
+
+
+        #region Unity Event Method
+
+        // HUD 매니저가 생성될 때 필요한 도구들을 준비한다
+        private void Awake()
         {
-            // 페이드용 이미지 및 페이더 참조
-            Transform targetObj = transform.GetChild(1);
-            Image targetImage = targetObj.GetChild(0).GetComponent<Image>();
-            SceneFader fader = targetObj.GetComponent<SceneFader>();
+            // HUD 하위 오브젝트에서 화면 페이드를 담당하는 SceneFader를 찾는다
+            fader = GetComponentInChildren<SceneFader>();
 
-            // 페이드 이미지 알파값 초기화 (완전 불투명)
-            Color tempColor = targetImage.color;
-            tempColor.a = 1f;
-            targetImage.color = tempColor;
-
-            // 텍스트 매니저 자동 연결 (없을 경우)
+            // 만약 텍스트 매니저가 아직 연결되지 않았을 때
             if (textManager == null)
-                textManager = transform.GetChild(0).GetComponent<SequenceTextManager>();
+                // 자식 오브젝트에 있는 SequenceTextManager를 찾아서 연결한다
+                textManager = GetComponentInChildren<SequenceTextManager>();
 
-            // 플레이어 탐색
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            PlayerMove playerMove = null;
-            if (player != null)
-                playerMove = player.GetComponent<PlayerMove>();
-
-            // 페이드 및 대사 중 제어 잠금
-            if (playerMove != null)
-                playerMove.enabled = false;
-
-            // 페이드 아웃 시작
-            fader.FadeOutToZero(() =>
+            // 시작 시 화면을 완전히 검은 상태로 고정한다
+            if (fader != null && fader.panelImage != null) // 페이더와 페이드 이미지가 존재할 때
             {
-                // 페이드 완료 후 대사 출력 시작
-                if (textManager != null)
-                {
-                    textManager.ShowMessage("폐병원을 순찰하다 침입자들을 쫓아 들어왔는데… " +
-                        "배터리가 꺼져버렸군.");
-                }
-
-                // 코루틴으로 대사 유지 시간만큼 기다렸다가 제어 복귀
-                StartCoroutine(RestoreControlAfterDelay(playerMove));
-            });
+                Color c = fader.panelImage.color; // 현재 페이드 이미지의 색상을 가져오고
+                c.a = 1f;                         // 알파값을 1로 만들어 화면을 완전히 가린다
+                fader.panelImage.color = c;       // 변경된 색상을 다시 적용한다
+            }
         }
 
-        // 일정 시간 후 플레이어 제어를 복원하는 코루틴
-        private IEnumerator RestoreControlAfterDelay(PlayerMove playerMove)
+        #endregion
+
+
+        #region Custom Method
+
+        // 화면을 검게 만든다 (알파 0 → 1)
+        public void FadeToBlack(Action onComplete = null)
         {
-            // 지정된 시간 동안 대사 유지
-            yield return new WaitForSeconds(dialogueHoldTime);
+            // 만약 페이더가 존재한다면 화면을 검게 만든다
+            if (fader != null)
+                fader.FadeInToOne(onComplete);
 
-            // 플레이어 제어 복원
-            if (playerMove != null)
-                playerMove.enabled = true;
+            // 그렇지 않으면 아무 일도 하지 않는다
         }
 
-        void Update()
+        // 화면을 밝게 만든다 (알파 1 → 0)
+        public void FadeFromBlack(Action onComplete = null)
         {
-            // 현재 사용하지 않음 (추후 HUD 갱신용)
+            // 만약 페이더가 존재한다면 화면을 밝게 만든다
+            if (fader != null)
+                fader.FadeOutToZero(onComplete);
+
+            // 그렇지 않으면 아무 일도 하지 않는다
         }
+
+        // 단일 문장을 HUD에 출력한다
+        public void ShowDialogue(string message)
+        {
+            // 만약 텍스트 매니저가 null이 아닐 때 (즉, 존재할 때)
+            if (textManager != null)
+                // 전달받은 문장을 HUD에 출력한다
+                textManager.ShowMessage(message);
+
+            // 그렇지 않으면 아무 것도 하지 않고 넘어간다
+        }
+
+        // 여러 문장을 순서대로 출력하는 텍스트 시퀀스를 실행한다
+        public IEnumerator ShowDialogueSequence(string[] lines, float holdTime)
+        {
+            // 만약 텍스트 매니저가 없다면 더 이상 진행할 수 없으므로 여기서 끝낸다
+            if (textManager == null)
+                yield break;
+
+            // 그동안 전달받은 모든 문장을 하나씩 순서대로 반복한다
+            foreach (string line in lines)
+            {
+                // 그래서 현재 문장을 HUD에 출력한다
+                textManager.ShowMessage(line);
+
+                // 그리고 지정된 시간만큼 화면에 유지되도록 기다린다
+                yield return new WaitForSeconds(holdTime);
+            }
+
+            // 모든 문장 출력이 끝났으므로 텍스트를 숨긴다
+            textManager.Hide();
+        }
+
+        #endregion
     }
 }
