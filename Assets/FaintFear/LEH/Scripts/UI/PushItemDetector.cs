@@ -1,5 +1,6 @@
-using UnityEngine;
+using FaintFear;
 using TMPro;
+using UnityEngine;
 
 public class PushItemDetector : MonoBehaviour
 {
@@ -8,40 +9,63 @@ public class PushItemDetector : MonoBehaviour
     public TMP_Text screenText;
     public float rayDistance = 5f;
 
-    private PushItemInfo currentItem;
+    public PowerGaugePlayer gaugePlayer; //상태만 참조
 
     void Start()
     {
-        crosshairText.gameObject.SetActive(false);
-        screenText.gameObject.SetActive(false);
+        HideTexts();
     }
 
     void Update()
     {
+        //이미 밀기(게이지 충전) 중이면 텍스트 숨김
+        if (gaugePlayer != null && gaugePlayer.IsCharging)
+        {
+            HideTexts();
+            return;
+        }
+
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, rayDistance))
         {
-            if (hit.collider.CompareTag("PushItem"))
+            if (!hit.collider.CompareTag("PushItem"))
             {
-                currentItem = hit.collider.GetComponent<PushItemInfo>();
+                HideTexts();
+                return;
+            }
 
-                if (currentItem != null)
-                {
-                    //여기서만 켠다
-                    crosshairText.gameObject.SetActive(true);
-                    screenText.gameObject.SetActive(true);
+            PushItem item = hit.collider.GetComponent<PushItem>();
 
-                    crosshairText.text = currentItem.crosshairText;
-                    screenText.text = currentItem.screenText;
-                    return;
-                }
+            //이미 치운 오브젝트면 x
+            if (item == null || item.isCleared)
+            {
+                HideTexts();
+                return;
+            }
+
+            PushItemInfo info = hit.collider.GetComponent<PushItemInfo>();
+            if (info != null)
+            {
+                ShowTexts(info.crosshairText, info.screenText);
+                return;
             }
         }
 
-        //PushItem을 안 보고 있을 때
-        currentItem = null;
+        HideTexts();
+    }
+
+    void ShowTexts(string crosshair, string screen)
+    {
+        crosshairText.gameObject.SetActive(true);
+        screenText.gameObject.SetActive(true);
+        crosshairText.text = crosshair;
+        screenText.text = screen;
+    }
+
+    void HideTexts()
+    {
         crosshairText.gameObject.SetActive(false);
         screenText.gameObject.SetActive(false);
     }
