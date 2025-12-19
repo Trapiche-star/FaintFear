@@ -770,7 +770,6 @@ GameObject:
   - component: {fileID: 6264263605012032472}
   - component: {fileID: 3481764062630763314}
   - component: {fileID: 8000472105846090862}
-  - component: {fileID: 5558358486522726725}
   - component: {fileID: 5166633022690514456}
   - component: {fileID: 7295266564363513482}
   - component: {fileID: 1569996443830505029}
@@ -853,29 +852,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &5558358486522726725
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5128307069453382357}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5166633022690514456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -935,6 +911,7 @@ MonoBehaviour:
   rayDistance: 2
   cameraRoot: {fileID: 0}
   crossHiair: {fileID: 0}
+  playerCrossHair: {fileID: 0}
   targetLayer:
     serializedVersion: 2
     m_Bits: 2304
@@ -963,8 +940,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 735d8af0de72b7e4e913e433e2f5de5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damagePerSecond: 3
-  healPerSecond: 5
+  enemyLookDrain: 1.4
+  enemyChaseDrain: 1.6
+  corpseRoomDrain: 0.4
+  flashlightDamage: 0.6
+  flashlightheal: 1.6
 --- !u!1 &6025288177002917330
 GameObject:
   m_ObjectHideFlags: 0

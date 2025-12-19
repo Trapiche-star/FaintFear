@@ -1,6 +1,8 @@
 using UnityEngine;
-
-public interface IDamageable
-{
-    public void TakeDamage(float damage);
+namespace FaintFear
+{ 
+    public interface IDamageable
+    {
+      public void TakeDamage(float damage);
+    }
 }

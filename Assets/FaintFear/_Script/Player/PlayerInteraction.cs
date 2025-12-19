@@ -59,6 +59,8 @@ namespace FaintFear
             // 크로스헤어 자동 연결 (플레이어 하위 구조 기준)
             crossHiair = transform.GetChild(1).GetChild(0).gameObject;
 
+            playerCrossHair = transform.GetChild(1).gameObject;
+
             // ActionUI 자동 탐색 (씬에 하나만 있다고 가정)
             if (actionUI == null)
                 actionUI = FindFirstObjectByType<ActionUI>();
