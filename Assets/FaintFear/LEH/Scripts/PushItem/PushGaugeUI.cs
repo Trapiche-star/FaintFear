@@ -3,20 +3,15 @@ using UnityEngine.UI;
 
 public class PushGaugeUI : MonoBehaviour
 {
-    [SerializeField] private Image fillImage;
+    public Image thickGauge; // 굵은 원 (Filled Image)
 
     public void SetGauge(float value)
     {
-        fillImage.fillAmount = (value);
+        thickGauge.fillAmount = value;
     }
 
     public void Show(bool show)
     {
         gameObject.SetActive(show);
-    }
-
-    public void ResetGauge()
-    {
-        fillImage.fillAmount = 0f;
     }
 }

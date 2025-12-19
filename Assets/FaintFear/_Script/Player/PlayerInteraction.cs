@@ -18,6 +18,8 @@ namespace FaintFear
 
         // 화면 중앙 크로스헤어 UI
         [SerializeField] private GameObject crossHiair;
+        // 전체 크로스헤어 UI
+        [SerializeField] private GameObject playerCrossHair;
 
         // 상호작용 가능한 레이어 마스크
         [SerializeField] private LayerMask targetLayer;
@@ -85,7 +87,7 @@ namespace FaintFear
             // UI가 열려 있으면 상호작용 중단
             if (UIState.IsUIOpen)
             {
-                crossHiair?.SetActive(false);
+                playerCrossHair?.SetActive(false);
                 actionUI?.HideAction();
                 return;
             }
@@ -110,6 +112,8 @@ namespace FaintFear
         // 카메라 전방으로 Raycast를 발사하여 상호작용 대상 감지
         private void ShootRay()
         {
+            playerCrossHair?.SetActive(true);
+
             Vector3 rayOrigin = cameraRoot.position;
             Vector3 rayDirection = cameraRoot.forward;
 
