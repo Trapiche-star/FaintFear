@@ -30,7 +30,7 @@ namespace FaintFear
         [SerializeField] private float corpseRoomDrain = 0.4f;       //시체와 같은 방에 있었을 때 
         [SerializeField] private float flashlightDamage = 0.6f;      //손전등을 껐을 때
 
-        [SerializeField] private float flashlightheal = 5f;       //손전등 정신력 회복
+    [SerializeField] private float flashlightheal = 1.6f;       //손전등 정신력 회복
 
         public UnityAction onDie;
 
@@ -65,11 +65,11 @@ namespace FaintFear
 
             float mentalDelta = 0f;
 
-            //손전등 on/off
-            if (flashlight != null && flashlight.IsOn)
-                mentalDelta += flashlightDamage;
-            else
-                mentalDelta -= flashlightheal;
+        //손전등 on/off
+        if (flashlight != null && flashlight.IsOn)
+            mentalDelta += flashlightheal;
+        else
+            mentalDelta -= flashlightDamage;
 
             //적을 응시했을 때 
             /*if (isEnemyLooking)

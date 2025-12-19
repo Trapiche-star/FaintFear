@@ -707,7 +707,7 @@ MonoBehaviour:
   m_StreamingVersion: 20241001
   m_LegacyPriority: 0
   Target:
-    TrackingTarget: {fileID: 2105812708}
+    TrackingTarget: {fileID: 0}
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
@@ -1035,7 +1035,7 @@ MonoBehaviour:
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
   m_Cameras:
-  - {fileID: 2098984323}
+  - {fileID: 0}
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
@@ -1472,11 +1472,6 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
---- !u!20 &2098984323 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 3831382254511906887, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
-  m_PrefabInstance: {fileID: 2105812707}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2105812707
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1534,11 +1529,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
---- !u!4 &2105812708 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5676163215268540709, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
-  m_PrefabInstance: {fileID: 2105812707}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2119837937
 MonoBehaviour:
   m_ObjectHideFlags: 0
