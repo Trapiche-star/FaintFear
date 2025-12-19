@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace FaintFear
 {
+
     public enum EnemyState
     {
         Wander,         // 배회
@@ -26,6 +27,14 @@ namespace FaintFear
         [SerializeField] private float attackRange = 1.5f;
         [SerializeField] private float gravity = 9.81f;
 
+        // 공격 판정 관련 설정
+        [Header("Attack Settings")]
+        [SerializeField] private float attackImpactRadius = 1.0f;   // 실제 타격 범위 반경
+        [SerializeField] private int damage = 10;
+        [SerializeField] private Vector3 attackOffset = new Vector3(0, 1.0f, 1.0f); // 타격 위치 (캐릭터 앞)
+        [SerializeField] private LayerMask targetLayer;             // 플레이어 레이어
+        [SerializeField] private float attackCooldown = 2.0f;       // 공격 쿨타임
+
         [Header("Wander Settings")]
         [SerializeField] private float wanderRadius = 10f;
         [SerializeField] private float minIdleTime = 2f;    // 배회 도착 후 최소 대기 시간
@@ -42,6 +51,7 @@ namespace FaintFear
         // 상태 변수
         private EnemyState currentState;
         private CharacterController controller;
+        private Animator ani;
         private SphereCollider detectTrigger;
         private Transform target;
         private Vector3 lastKnownPos;
@@ -58,12 +68,16 @@ namespace FaintFear
         private Quaternion targetIdleRot;   // 두리번거릴 때 목표 회전값
         private float currentWalkStraightTimer; // 이동 시작 후 남은 직진 시간
 
+        // 공격 쿨타임 체크용 변수
+        private float lastAttackTime;
+
         private void Awake()
         {
             controller = GetComponent<CharacterController>();
             detectTrigger = GetComponent<SphereCollider>();
             detectTrigger.isTrigger = true;
             startPos = transform.position;
+            ani = GetComponent<Animator>();
         }
 
         private void Start()
@@ -99,6 +113,9 @@ namespace FaintFear
             // 1. 대기(Idle) 상태: 목적지 도착 후 멈춰서 주변을 두리번거림
             if (isWanderIdle)
             {
+                // [애니메이션] 멈춤 상태
+                ani.SetInteger("State", 0);
+
                 currentIdleTimer -= Time.deltaTime;
                 nextLookTimer -= Time.deltaTime;
 
@@ -126,6 +143,9 @@ namespace FaintFear
             // 2. 이동 상태: 다음 배회 지점으로 이동
             else
             {
+                // [애니메이션] 이동 상태
+                ani.SetInteger("State", 1);
+
                 wanderTimer += Time.deltaTime;
                 float dist = Vector3.Distance(transform.position, currentDestination);
 
@@ -152,6 +172,9 @@ namespace FaintFear
 
         private void ChaseUpdate()
         {
+            // [애니메이션] 추적 이동 상태
+            ani.SetInteger("State", 1);
+
             // 추적 중일 때는 ignoreAngle: true를 전달하여 시야각을 무시
             // 즉, 플레이어가 등 뒤로 가더라도 사거리 내에 있고 벽이 없다면 계속 추적
             if (CheckLineOfSight(ignoreAngle: true))
@@ -181,6 +204,9 @@ namespace FaintFear
 
         private void SearchUpdate()
         {
+            // [애니메이션] 수색 이동 상태
+            ani.SetInteger("State", 1);
+
             // 수색 중 다시 발견하면 추적 재개
             // (기본값 false 사용)
             if (CheckLineOfSight())
@@ -202,6 +228,9 @@ namespace FaintFear
 
         private void AttackUpdate()
         {
+            // [애니메이션] 공격 대기/수행 중에는 제자리
+            ani.SetInteger("State", 0);
+
             float dist = Vector3.Distance(transform.position, target.position);
 
             // 추적과 마찬가지로 시야각을 무시(true)하고 거리와 장애물만 체크.
@@ -216,10 +245,37 @@ namespace FaintFear
 
             LookAtTarget(target.position);
 
-            // 공격 로직 (애니메이션 실행 등)
+            // 쿨타임 체크 후 공격 애니메이션 실행
+            if (Time.time - lastAttackTime >= attackCooldown)
+            {
+                lastAttackTime = Time.time;
+                // Animator에 "Attack" Trigger 파라미터가 있어야 함
+                ani.SetTrigger("Attack");
+            }
         }
 
         // --- 기능 메서드 ---
+
+        // 애니메이션 이벤트에서 호출될 함수 (실제 피격 판정)
+        public void OnAttackHit()
+        {
+            // 타격 위치 계산 (캐릭터 기준 앞쪽 오프셋 적용)
+            Vector3 hitPoint = transform.position + transform.TransformDirection(attackOffset);
+
+            // 구체 범위 내의 충돌체 검출
+            Collider[] hitColliders = Physics.OverlapSphere(hitPoint, attackImpactRadius, targetLayer);
+            Debug.Log(hitColliders[0].gameObject);
+            foreach (var hit in hitColliders)
+            {
+                // IDamageable 인터페이스가 있는지 확인 후 데미지 전달
+                IDamageable damageable = hit.GetComponent<IDamageable>();
+                if (damageable != null)
+                {
+                    Debug.Log("11");
+                    damageable.TakeDamage(damage);
+                }
+            }
+        }
 
         // 회전 속도를 인자로 받아 상황에 맞게 적용
         private void MoveToTarget(Vector3 targetPos, float turnSpeed)
@@ -375,6 +431,11 @@ namespace FaintFear
                 Gizmos.color = CheckLineOfSight() ? Color.green : Color.red;
                 Gizmos.DrawLine(origin, target.position);
             }
+
+            // 공격 범위 확인용 기즈모 (빨간색 구체)
+            Gizmos.color = new Color(1, 0, 0, 0.5f);
+            Vector3 hitPoint = transform.position + transform.TransformDirection(attackOffset);
+            Gizmos.DrawWireSphere(hitPoint, attackImpactRadius);
         }
     }
 }

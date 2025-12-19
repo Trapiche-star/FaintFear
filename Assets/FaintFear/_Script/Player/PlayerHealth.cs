@@ -3,145 +3,148 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-//정신력 상태 
-public enum MentalState
+namespace FaintFear
 {
-    Stable,     // 안정
-    Uneasy,     // 불안
-    Tension,    // 긴장
-    Fear,       // 공포
-    Panic       // 패닉
-}
-
-public class PlayerHealth : MonoBehaviour, IDamageable
-{
-    #region Variables
-    //참조
-    private Flashlight flashlight;
-
-    private float mental;
-    private bool isDeath = false;
-
-    [Header("Mental Drain Factors")]
-    [SerializeField] private float enemyLookDrain = 1.4f;        //적을 응시했을 때 
-    [SerializeField] private float enemyChaseDrain = 1.6f;       //적이 추적해올 때
-    [SerializeField] private float corpseRoomDrain = 0.4f;       //시체와 같은 방에 있었을 때 
-    [SerializeField] private float flashlightDamage = 0.6f;      //손전등을 껐을 때
-
-    [SerializeField] private float flashlightheal = 5f;       //손전등 정신력 회복
-
-    public UnityAction onDie;
-
-    public event Action<MentalState> OnMentalStateChanged;
-
-    #endregion
-
-    #region Property
-    //정신력 상태
-    public MentalState CurrentMentalState { get; private set; }
-    #endregion
-
-    #region Unity Event Method
-    private void Awake()
+    //정신력 상태 
+    public enum MentalState
     {
+        Stable,     // 안정
+        Uneasy,     // 불안
+        Tension,    // 긴장
+        Fear,       // 공포
+        Panic       // 패닉
+    }
+
+    public class PlayerHealth : MonoBehaviour, IDamageable
+    {
+        #region Variables
         //참조
-        flashlight = GetComponentInChildren<Flashlight>();
-    }
+        private Flashlight flashlight;
 
-    private void Start()
-    {
-        //초기화
-        mental = PlayerStatus.Instance.currentMentalPower;
-        CurrentMentalState = GetMentalState(mental);
-        OnMentalStateChanged?.Invoke(CurrentMentalState);
-    }
+        private float mental;
+        private bool isDeath = false;
 
-    private void Update()
-    {
-        //손전등 사용 가능 후부터 정신력 깎이게
-        if (isDeath || !PlayerStatus.Instance.isMentalSystemActive) return;
+        [Header("Mental Drain Factors")]
+        [SerializeField] private float enemyLookDrain = 1.4f;        //적을 응시했을 때 
+        [SerializeField] private float enemyChaseDrain = 1.6f;       //적이 추적해올 때
+        [SerializeField] private float corpseRoomDrain = 0.4f;       //시체와 같은 방에 있었을 때 
+        [SerializeField] private float flashlightDamage = 0.6f;      //손전등을 껐을 때
 
-        float mentalDelta = 0f;
+        [SerializeField] private float flashlightheal = 5f;       //손전등 정신력 회복
 
-        //손전등 on/off
-        if (flashlight != null && flashlight.IsOn)
-            mentalDelta += flashlightDamage;
-        else
-            mentalDelta -= flashlightheal;
+        public UnityAction onDie;
 
-        //적을 응시했을 때 
-        /*if (isEnemyLooking)
-            mentalDelta -= enemyLookDrain;*/
+        public event Action<MentalState> OnMentalStateChanged;
 
-        //적이 추적해올 때
-        /*if (isBeingChased)
-            mentalDelta -= enemyChaseDrain;*/
+        #endregion
 
-        //시체와 같은 방에 있었을 때 
-        /*if (isInCorpseRoom)
-            mentalDelta -= corpseRoomDrain;*/
+        #region Property
+        //정신력 상태
+        public MentalState CurrentMentalState { get; private set; }
+        #endregion
 
-        ApplyMentalChange(mentalDelta);
-    }
-    #endregion
-
-    #region Custom Method
-    //정신력 공통 처리
-    void ApplyMentalChange(float deltaPerSecond)
-    {
-        mental += deltaPerSecond * Time.deltaTime;
-        mental = Mathf.Clamp(mental, 0f, PlayerStatus.Instance.maxMentalPower);
-
-        PlayerStatus.Instance.SetHealth(mental);
-        UpdateMentalState();
-
-        if (mental <= 0f && !isDeath)
+        #region Unity Event Method
+        private void Awake()
         {
-            Die();
+            //참조
+            flashlight = GetComponentInChildren<Flashlight>();
         }
-    }
 
-    public void TakeDamage(float damage)
-    {
-        mental -= damage;
-        mental = Mathf.Clamp(mental, 0f, PlayerStatus.Instance.maxMentalPower);
-
-        PlayerStatus.Instance.SetHealth(mental);
-        UpdateMentalState();
-
-        if (mental <= 0f && isDeath == false)
+        private void Start()
         {
-            Die();
+            //초기화
+            mental = PlayerStatus.Instance.currentMentalPower;
+            CurrentMentalState = GetMentalState(mental);
+            OnMentalStateChanged?.Invoke(CurrentMentalState);
         }
-    }
 
-    //정신력 단계 범위 설정
-    private MentalState GetMentalState(float mental)
-    {
-        if (mental > 80f) return MentalState.Stable;
-        if (mental > 60f) return MentalState.Uneasy;
-        if (mental > 30f) return MentalState.Tension;
-        if (mental > 10f) return MentalState.Fear;
-        return MentalState.Panic;
-    }
-    //정신력 단계 변경
-    private void UpdateMentalState()
-    {
-        MentalState newState = GetMentalState(mental);
-
-        if (newState != CurrentMentalState)
+        private void Update()
         {
-            CurrentMentalState = newState;
-            OnMentalStateChanged?.Invoke(newState);
+            //손전등 사용 가능 후부터 정신력 깎이게
+            if (isDeath || !PlayerStatus.Instance.isMentalSystemActive) return;
+
+            float mentalDelta = 0f;
+
+            //손전등 on/off
+            if (flashlight != null && flashlight.IsOn)
+                mentalDelta += flashlightDamage;
+            else
+                mentalDelta -= flashlightheal;
+
+            //적을 응시했을 때 
+            /*if (isEnemyLooking)
+                mentalDelta -= enemyLookDrain;*/
+
+            //적이 추적해올 때
+            /*if (isBeingChased)
+                mentalDelta -= enemyChaseDrain;*/
+
+            //시체와 같은 방에 있었을 때 
+            /*if (isInCorpseRoom)
+                mentalDelta -= corpseRoomDrain;*/
+
+            ApplyMentalChange(mentalDelta);
         }
-    }
+        #endregion
 
-    //죽음 처리
-    private void Die()
-    {
-        isDeath = true;
+        #region Custom Method
+        //정신력 공통 처리
+        void ApplyMentalChange(float deltaPerSecond)
+        {
+            mental += deltaPerSecond * Time.deltaTime;
+            mental = Mathf.Clamp(mental, 0f, PlayerStatus.Instance.maxMentalPower);
 
-        onDie?.Invoke();
+            PlayerStatus.Instance.SetHealth(mental);
+            UpdateMentalState();
+
+            if (mental <= 0f && !isDeath)
+            {
+                Die();
+            }
+        }
+
+        public void TakeDamage(float damage)
+        {
+            mental -= damage;
+            mental = Mathf.Clamp(mental, 0f, PlayerStatus.Instance.maxMentalPower);
+            Debug.Log("데미지입음" + mental);
+            PlayerStatus.Instance.SetHealth(mental);
+            UpdateMentalState();
+
+            if (mental <= 0f && isDeath == false)
+            {
+                Die();
+            }
+        }
+
+        //정신력 단계 범위 설정
+        private MentalState GetMentalState(float mental)
+        {
+            if (mental > 80f) return MentalState.Stable;
+            if (mental > 60f) return MentalState.Uneasy;
+            if (mental > 30f) return MentalState.Tension;
+            if (mental > 10f) return MentalState.Fear;
+            return MentalState.Panic;
+        }
+        //정신력 단계 변경
+        private void UpdateMentalState()
+        {
+            MentalState newState = GetMentalState(mental);
+
+            if (newState != CurrentMentalState)
+            {
+                CurrentMentalState = newState;
+                OnMentalStateChanged?.Invoke(newState);
+            }
+        }
+
+        //죽음 처리
+        private void Die()
+        {
+            isDeath = true;
+
+            onDie?.Invoke();
+        }
+        #endregion
     }
-    #endregion
 }
