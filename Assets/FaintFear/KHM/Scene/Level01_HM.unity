@@ -8987,9 +8987,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isLocked: 1
-  requiredTag: Player
+  requiredKey: 0
   sequenceTextManager: {fileID: 2312052754214785565}
-  actionUI: {fileID: 0}
   messageDuration: 2
 --- !u!1 &1256880563
 GameObject:
@@ -9929,11 +9928,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a226c85f76dceab41a2e57d6e1e5dac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  keyType: 0
   messageText: "\uC774\uAC78\uB85C \uC800\uCABD \uBB38\uC744 \uC5F4 \uC218 \uC788\uC744\uC9C0\uB3C4
     \uBAA8\uB978\uB2E4."
   messageDuration: 2
   sequenceTextManager: {fileID: 2312052754214785565}
-  actionUI: {fileID: 0}
 --- !u!1001 &1367687768
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11224,7 +11223,6 @@ MonoBehaviour:
   currentBattery: 0
   isBatteryActive: 0
   batteryCount: 0
-  hasKey: 0
 --- !u!1 &1544082081
 GameObject:
   m_ObjectHideFlags: 0
@@ -15719,7 +15717,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e3039df8ac8829c4bb38c2013bad93c6, type: 2}
   m_sharedMaterial: {fileID: -5658785806089299815, guid: e3039df8ac8829c4bb38c2013bad93c6, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: -5658785806089299815, guid: e3039df8ac8829c4bb38c2013bad93c6, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -41900,7 +41899,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e3039df8ac8829c4bb38c2013bad93c6, type: 2}
   m_sharedMaterial: {fileID: -5658785806089299815, guid: e3039df8ac8829c4bb38c2013bad93c6, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: -5658785806089299815, guid: e3039df8ac8829c4bb38c2013bad93c6, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -144932,6 +144932,7 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 14656
+  actionUI: {fileID: 0}
 --- !u!33 &7222891540832023255
 MeshFilter:
   m_ObjectHideFlags: 0

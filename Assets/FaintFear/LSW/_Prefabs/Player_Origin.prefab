@@ -80,8 +80,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spotLight: {fileID: 2807296613162276726}
-  maxBattery: 100
-  currentBattery: 0
   batteryDrainRate: 10
 --- !u!1 &1699650090419864882
 GameObject:
@@ -940,6 +938,7 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 2304
+  actionUI: {fileID: 0}
 --- !u!114 &7694742110752303209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -964,7 +963,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 735d8af0de72b7e4e913e433e2f5de5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mental: 0
+  damagePerSecond: 3
+  healPerSecond: 5
 --- !u!1 &6025288177002917330
 GameObject:
   m_ObjectHideFlags: 0
