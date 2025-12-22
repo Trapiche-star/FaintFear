@@ -205,6 +205,7 @@ GameObject:
   - component: {fileID: 8613019285101603701}
   - component: {fileID: 3628334409125768203}
   - component: {fileID: 1563633127144959883}
+  - component: {fileID: 8162890610884242762}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -425,6 +426,28 @@ MonoBehaviour:
     vignetteIntensity: 1
     vignetteColor: {r: 0.7830189, g: 0.09972411, b: 0.09972411, a: 1}
     cameraShake: 3
+--- !u!114 &8162890610884242762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 236520129318838511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33dfd00a402e93f488742c6b1e637fab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gaugeUI: {fileID: 0}
+  maxChargeTime: 2
+  drainSpeed: 0.4
+  detectRadius: 0.8
+  pushItemLayer:
+    serializedVersion: 2
+    m_Bits: 16384
+  playerCamera: {fileID: 1488863931562352072}
+  zoomFOV: 60
+  zoomSpeed: 10
 --- !u!1 &569378629108264318
 GameObject:
   m_ObjectHideFlags: 0
@@ -579,7 +602,7 @@ Light:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 3.5
   m_Range: 10
-  m_SpotAngle: 59
+  m_SpotAngle: 90
   m_InnerSpotAngle: 44.258152
   m_CookieSize: 10
   m_Shadows:
@@ -1081,6 +1104,7 @@ GameObject:
   - component: {fileID: 725169972440530730}
   - component: {fileID: 1488863931562352072}
   - component: {fileID: 8620867875285248473}
+  - component: {fileID: 135917209964894279}
   m_Layer: 0
   m_Name: FlashlightCamera
   m_TagString: MainCamera
@@ -1198,6 +1222,25 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &135917209964894279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8787531082260883104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74acb8ea50b524340afc6b8860dbf06a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectDistance: 3
+  pushItemLayer:
+    serializedVersion: 2
+    m_Bits: 16384
+  crosshairText: {fileID: 0}
+  screenText: {fileID: 0}
+  powerGaugePlayer: {fileID: 8162890610884242762}
 --- !u!1 &8936831257344965197
 GameObject:
   m_ObjectHideFlags: 0

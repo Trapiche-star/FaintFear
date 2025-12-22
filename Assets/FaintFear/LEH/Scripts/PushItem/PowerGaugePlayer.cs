@@ -15,28 +15,31 @@ namespace FaintFear
         public float detectRadius = 0.8f;
         public LayerMask pushItemLayer;
 
-        [Header("Camera Zoom")]
-        public Camera playerCamera;
-        public float zoomFOV = 40f;
-        public float zoomSpeed = 10f;
-
         float currentCharge;
-        float defaultFOV;
 
         bool isPushHeld;
         bool isTouchingPushItem;
 
+        // 외부 공개 상태
+        public bool IsCharging { get; private set; }
+        public bool HasRemainingCharge => currentCharge > 0f;
+
         PushItem currentItem;
         PlayerMove playerMove;
+
+        //카메라용 공개 정보
+        public bool CanZoom =>
+            isPushHeld && isTouchingPushItem && currentItem != null;
+
+        public Transform ZoomTarget =>
+            currentItem != null ? currentItem.transform : null;
 
         void Awake()
         {
             playerMove = GetComponent<PlayerMove>();
 
-            if (playerCamera == null)
-                playerCamera = Camera.main;
-
-            defaultFOV = playerCamera.fieldOfView;
+            IsCharging = false;
+            currentCharge = 0f;
 
             gaugeUI.Show(false);
             gaugeUI.SetGauge(0f);
@@ -56,7 +59,6 @@ namespace FaintFear
         {
             DetectPushItem();
             HandleCharge();
-            HandleZoom();
         }
 
         #region Input
@@ -80,15 +82,16 @@ namespace FaintFear
 
             foreach (var hit in hits)
             {
-                if (hit.CompareTag("PushItem"))
-                {
-                    currentItem = hit.GetComponent<PushItem>();
-                    if (currentItem != null && !currentItem.isCleared)
-                    {
-                        isTouchingPushItem = true;
-                        return;
-                    }
-                }
+                if (!hit.CompareTag("PushItem"))
+                    continue;
+
+                PushItem item = hit.GetComponent<PushItem>();
+                if (item == null || item.isCleared)
+                    continue;
+
+                currentItem = item;
+                isTouchingPushItem = true;
+                return;
             }
         }
         #endregion
@@ -96,20 +99,22 @@ namespace FaintFear
         #region Charge
         void HandleCharge()
         {
-            //접촉 안 하면 절대 충전 불가
             if (!isTouchingPushItem || currentItem == null)
             {
+                IsCharging = false;
                 DrainCharge();
                 return;
             }
 
             if (isPushHeld)
             {
+                IsCharging = true;
                 gaugeUI.Show(true);
                 currentCharge += Time.deltaTime / maxChargeTime;
             }
             else
             {
+                IsCharging = false;
                 DrainCharge();
             }
 
@@ -132,27 +137,24 @@ namespace FaintFear
             }
 
             currentCharge -= Time.deltaTime * drainSpeed;
+
+            if (currentCharge <= 0f)
+            {
+                ResetGauge();
+                return;
+            }
+
             currentCharge = Mathf.Clamp01(currentCharge);
             gaugeUI.SetGauge(currentCharge);
-
-            if (currentCharge > 0f)
-                gaugeUI.Show(true);
+            gaugeUI.Show(true);
         }
 
         void ResetGauge()
         {
             currentCharge = 0f;
+            IsCharging = false;
             gaugeUI.SetGauge(0f);
             gaugeUI.Show(false);
-        }
-        #endregion
-
-        #region Camera
-        void HandleZoom()
-        {
-            float targetFOV = (isPushHeld && isTouchingPushItem) ? zoomFOV : defaultFOV;
-            playerCamera.fieldOfView =
-                Mathf.Lerp(playerCamera.fieldOfView, targetFOV, Time.deltaTime * zoomSpeed);
         }
         #endregion
 
