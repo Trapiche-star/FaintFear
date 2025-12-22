@@ -445,9 +445,6 @@ MonoBehaviour:
   pushItemLayer:
     serializedVersion: 2
     m_Bits: 16384
-  playerCamera: {fileID: 1488863931562352072}
-  zoomFOV: 60
-  zoomSpeed: 10
 --- !u!1 &569378629108264318
 GameObject:
   m_ObjectHideFlags: 0

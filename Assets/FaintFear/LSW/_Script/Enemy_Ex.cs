@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace FaintFear
 {
-
     public enum EnemyState
     {
         Wander,         // 배회
@@ -44,6 +43,12 @@ namespace FaintFear
         [SerializeField] private float walkStraightTime = 1.0f; // 배회 시작 시 무조건 직진하는 시간
         [SerializeField] private float wanderMoveRotSpeed = 1.5f; // 배회 이동 중의 부드러운 회전 속도
 
+        // 장애물 감지 설정
+        [Header("Obstacle Settings")]
+        [SerializeField] private float obstacleCheckDistance = 1.5f; // 장애물 감지 거리
+        [SerializeField] private float blockedWaitTime = 2.0f;       // 장애물 발견 시 대기 시간
+        [SerializeField] private string obstacleTag = "Obstacle";    // 장애물 태그
+
         [Header("Vision")]
         [Range(0, 360)]
         [SerializeField] private float viewAngle = 120f;    // 시야각
@@ -70,6 +75,10 @@ namespace FaintFear
 
         // 공격 쿨타임 체크용 변수
         private float lastAttackTime;
+
+        // 장애물로 인해 막혔는지 확인하는 변수
+        private bool isBlocked = false;
+        private float currentBlockedTimer;
 
         private void Awake()
         {
@@ -113,7 +122,7 @@ namespace FaintFear
             // 1. 대기(Idle) 상태: 목적지 도착 후 멈춰서 주변을 두리번거림
             if (isWanderIdle)
             {
-                // [애니메이션] 멈춤 상태
+                // 멈춤 상태
                 ani.SetInteger("State", 0);
 
                 currentIdleTimer -= Time.deltaTime;
@@ -143,7 +152,7 @@ namespace FaintFear
             // 2. 이동 상태: 다음 배회 지점으로 이동
             else
             {
-                // [애니메이션] 이동 상태
+                // 이동 상태
                 ani.SetInteger("State", 1);
 
                 wanderTimer += Time.deltaTime;
@@ -172,8 +181,23 @@ namespace FaintFear
 
         private void ChaseUpdate()
         {
-            // [애니메이션] 추적 이동 상태
+            // 장애물에 막혔을 경우 처리 로직
+            if (isBlocked)
+            {
+                HandleBlockedState();
+                return; // 막혀서 대기 중이면 아래 이동 로직 실행 안함
+            }
+
+            // 추적 이동 상태
             ani.SetInteger("State", 1);
+
+            // 이동 전 정면 장애물 체크
+            if (CheckForwardObstacle())
+            {
+                isBlocked = true;
+                currentBlockedTimer = blockedWaitTime;
+                return;
+            }
 
             // 추적 중일 때는 ignoreAngle: true를 전달하여 시야각을 무시
             // 즉, 플레이어가 등 뒤로 가더라도 사거리 내에 있고 벽이 없다면 계속 추적
@@ -204,8 +228,23 @@ namespace FaintFear
 
         private void SearchUpdate()
         {
-            // [애니메이션] 수색 이동 상태
+            // 장애물에 막혔을 경우 처리 로직
+            if (isBlocked)
+            {
+                HandleBlockedState();
+                return;
+            }
+
+            // 수색 이동 상태
             ani.SetInteger("State", 1);
+
+            // 이동 전 정면 장애물 체크
+            if (CheckForwardObstacle())
+            {
+                isBlocked = true;
+                currentBlockedTimer = blockedWaitTime;
+                return;
+            }
 
             // 수색 중 다시 발견하면 추적 재개
             // (기본값 false 사용)
@@ -228,7 +267,7 @@ namespace FaintFear
 
         private void AttackUpdate()
         {
-            // [애니메이션] 공격 대기/수행 중에는 제자리
+            // 공격 대기/수행 중에는 제자리
             ani.SetInteger("State", 0);
 
             float dist = Vector3.Distance(transform.position, target.position);
@@ -256,6 +295,41 @@ namespace FaintFear
 
         // --- 기능 메서드 ---
 
+        // 장애물 감지용 레이캐스트
+        private bool CheckForwardObstacle()
+        {
+            // 발 밑이 아니라 허리쯤에서 쏘기 위해 y값 보정
+            Vector3 origin = transform.position + Vector3.up * 1.0f;
+
+            // 정면으로 레이 발사
+            if (Physics.Raycast(origin, transform.forward, out RaycastHit hit, obstacleCheckDistance))
+            {
+                // 부딪힌 물체의 태그가 Obstacle인지 확인
+                if (hit.collider.CompareTag(obstacleTag))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // 막혔을 때 대기 및 상태 전환 처리
+        private void HandleBlockedState()
+        {
+            // 멈춰서 대기하므로 애니메이션 State 0
+            ani.SetInteger("State", 0);
+
+            currentBlockedTimer -= Time.deltaTime;
+
+            if (currentBlockedTimer <= 0)
+            {
+                // 대기 시간 끝나면 배회로 강제 전환
+                Debug.Log("장애물 발견! 배회로 전환합니다.");
+                detectTrigger.enabled = true; // 감지 트리거 다시 켜기
+                ChangeState(EnemyState.Wander);
+            }
+        }
+
         // 애니메이션 이벤트에서 호출될 함수 (실제 피격 판정)
         public void OnAttackHit()
         {
@@ -264,7 +338,10 @@ namespace FaintFear
 
             // 구체 범위 내의 충돌체 검출
             Collider[] hitColliders = Physics.OverlapSphere(hitPoint, attackImpactRadius, targetLayer);
-            Debug.Log(hitColliders[0].gameObject);
+
+            if (hitColliders.Length > 0)
+                Debug.Log(hitColliders[0].gameObject);
+
             foreach (var hit in hitColliders)
             {
                 // IDamageable 인터페이스가 있는지 확인 후 데미지 전달
@@ -381,6 +458,9 @@ namespace FaintFear
             // 상태 변경 시 대기 관련 플래그 초기화
             isWanderIdle = false;
 
+            // 상태 변경 시 막힘 상태 해제
+            isBlocked = false;
+
             if (newState == EnemyState.Wander)
             {
                 GetNewWanderPosition();
@@ -436,6 +516,11 @@ namespace FaintFear
             Gizmos.color = new Color(1, 0, 0, 0.5f);
             Vector3 hitPoint = transform.position + transform.TransformDirection(attackOffset);
             Gizmos.DrawWireSphere(hitPoint, attackImpactRadius);
+
+            // 장애물 감지 레이 기즈모 (파란색)
+            Gizmos.color = Color.blue;
+            Vector3 rayOrigin = transform.position + Vector3.up * 1.0f;
+            Gizmos.DrawRay(rayOrigin, transform.forward * obstacleCheckDistance);
         }
     }
 }

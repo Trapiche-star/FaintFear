@@ -296,16 +296,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74acb8ea50b524340afc6b8860dbf06a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCamera: {fileID: 605349354}
+  detectDistance: 3
+  pushItemLayer:
+    serializedVersion: 2
+    m_Bits: 0
   crosshairText: {fileID: 1754870886}
   screenText: {fileID: 1943623686}
-  rayDistance: 5
-  gaugePlayer: {fileID: 1040299072}
---- !u!20 &605349354 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 1488863931562352072, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
-  m_PrefabInstance: {fileID: 472655649}
-  m_PrefabAsset: {fileID: 0}
+  powerGaugePlayer: {fileID: 0}
 --- !u!1 &960067048
 GameObject:
   m_ObjectHideFlags: 0
@@ -467,9 +464,6 @@ MonoBehaviour:
   pushItemLayer:
     serializedVersion: 2
     m_Bits: 16384
-  playerCamera: {fileID: 605349354}
-  zoomFOV: 40
-  zoomSpeed: 10
 --- !u!1 &1595248500
 GameObject:
   m_ObjectHideFlags: 0

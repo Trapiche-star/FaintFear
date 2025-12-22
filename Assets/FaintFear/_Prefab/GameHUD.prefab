@@ -1064,7 +1064,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textManager: {fileID: 2312052754023712571}
-  dialogueHoldTime: 3
 --- !u!1 &8572671037270912656
 GameObject:
   m_ObjectHideFlags: 0
