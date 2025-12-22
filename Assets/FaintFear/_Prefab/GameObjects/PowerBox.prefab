@@ -1,5 +1,58 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &100262585282721480
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2695026469325466344}
+  - component: {fileID: 8843098248616618857}
+  m_Layer: 11
+  m_Name: BoxRight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2695026469325466344
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100262585282721480}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1909758317419291000}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &8843098248616618857
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100262585282721480}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.0034472924, y: 0.00035964785, z: 0.016937232}
+  m_Center: {x: -0.000135166, y: 0.00828878, z: 0.000668233}
 --- !u!1 &142083291312022206
 GameObject:
   m_ObjectHideFlags: 0
@@ -98,7 +151,7 @@ GameObject:
   - component: {fileID: 2867290848814144522}
   - component: {fileID: 3280956140375947198}
   - component: {fileID: 4297770123116849188}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SlotTrigger03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -153,7 +206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53d10e2c0eda6e3438261b0155052de3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  requiredLeverIndex: 0
+  requiredLeverIndex: 2
   insertedLever: {fileID: 1453001251208005101}
   powerBox: {fileID: 2382360199136297033}
 --- !u!114 &4297770123116849188
@@ -169,8 +222,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotController: {fileID: 3280956140375947198}
-  actionText: "\uB808\uBC84\uB97C \uAF42\uB294\uB2E4"
-  needLeverText: "\uB808\uBC84\uAC00 \uD544\uC694\uD558\uB2E4"
+  hud: {fileID: 0}
+  actionText: "\uC791\uB3D9"
+  needLeverMessage: "\uC791\uB3D9\uD558\uB824\uBA74 \uC2A4\uC704\uCE58\uAC00 \uD544\uC694\uD558\uB2E4"
+  wrongLeverMessage: "\uC774 \uC2A4\uC704\uCE58\uAC00 \uC544\uB2C8\uB2E4"
 --- !u!1 &876467674220822552
 GameObject:
   m_ObjectHideFlags: 0
@@ -181,6 +236,7 @@ GameObject:
   m_Component:
   - component: {fileID: 732996987092472689}
   - component: {fileID: 7290732365749688251}
+  - component: {fileID: 1218021800747050838}
   m_Layer: 8
   m_Name: PB_DoorTrigger
   m_TagString: Untagged
@@ -224,6 +280,23 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.4736735, y: 1.5905879, z: 0.06898193}
   m_Center: {x: -0.049930524, y: -0.06770897, z: 0.28475198}
+--- !u!114 &1218021800747050838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 876467674220822552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de463559fcb0e1b4f8145321adb0b866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doorPivot: {fileID: 739655116310793957}
+  openedAngle: 0
+  closedAngle: -90
+  rotateSpeed: 90
+  powerBox: {fileID: 2382360199136297033}
 --- !u!1 &878904413784033891
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,7 +306,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4466792030665269345}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CardInsertPoint04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -267,7 +340,7 @@ GameObject:
   - component: {fileID: 8774825481313894508}
   - component: {fileID: 5152769283133757400}
   - component: {fileID: 658821699270514253}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SlotTrigger01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -338,8 +411,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotController: {fileID: 5152769283133757400}
-  actionText: "\uB808\uBC84\uB97C \uAF42\uB294\uB2E4"
-  needLeverText: "\uB808\uBC84\uAC00 \uD544\uC694\uD558\uB2E4"
+  hud: {fileID: 0}
+  actionText: "\uC791\uB3D9"
+  needLeverMessage: "\uC791\uB3D9\uD558\uB824\uBA74 \uC2A4\uC704\uCE58\uAC00 \uD544\uC694\uD558\uB2E4"
+  wrongLeverMessage: "\uC774 \uC2A4\uC704\uCE58\uAC00 \uC544\uB2C8\uB2E4"
 --- !u!1 &984319589025028038
 GameObject:
   m_ObjectHideFlags: 0
@@ -349,7 +424,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 68538811216053018}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CardInsertPoint03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -380,7 +455,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9199041724644778944}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CardInsertPoint01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -413,7 +488,7 @@ GameObject:
   - component: {fileID: 4798832437095905716}
   - component: {fileID: 6453745590388712793}
   - component: {fileID: 5531802736026455538}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: InsertedLever03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -499,7 +574,7 @@ GameObject:
   - component: {fileID: 1909758317419291000}
   - component: {fileID: 6323833378022632730}
   - component: {fileID: 6865858796785750146}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: PB_Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -521,6 +596,9 @@ Transform:
   m_Children:
   - {fileID: 4482988394307077019}
   - {fileID: 8313163854276881678}
+  - {fileID: 3559242841850048497}
+  - {fileID: 381829990087344741}
+  - {fileID: 2695026469325466344}
   m_Father: {fileID: 6974078422071324890}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6323833378022632730
@@ -585,7 +663,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6074731287805047579}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Slot_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -622,7 +700,7 @@ GameObject:
   - component: {fileID: 1972857880933158884}
   - component: {fileID: 9189968958716182868}
   - component: {fileID: 5559458537958992570}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SlotBody03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -738,7 +816,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3683923278745162584}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CardInsertPoint02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -771,7 +849,7 @@ GameObject:
   - component: {fileID: 4086750179025112785}
   - component: {fileID: 8603591920195960406}
   - component: {fileID: 245914156430100453}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SlotBody02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -857,7 +935,7 @@ GameObject:
   - component: {fileID: 6500961530963700965}
   - component: {fileID: 1845657247153314606}
   - component: {fileID: 5467387057789462290}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SlotBody01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1043,7 +1121,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4397787529218517683}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1055,7 +1133,7 @@ Transform:
   - {fileID: 6198121402117981278}
   - {fileID: 6074731287805047579}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &2382360199136297033
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1073,11 +1151,11 @@ MonoBehaviour:
   - {fileID: 3912924787915874709}
   - {fileID: 3280956140375947198}
   - {fileID: 275902780105739135}
-  slotTriggerColliders:
-  - {fileID: 8774825481313894508}
-  - {fileID: 6088072283856768719}
-  - {fileID: 2867290848814144522}
-  - {fileID: 6010717465137288547}
+  slotColliders:
+  - {fileID: 658821699270514253}
+  - {fileID: 7712149614102816739}
+  - {fileID: 4297770123116849188}
+  - {fileID: 2448952029264354434}
 --- !u!1 &4668951198858434788
 GameObject:
   m_ObjectHideFlags: 0
@@ -1089,6 +1167,7 @@ GameObject:
   - component: {fileID: 7998396672304677467}
   - component: {fileID: 8259642834896491437}
   - component: {fileID: 8570122288101295500}
+  - component: {fileID: 7617640321932195404}
   m_Layer: 0
   m_Name: DoorMesh
   m_TagString: Untagged
@@ -1166,6 +1245,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &7617640321932195404
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4668951198858434788}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.00013516964, y: 0.014885901, z: 0.014885896}
+  m_Center: {x: -0.00018678505, y: 0.0073638503, z: 0.0040561827}
 --- !u!1 &4887780547554451852
 GameObject:
   m_ObjectHideFlags: 0
@@ -1177,7 +1277,7 @@ GameObject:
   - component: {fileID: 498038889657328905}
   - component: {fileID: 6556907574018611744}
   - component: {fileID: 1966894287460242211}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: InsertedLever04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1264,7 +1364,7 @@ GameObject:
   - component: {fileID: 6010717465137288547}
   - component: {fileID: 275902780105739135}
   - component: {fileID: 2448952029264354434}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SlotTrigger04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1319,7 +1419,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53d10e2c0eda6e3438261b0155052de3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  requiredLeverIndex: 0
+  requiredLeverIndex: 3
   insertedLever: {fileID: 4887780547554451852}
   powerBox: {fileID: 2382360199136297033}
 --- !u!114 &2448952029264354434
@@ -1335,8 +1435,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotController: {fileID: 275902780105739135}
-  actionText: "\uB808\uBC84\uB97C \uAF42\uB294\uB2E4"
-  needLeverText: "\uB808\uBC84\uAC00 \uD544\uC694\uD558\uB2E4"
+  hud: {fileID: 0}
+  actionText: "\uC791\uB3D9"
+  needLeverMessage: "\uC791\uB3D9\uD558\uB824\uBA74 \uC2A4\uC704\uCE58\uAC00 \uD544\uC694\uD558\uB2E4"
+  wrongLeverMessage: "\uC774 \uC2A4\uC704\uCE58\uAC00 \uC544\uB2C8\uB2E4"
 --- !u!1 &4924561361700298944
 GameObject:
   m_ObjectHideFlags: 0
@@ -1348,7 +1450,7 @@ GameObject:
   - component: {fileID: 4435958640545301938}
   - component: {fileID: 8708563048526539912}
   - component: {fileID: 2579648484757892095}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: InsertedLever02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1435,7 +1537,7 @@ GameObject:
   - component: {fileID: 6088072283856768719}
   - component: {fileID: 3912924787915874709}
   - component: {fileID: 7712149614102816739}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SlotTrigger02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1490,7 +1592,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53d10e2c0eda6e3438261b0155052de3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  requiredLeverIndex: 0
+  requiredLeverIndex: 1
   insertedLever: {fileID: 4924561361700298944}
   powerBox: {fileID: 2382360199136297033}
 --- !u!114 &7712149614102816739
@@ -1506,8 +1608,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotController: {fileID: 3912924787915874709}
-  actionText: "\uB808\uBC84\uB97C \uAF42\uB294\uB2E4"
-  needLeverText: "\uB808\uBC84\uAC00 \uD544\uC694\uD558\uB2E4"
+  hud: {fileID: 0}
+  actionText: "\uC791\uB3D9"
+  needLeverMessage: "\uC791\uB3D9\uD558\uB824\uBA74 \uC2A4\uC704\uCE58\uAC00 \uD544\uC694\uD558\uB2E4"
+  wrongLeverMessage: "\uC774 \uC2A4\uC704\uCE58\uAC00 \uC544\uB2C8\uB2E4"
 --- !u!1 &6298910462962377844
 GameObject:
   m_ObjectHideFlags: 0
@@ -1517,7 +1621,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 996272303449849820}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Slot_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1552,7 +1656,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 112096586645848467}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Slot_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1589,7 +1693,7 @@ GameObject:
   - component: {fileID: 6455782780917564710}
   - component: {fileID: 5510186813229455684}
   - component: {fileID: 398233245106220901}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: InsertedLever01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1688,7 +1792,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6830486596553693454}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0.527, y: 0.145, z: 0.322}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1696,7 +1800,7 @@ Transform:
   - {fileID: 7433254964997419861}
   - {fileID: 732996987092472689}
   m_Father: {fileID: 6974078422071324890}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &7393421697288366089
 GameObject:
   m_ObjectHideFlags: 0
@@ -1792,7 +1896,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6198121402117981278}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Slot_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1915,7 +2019,7 @@ GameObject:
   - component: {fileID: 8811138107142938020}
   - component: {fileID: 2910759957851959266}
   - component: {fileID: 4877311377198862775}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SlotBody04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1990,3 +2094,109 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &8963531757781174852
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 381829990087344741}
+  - component: {fileID: 2805025632059318812}
+  m_Layer: 11
+  m_Name: BoxLeft
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &381829990087344741
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8963531757781174852}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1909758317419291000}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2805025632059318812
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8963531757781174852}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.0034472924, y: 0.0002748835, z: 0.016937232}
+  m_Center: {x: -0.000135166, y: -0.008331159, z: 0.000668233}
+--- !u!1 &9063803514600671364
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3559242841850048497}
+  - component: {fileID: 6948862861223926532}
+  m_Layer: 11
+  m_Name: BoxBack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3559242841850048497
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9063803514600671364}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1909758317419291000}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &6948862861223926532
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9063803514600671364}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.0010830036, y: 0.016937232, z: 0.016937232}
+  m_Center: {x: 0.0010469777, y: 6.2404734e-11, z: 0.00066823297}

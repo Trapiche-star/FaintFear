@@ -3,87 +3,85 @@ using UnityEngine;
 namespace FaintFear
 {
     /// <summary>
-    /// 슬롯 콜라이더 상호작용
-    /// ActionUI 문구를 제공하고 E 입력 시 슬롯 삽입을 시도한다.
-    /// 실패 시 시퀀스 UI를 통해 메시지를 출력한다.
+    /// 슬롯과 상호작용하는 트리거
+    /// 레버 보유 상태에 따라 HUD 메시지를 출력하거나 슬롯 삽입을 시도한다
     /// </summary>
     public class SlotCollider : Interactive, IActionProvider
     {
         #region Variables
 
-        // 연결된 슬롯 컨트롤러
-        [SerializeField]
-        private SlotController slotController;
+        [SerializeField] private SlotController slotController; // 슬롯 조건 확인과 실제 삽입 처리를 담당
+        [SerializeField] private HUDManager hud;                 // 상호작용 실패 시 안내 메시지를 출력
+        [SerializeField] private string actionText;              // ActionUI에 표시될 기본 상호작용 문구
+        [SerializeField] private string needLeverMessage;         // 레버가 없을 때 출력되는 안내 메시지
+        [SerializeField] private string wrongLeverMessage;        // 슬롯에 맞지 않을 때 출력되는 실패 메시지
 
-        // 기본 상호작용 문구 (ActionUI용)
-        [SerializeField]
-        private string actionText = "작동";
+        #endregion
 
-        // 레버가 하나도 없을 때 표시할 메시지
-        [SerializeField]
-        private string needLeverMessage = "레버가 필요하다";
 
-        // 레버는 있지만 슬롯에 맞지 않을 때 표시할 메시지
-        [SerializeField]
-        private string wrongLeverMessage = "이 슬롯에 맞지 않는다";
+        #region Unity Event Method
 
-        // 시퀀스 텍스트 매니저
-        [SerializeField]
-        private SequenceTextManager sequenceText;
+        // 씬 시작 시 HUDManager 참조를 확보한다
+        private void Awake()
+        {
+            if (hud == null)
+                hud = Object.FindAnyObjectByType<HUDManager>();
+            // 만약 HUD가 연결되어 있지 않으면 씬에 존재하는 HUDManager를 찾아 사용한다
+        }
 
         #endregion
 
 
         #region Interactive Override
 
-        // 플레이어가 E 키를 눌렀을 때 호출된다
+        // 플레이어가 상호작용 키(E)를 눌렀을 때 호출된다
         public override void Interaction()
         {
-            // 슬롯 컨트롤러가 없으면 아무 처리도 하지 않는다
             if (slotController == null) return;
+            // 만약 슬롯 컨트롤러가 없으면 이 메서드에서는 더 이상 상호작용하지 않는다
 
-            // 퍼즐 인벤토리가 없으면 시도 자체를 중단한다
-            if (PuzzleInventory.Instance == null) return;
+            if (PuzzleInventory.Instance == null)
+            {
+                hud?.ShowDialogue(needLeverMessage);
+                // 만약 퍼즐 인벤토리가 존재하지 않으면 HUD가 존재할 때 레버 필요 메시지를 출력한다
+                return;
+                // 만약 위 조건이 참이면 이 메서드에서는 더 이상 상호작용하지 않는다
+            }
 
-            // 레버를 하나도 들고 있지 않으면
             if (!PuzzleInventory.Instance.HasAnyLever())
             {
-                // 시퀀스 UI에 레버 필요 메시지를 표시한다
-                if (sequenceText != null)
-                    sequenceText.ShowMessage(needLeverMessage);
-
+                hud?.ShowDialogue(needLeverMessage);
+                // 만약 레버를 하나도 가지고 있지 않으면 HUD가 존재할 때 레버 필요 메시지를 출력한다
                 return;
+                // 만약 위 조건이 참이면 이 메서드에서는 더 이상 상호작용하지 않는다
             }
 
-            // 이 슬롯에 맞는 레버를 들고 있지 않으면
             if (!PuzzleInventory.Instance.HasLever(slotController.RequiredLeverIndex))
             {
-                // 시퀀스 UI에 슬롯 불일치 메시지를 표시한다
-                if (sequenceText != null)
-                    sequenceText.ShowMessage(wrongLeverMessage);
-
+                hud?.ShowDialogue(wrongLeverMessage);
+                // 만약 슬롯에 필요한 레버가 없으면 HUD가 존재할 때 슬롯 불일치 메시지를 출력한다
                 return;
+                // 만약 위 조건이 참이면 이 메서드에서는 더 이상 상호작용하지 않는다
             }
 
-            // 여기까지 왔다는 것은 조건이 모두 맞다는 뜻이다
-            // 실제 슬롯 삽입을 시도한다
             slotController.TryInsert();
+            // 모든 조건이 충족되었으므로 슬롯 삽입을 시도한다
         }
 
         #endregion
 
 
-        #region IActionProvider
+        #region Property
 
-        // ActionUI에 표시할 문구를 반환한다
+        // ActionUI에 표시할 상호작용 문구를 반환한다
         public string GetActionText()
         {
-            // 슬롯이 이미 채워졌다면 문구를 숨긴다
             if (slotController != null && slotController.IsFilled)
                 return string.Empty;
+            // 만약 슬롯이 이미 채워져 있다면 이 메서드에서는 문구를 표시하지 않는다
 
-            // 가능한 행동만 표시한다
             return actionText;
+            // 위 조건에 해당하지 않으면 기본 상호작용 문구를 반환한다
         }
 
         #endregion
