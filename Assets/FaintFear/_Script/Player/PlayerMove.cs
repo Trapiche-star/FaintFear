@@ -35,11 +35,15 @@ namespace FaintFear
         // 중력 처리를 위한 속도 변수
         private Vector3 velocity;
 
+        // + 확대시 시점 고정용 (외부 제어)
+        private bool lookLocked = false;
+
         public Action OnInteractEvent;
         public Action OnFlashLightEvent;
         public Action<bool> OnPushEvent;
 
-
+        //움직임만 막기
+        public bool canMove = true;
         #endregion
 
         #region Unity Event Method
@@ -91,12 +95,24 @@ namespace FaintFear
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            canMove = true;
         }
 
         private void Update()
         {
+            // + 시점은 항상 처리
             Look();
+
+            // + 이동만 선택적으로 차단
+            if (!canMove)
+                return;
+
             Move();
+
+            /* if (!canMove)
+                 return;
+             Look();
+             Move(); */
         }
 
         #endregion
@@ -128,6 +144,9 @@ namespace FaintFear
 
         void Look()
         {
+            // +시점 고정
+            if (lookLocked) return;
+
             // 저장된 델타값으로 회전 처리
             float yRotation = currentLookDelta.x * lookSensitivity * Time.deltaTime;
             transform.Rotate(Vector3.up * yRotation);
@@ -140,6 +159,13 @@ namespace FaintFear
             {
                 cameraRoot.localRotation = Quaternion.Euler(currentXRotation, 0f, 0f);
             }
+        }
+
+        // + 외부(카메라 컨트롤러)에서 호출
+        public void SetLookLock(bool locked)
+        {
+            lookLocked = locked;
+
         }
 
         public void OnMove(InputAction.CallbackContext context)
