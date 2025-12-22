@@ -1,31 +1,31 @@
 using UnityEngine;
-using UnityEngine.Rendering; // MaterialGlobalIlluminationFlags, Emission 키워드 제어용
+using UnityEngine.Rendering;
 
 namespace FaintFear
 {
     /// <summary>
     /// 라이트 존 제어 클래스
-    /// 트리거 기준으로 라이트와 메테리얼 에미션을 켜고 끄며,
-    /// 시작 시점에 트리거 밖 에미션이 켜져 있을 수 있는 상황을 0으로 만든다.
+    /// 플레이어 위치를 기준으로 라이트와 에미션을 켜고 끄며,
+    /// 시작 시 트리거 밖 에미션이 보이지 않도록 초기 상태를 정리한다
     /// </summary>
     public class LightZone01 : MonoBehaviour
     {
         #region Variables
 
         // 건물 내부 모든 Point Light를 담고 있는 부모 오브젝트
-        public GameObject allPointLights;
+        [SerializeField] private GameObject allPointLights;
 
-        // 에미션이 적용된 Mesh들을 담고 있는 부모 오브젝트
-        public GameObject allEmissiveObjects;
+        // 에미션이 적용된 메쉬들을 담고 있는 부모 오브젝트
+        [SerializeField] private GameObject allEmissiveObjects;
 
-        // 라이트가 켜졌을 때 적용될 Range 값
-        public float activeRange = 8f;
+        // 라이트가 켜졌을 때 사용할 Range 값
+        [SerializeField] private float activeRange = 8f;
 
-        // 라이트가 꺼졌을 때 적용될 Range 값 (보통 0)
-        public float inactiveRange = 0f;
+        // 라이트가 꺼졌을 때 사용할 Range 값
+        [SerializeField] private float inactiveRange = 0f;
 
-        // 트리거 중심 기준으로 라이트 / 에미션이 켜질 수 있는 최대 거리
-        public float triggerLightDistance = 15f;
+        // 트리거 중심 기준으로 라이트/에미션이 켜질 수 있는 최대 거리
+        [SerializeField] private float triggerLightDistance = 15f;
 
         // 제어 대상 라이트 배열
         private Light[] lights;
@@ -41,47 +41,50 @@ namespace FaintFear
 
         #region Unity Event Method
 
+        // 씬이 시작되기 전에 라이트/에미션 제어 대상을 캐싱하고 초기 상태를 정리한다
         private void Awake()
         {
-            // Point Light 부모 아래의 모든 Light 컴포넌트 캐싱
+            // 만약 Point Light 부모가 존재한다면
             if (allPointLights != null)
+                // 그래서 자식에 포함된 모든 Light 컴포넌트를 가져온다
                 lights = allPointLights.GetComponentsInChildren<Light>(true);
 
-            // 에미션 대상 부모 아래의 모든 Renderer 캐싱
+            // 만약 에미션 대상 부모가 존재한다면
             if (allEmissiveObjects != null)
+                // 그래서 자식에 포함된 모든 Renderer를 가져온다
                 emissiveRenderers = allEmissiveObjects.GetComponentsInChildren<Renderer>(true);
 
-            // 씬 시작 순간(첫 프레임)부터 "트리거 밖 에미션이 켜져 보이는" 상황을 막기 위해
-            // 에미션을 먼저 무조건 OFF로 초기화한다.
-            // 이렇게 하면 Start()에서 플레이어가 안에 있으면 필요한 것만 다시 켜고,
-            // 밖에 있으면 그대로 OFF 상태가 유지된다.
+            // 그래서 씬 시작 순간 트리거 밖 에미션이 보이는 상황을 방지하기 위해
+            // 모든 에미션을 강제로 OFF 상태로 만든다
             ForceDisableAllEmission();
         }
 
+        // 첫 프레임에 플레이어가 트리거 안에 있는지 검사해 초기 상태를 결정한다
         private void Start()
         {
-            // 제어 대상이 없으면 처리 중단
+            // 만약 라이트와 에미션 대상이 모두 없다면
             if (lights == null && emissiveRenderers == null)
-                return;
+                return; // 더 이상 처리할 것이 없으므로 끝낸다
 
             bool playerInside = false;
 
-            // 트리거 영역 내에 플레이어가 있는지 검사
+            // 만약 이 오브젝트에 BoxCollider가 없다면
             BoxCollider box = GetComponent<BoxCollider>();
             if (box == null)
             {
-                // 트리거 콜라이더가 없으면 안전하게 전체 OFF 유지
+                // 안전하게 모든 라이트를 끄고 종료한다
                 SetLightsActive(false);
                 return;
             }
 
-            // OverlapBox로 시작 시점에 플레이어가 트리거 안에 있는지 확인
+            // 그래서 OverlapBox를 사용해 시작 시 플레이어가 트리거 안에 있는지 검사한다
             Collider[] colliders = Physics.OverlapBox(
                 transform.position,
                 box.size / 2f,
                 transform.rotation
             );
 
+            // 겹친 콜라이더 중 플레이어가 있는지 확인한다
             foreach (Collider col in colliders)
             {
                 if (col.CompareTag("Player"))
@@ -91,24 +94,21 @@ namespace FaintFear
                 }
             }
 
-            // 플레이어가 트리거 안에 있으면 켜기, 아니면 끄기
-            // (Awake에서 에미션은 이미 OFF로 초기화되었기 때문에,
-            // 여기서 켜는 경우에만 명확하게 ON 상태로 바뀐다.)
-            if (playerInside)
-                SetLightsActive(true);
-            else
-                SetLightsActive(false);
+            // 만약 플레이어가 안에 있다면 라이트를 켜고,
+            // 그렇지 않으면 라이트를 끈 상태로 유지한다
+            SetLightsActive(playerInside);
         }
 
+        // 플레이어가 트리거를 벗어났을 때 호출된다
         private void OnTriggerExit(Collider other)
         {
-            // 플레이어가 트리거를 벗어났을 때
+            // 만약 나간 대상이 플레이어일 때
             if (other.CompareTag("Player"))
             {
-                // 라이트 및 에미션 끄기
+                // 그래서 라이트와 에미션을 끈다
                 SetLightsActive(false);
 
-                // 이후 다시 켜지지 않도록 영구 OFF 처리
+                // 그리고 이후 다시 켜지지 않도록 영구 OFF 처리한다
                 lightsPermanentlyOff = true;
             }
         }
@@ -118,14 +118,13 @@ namespace FaintFear
 
         #region Custom Method
 
-        // 라이트와 에미션의 전체 ON / OFF 상태를 제어
+        // 라이트와 에미션의 전체 ON / OFF 상태를 제어한다
         public void SetLightsActive(bool state)
         {
-            // 한 번 영구 OFF 되었다면 다시 켜지지 않도록 차단
+            // 만약 이미 영구 OFF 상태인데 다시 켜려고 한다면
             if (lightsPermanentlyOff && state)
-                return;
+                return; // 무시하고 끝낸다
 
-            // 트리거 중심 좌표
             Vector3 triggerCenter = transform.position;
 
             // 라이트 제어 처리
@@ -133,105 +132,95 @@ namespace FaintFear
             {
                 foreach (Light l in lights)
                 {
-                    // 라이트가 null이면 건너뜀
+                    // 만약 라이트가 null이면 건너뛴다
                     if (l == null)
                         continue;
 
-                    // 트리거 중심과 라이트 사이 거리 계산
+                    // 트리거 중심과 라이트 사이의 거리를 계산한다
                     float distance = Vector3.Distance(l.transform.position, triggerCenter);
 
-                    // 켜기 조건: state == true && 거리 조건 충족
+                    // 만약 켜는 상태이고 && 거리 조건을 만족하면
                     if (state && distance <= triggerLightDistance)
                     {
-                        // 라이트 오브젝트가 꺼져 있으면 켬 (비활성 상태면 enabled만으로는 불가)
-                        if (!l.gameObject.activeSelf)
-                            l.gameObject.SetActive(true);
-
-                        // 라이트 컴포넌트 활성화 및 Range 설정
+                        // 그래서 라이트를 활성화한다
                         l.enabled = true;
                         l.range = activeRange;
                     }
                     else
                     {
-                        // 라이트 오브젝트는 켜두되(필요 시), 라이트 컴포넌트만 끔
-                        // (오브젝트 자체를 끄면 다른 컴포넌트/자식에 영향이 있을 수 있어 유지)
-                        if (!l.gameObject.activeSelf)
-                            l.gameObject.SetActive(true);
-
+                        // 그렇지 않으면 라이트를 끈다
                         l.enabled = false;
                         l.range = inactiveRange;
                     }
                 }
             }
 
-            // 에미션 상태 제어
-            // (Awake에서 이미 전체 OFF를 해두었기 때문에,
-            // 여기서는 '켜야 하는 대상만 켜거나' '전체를 끄는' 역할만 수행하면 된다.)
+            // 에미션 상태도 함께 제어한다
             SetEmissionState(state, triggerCenter);
         }
 
-        // 씬 시작 순간부터 트리거 밖 에미션이 켜질 가능성을 0으로 만들기 위한 초기화 함수
+        // 씬 시작 시 모든 에미션을 강제로 OFF로 만드는 초기화 함수
         private void ForceDisableAllEmission()
         {
-            // 에미션 대상이 없으면 종료
+            // 만약 에미션 대상이 없다면
             if (emissiveRenderers == null)
                 return;
 
-            // 모든 렌더러 / 모든 머티리얼을 대상으로 에미션 OFF 강제 적용
+            // 모든 렌더러에 대해 반복한다
             foreach (Renderer rend in emissiveRenderers)
             {
                 if (rend == null)
                     continue;
 
-                foreach (Material mat in rend.sharedMaterials)
+                // 모든 머티리얼을 대상으로 처리한다
+                foreach (Material mat in rend.materials)
                 {
                     if (mat == null)
                         continue;
 
-                    // 에미션 키워드 OFF
+                    // 그래서 에미션 키워드를 끄고
                     mat.DisableKeyword("_EMISSION");
 
-                    // GI 플래그 OFF (에미션이 간접광에 영향을 주지 않도록)
+                    // 간접광에 영향이 가지 않도록 설정하고
                     mat.globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
 
-                    // 에미션 컬러를 완전 검정으로
+                    // 에미션 색상을 검정으로 만든다
                     mat.SetColor("_EmissionColor", Color.black);
                 }
             }
         }
 
-        // 메테리얼 에미션 상태를 트리거 중심 기준 거리로 ON / OFF
+        // 트리거 중심과의 거리 기준으로 에미션을 켜거나 끈다
         private void SetEmissionState(bool state, Vector3 triggerCenter)
         {
-            // 에미션 대상이 없으면 종료
+            // 만약 에미션 대상이 없다면
             if (emissiveRenderers == null)
                 return;
 
             foreach (Renderer rend in emissiveRenderers)
             {
-                // 렌더러가 null이면 건너뜀
                 if (rend == null)
                     continue;
 
-                // 트리거 중심과 렌더러 사이 거리 계산
+                // 트리거 중심과의 거리 계산
                 float distance = Vector3.Distance(rend.transform.position, triggerCenter);
 
-                foreach (Material mat in rend.sharedMaterials)
+                foreach (Material mat in rend.materials)
                 {
                     if (mat == null)
                         continue;
 
-                    // 켜기 조건: state == true && 거리 조건 충족
+                    // 만약 켜는 상태이고 && 거리 조건을 만족하면
                     if (state && distance <= triggerLightDistance)
                     {
-                        // 에미션 ON
+                        // 그래서 에미션을 켠다
                         mat.EnableKeyword("_EMISSION");
                         mat.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
                         mat.SetColor("_EmissionColor", Color.white * 1.5f);
                     }
                     else
                     {
-                        // 에미션 OFF
+                        // 그렇지 않으면 에미션을 끈다
                         mat.DisableKeyword("_EMISSION");
                         mat.globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
                         mat.SetColor("_EmissionColor", Color.black);
