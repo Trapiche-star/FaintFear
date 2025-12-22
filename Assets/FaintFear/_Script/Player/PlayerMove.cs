@@ -39,7 +39,8 @@ namespace FaintFear
         public Action OnFlashLightEvent;
         public Action<bool> OnPushEvent;
 
-
+        //움직임만 막기
+        public bool canMove = true;
         #endregion
 
         #region Unity Event Method
@@ -91,10 +92,13 @@ namespace FaintFear
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            canMove = true;
         }
 
         private void Update()
         {
+            if (!canMove)
+                return;
             Look();
             Move();
         }
