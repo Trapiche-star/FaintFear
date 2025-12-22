@@ -14,15 +14,15 @@ namespace FaintFear
         [SerializeField] private HUDManager hudManager; // HUD 도구
 
         [Header("연출 설정")]
-        [SerializeField] private float dialogueHoldTime = 2.5f; // 문장 유지 시간
+        [SerializeField] private float dialogueHoldTime = 2f; // 문장 유지 시간
 
         [Header("오프닝 독백")]
         [TextArea]
         [SerializeField]
         private string[] openingDialogueLines =
         {
-            "폐병원을 순찰하다 침입자들을 쫓아 들어왔는데…",
-            "배터리가 꺼져버렸군."
+            "폐병원을 순찰하다 침입자들을 쫓아 들어왔는데… 배터리가 꺼져버렸군.",
+            
         };
 
         private PlayerMove playerMove; // 플레이어 조작 컴포넌트
