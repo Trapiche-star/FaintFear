@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ namespace FaintFear
     {
         #region Variables
         private PlayerMove playerMove;
+        private Flashlight flashlight;
         public LightZone01 lightZone;
         public TriggerRestrict triggerRestrict;
 
@@ -23,9 +25,11 @@ namespace FaintFear
 
 
         //시퀀스 텍스트
-        public SequenceTextManager sequenceText;
-        private string dialogueLine01 = "...방금 뭐였지?";
-        private string dialogueLine02 = "[F]를 눌러서 손전등을 켜고 끌 수 있다.";
+        public TextMeshProUGUI sequenceText;
+        private string dialogueLine01 = "[F]를 눌러서 손전등을 켜고 끌 수 있다.";
+        private string dialogueLine02 = "어둠에 노출될 때마다 비정상적인 공포심이 몰려든다...";
+        private string dialogueLine03 = "빛에서 멀어지지 않는게 좋겠다.";
+        
 
 
         private bool eventTriggered = false;
@@ -35,6 +39,7 @@ namespace FaintFear
         private void Start()
         {
             playerMove = GameObject.Find("Player").GetComponent<PlayerMove>();
+            flashlight = GameObject.FindAnyObjectByType<Flashlight>();
         }
         private void Update()
         {
@@ -52,34 +57,48 @@ namespace FaintFear
         #region Custom Method 
         IEnumerator SequencePlay()
         {
-            playerMove.enabled = false;
+            //플레이어 고정
+            playerMove.canMove = false;
             vcam.enabled = false;
-            ghost.SetActive(true);
-
-            //창문으로 강제 시점 이동
-            yield return StartCoroutine(LookAtTarget());
-            //귀신 지나가기
-            yield return StartCoroutine(MoveGhost());
-            yield return new WaitForSeconds(0.5f);
-
-            sequenceText.gameObject.SetActive(true);
-            sequenceText.ShowMessage(dialogueLine01);
-            yield return new WaitForSeconds(2f);
-
-            playerMove.enabled = true;
-            vcam.enabled = true;
 
             //조명 끄기
             lightZone.SetLightsActive(false);
-            triggerRestrict.SetRestriction(false);
 
             //손전등 튜토리얼 대사 출력
             sequenceText.gameObject.SetActive(true);
-            sequenceText.ShowMessage(dialogueLine02);
+            sequenceText.text = dialogueLine01;
 
-            //정신력 시스템 활성화
-            PlayerStatus.Instance.isMentalSystemActive = true;
+            //손전등을 켰을 때 
+            if(flashlight.IsOn)
+            {
+                sequenceText.text = "";
 
+                ghost.SetActive(true);
+
+                //창문으로 강제 시점 이동
+                yield return StartCoroutine(LookAtTarget());
+                //귀신 지나가기
+                yield return StartCoroutine(MoveGhost());
+                yield return new WaitForSeconds(0.5f);
+
+                //플레이어 움직임 고정 해제
+                playerMove.canMove = true;
+                vcam.enabled = true;
+
+                //이탈 제한 구역 콜라이더, 트리거 해제
+                triggerRestrict.SetRestriction(false);
+
+                //텍스트 출력
+                sequenceText.gameObject.SetActive(true);
+                sequenceText.text = dialogueLine02;
+                yield return new WaitForSeconds(2f);
+                sequenceText.text = dialogueLine03;
+                yield return new WaitForSeconds(2f);
+                sequenceText.text = "";
+
+                //정신력 시스템 활성화
+                PlayerStatus.Instance.isMentalSystemActive = true;
+            }
         }
         //창문으로 강제 시점 이동
         IEnumerator LookAtTarget()
