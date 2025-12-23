@@ -12,7 +12,7 @@ namespace FaintFear
         [SerializeField] private GameObject cutRoot; // 절단 시 제거될 체인·자물쇠 오브젝트 묶음
         [SerializeField] private DoorLock doorLock;  // 봉인 해제 대상 도어락
 
-        private HUDManager hud;                      // HUD 메시지 출력 담당
+        private SequenceTextManager sequenceText;    // HUD 텍스트 출력 담당
         private bool isUnlocked = false;             // 이미 체인이 제거되었는지 여부
 
         #endregion
@@ -23,8 +23,8 @@ namespace FaintFear
         // 체인락 초기 설정 및 HUD 참조 준비
         private void Awake()
         {
-            // 씬에 존재하는 HUDManager를 탐색하여 참조한다
-            hud = Object.FindFirstObjectByType<HUDManager>();
+            // 씬에 존재하는 SequenceTextManager를 탐색하여 참조한다
+            sequenceText = Object.FindFirstObjectByType<SequenceTextManager>();
         }
 
         #endregion
@@ -75,12 +75,11 @@ namespace FaintFear
             gameObject.SetActive(false);
         }
 
-        // HUD 메시지 출력 위임
+        // SequenceTextManager를 통해 메시지 출력
         private void ShowHUDMessage(string message)
         {
-            // HUDManager가 존재할 경우에만 메시지를 출력한다
-            if (hud != null)
-                hud.ShowDialogue(message);
+            if (sequenceText != null)
+                sequenceText.ShowMessage(message);
         }
 
         #endregion

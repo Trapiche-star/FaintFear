@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 using System;
 
 namespace FaintFear
@@ -36,32 +35,15 @@ namespace FaintFear
         // 화면을 검게 만든다 (알파 0 → 1)
         public void FadeToBlack(Action onComplete = null)
         {
-            // 만약 페이더가 존재한다면 화면을 검게 만든다
             if (fader != null)
                 fader.FadeInToOne(onComplete);
-
-            // 그렇지 않으면 아무 일도 하지 않는다
         }
 
         // 화면을 밝게 만든다 (알파 1 → 0)
         public void FadeFromBlack(Action onComplete = null)
         {
-            // 만약 페이더가 존재한다면 화면을 밝게 만든다
             if (fader != null)
                 fader.FadeOutToZero(onComplete);
-
-            // 그렇지 않으면 아무 일도 하지 않는다
-        }
-
-        // ===== 추가된 부분 (컴파일 에러 해결용) =====
-
-        /// <summary>
-        /// 간단한 HUD 다이얼로그 출력 (임시)
-        /// </summary>
-        public void ShowDialogue(string message)
-        {
-            // 현재는 HUD 텍스트 시스템이 없으므로 로그로만 출력
-            Debug.Log($"[HUD Dialogue] {message}");
         }
 
         #endregion
