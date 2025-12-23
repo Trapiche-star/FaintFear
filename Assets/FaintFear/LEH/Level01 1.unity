@@ -931,11 +931,11 @@ PrefabInstance:
     - target: {fileID: 78784444985532123, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: c42d67540ff0b8645ac81c5807b50811, type: 2}
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 78784444985532123, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: -5658785806089299815, guid: c42d67540ff0b8645ac81c5807b50811, type: 2}
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 78784444985532123, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 0
@@ -1184,7 +1184,8 @@ MonoBehaviour:
   lightZone: {fileID: 803317310}
   triggerRestrict: {fileID: 803317311}
   vcam: {fileID: 438918824}
-  playerCamera: {fileID: 1960307504}
+  sequenceUI: {fileID: 0}
+  cameraPosition: {fileID: 0}
   windowLookPoint: {fileID: 62703778}
   rotateSpeed: 5
   ghost: {fileID: 1824717617}
@@ -1773,6 +1774,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hudManager: {fileID: 547749791}
+  sequenceText: {fileID: 0}
   dialogueHoldTime: 2.5
   openingDialogueLines:
   - "\uD3D0\uBCD1\uC6D0\uC744 \uC21C\uCC30\uD558\uB2E4 \uCE68\uC785\uC790\uB4E4\uC744
@@ -1859,6 +1861,31 @@ MonoBehaviour:
   zoomFOV: 35
   zoomSpeed: 8
   playerMove: {fileID: 1807902835}
+--- !u!114 &1807902841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1786992885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7fb81cebc513614daef1f732f9d9b53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerGaugePlayer: {fileID: 1807902842}
+  gaugeUI: {fileID: 1222567551}
+--- !u!114 &1807902842 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8162890610884242762, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
+  m_PrefabInstance: {fileID: 7684836878560161770}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1786992885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33dfd00a402e93f488742c6b1e637fab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1824717617
 GameObject:
   m_ObjectHideFlags: 0
@@ -2514,6 +2541,14 @@ PrefabInstance:
       propertyPath: gaugeUI
       value: 
       objectReference: {fileID: 1222567551}
+    - target: {fileID: 8162890610884242762, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
+      propertyPath: drainSpeed
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 8162890610884242762, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
+      propertyPath: maxChargeTime
+      value: 30
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2521,6 +2556,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 236520129318838511, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1807902840}
+    - targetCorrespondingSourceObject: {fileID: 236520129318838511, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1807902841}
   m_SourcePrefab: {fileID: 100100000, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

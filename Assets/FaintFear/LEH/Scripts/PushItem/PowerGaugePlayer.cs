@@ -20,26 +20,24 @@ namespace FaintFear
         bool isPushHeld;
         bool isTouchingPushItem;
 
-        // 외부 공개 상태
+        [SerializeField] private GameObject flashlight;
+
         public bool IsCharging { get; private set; }
         public bool HasRemainingCharge => currentCharge > 0f;
 
-        PushItem currentItem;
-        PlayerMove playerMove;
-
-        //카메라용 공개 정보
+        //UI / 외부 제어용 (중요)
         public bool CanZoom =>
             isPushHeld && isTouchingPushItem && currentItem != null;
 
-        public Transform ZoomTarget =>
-            currentItem != null ? currentItem.transform : null;
+        PushItem currentItem;
+        PlayerMove playerMove;
 
         void Awake()
         {
             playerMove = GetComponent<PlayerMove>();
 
-            IsCharging = false;
             currentCharge = 0f;
+            IsCharging = false;
 
             gaugeUI.Show(false);
             gaugeUI.SetGauge(0f);
@@ -61,14 +59,31 @@ namespace FaintFear
             HandleCharge();
         }
 
-        #region Input
+        // =========================
+        // 입력 상태
+        // =========================
         void OnPushStateChanged(bool isHeld)
         {
             isPushHeld = isHeld;
-        }
-        #endregion
 
-        #region Detect
+            if (flashlight == null) return;
+
+            //상호작용 중 일때 배터리 소모 끄기, 오브젝트 비활성화
+            if (isHeld)
+            {
+                PlayerStatus.Instance.isBatteryActive = false;
+                flashlight.SetActive(false);
+            }
+            else
+            {
+                PlayerStatus.Instance.isBatteryActive = true;
+                flashlight.SetActive(true);
+            }
+        }
+
+        // =========================
+        // 밀 수 있는 물체 감지
+        // =========================
         void DetectPushItem()
         {
             isTouchingPushItem = false;
@@ -94,33 +109,38 @@ namespace FaintFear
                 return;
             }
         }
-        #endregion
 
-        #region Charge
+        // =========================
+        // 게이지 처리
+        // =========================
         void HandleCharge()
         {
+            // 닿아있지 않으면 감소만
             if (!isTouchingPushItem || currentItem == null)
             {
                 IsCharging = false;
-                DrainCharge();
+                DrainCharge(false);
                 return;
             }
 
+            // V키 누르고 있을 때만 충전
             if (isPushHeld)
             {
                 IsCharging = true;
                 gaugeUI.Show(true);
+
                 currentCharge += Time.deltaTime / maxChargeTime;
             }
             else
             {
                 IsCharging = false;
-                DrainCharge();
+                DrainCharge(false);
             }
 
             currentCharge = Mathf.Clamp01(currentCharge);
             gaugeUI.SetGauge(currentCharge);
 
+            // 가득 차면 밀기
             if (currentCharge >= 1f)
             {
                 currentItem.MoveToTarget();
@@ -128,7 +148,10 @@ namespace FaintFear
             }
         }
 
-        void DrainCharge()
+        // =========================
+        // 게이지 감소
+        // =========================
+        void DrainCharge(bool showUI)
         {
             if (currentCharge <= 0f)
             {
@@ -137,26 +160,23 @@ namespace FaintFear
             }
 
             currentCharge -= Time.deltaTime * drainSpeed;
-
-            if (currentCharge <= 0f)
-            {
-                ResetGauge();
-                return;
-            }
-
             currentCharge = Mathf.Clamp01(currentCharge);
+
             gaugeUI.SetGauge(currentCharge);
-            gaugeUI.Show(true);
+            gaugeUI.Show(showUI);
         }
 
+        // =========================
+        // 초기화
+        // =========================
         void ResetGauge()
         {
             currentCharge = 0f;
             IsCharging = false;
+
             gaugeUI.SetGauge(0f);
             gaugeUI.Show(false);
         }
-        #endregion
 
 #if UNITY_EDITOR
         void OnDrawGizmosSelected()
