@@ -12,6 +12,10 @@ namespace FaintFear
         Gatehouse_Key,      // 정문 / 경비소 열쇠
         GuardRoom_Key,      // 경비실 열쇠        
         Basement_Key,       // 지하 열쇠
-        DiningRoom_Key      // 식당 열쇠
+        Kitchen_Key,        // 식당 열쇠
+        DayRoom_Key,        //상영실 열쇠
+        Classroom_Key       //교실 열쇠
+
+
     }
 }
