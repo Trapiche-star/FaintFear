@@ -2294,6 +2294,10 @@ PrefabInstance:
       propertyPath: vcam
       value: 
       objectReference: {fileID: 438918824}
+    - target: {fileID: 1563633127144959883, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
+      propertyPath: stable.wobble
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5241323646376783730, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
       propertyPath: m_SpotAngle
       value: 90

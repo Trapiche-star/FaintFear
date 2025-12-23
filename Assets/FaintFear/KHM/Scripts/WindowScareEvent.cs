@@ -26,7 +26,7 @@ namespace FaintFear
         public Transform moveTarget;            // 귀신이 이동할 타겟
 
         //시퀀스 텍스트
-        public TextMeshProUGUI sequenceText;
+        public SequenceTextManager sequenceText;
         private string dialogueLine01 = "[F]를 눌러서 손전등을 켜고 끌 수 있다.";
         private string dialogueLine02 = "어둠에 노출될 때마다 비정상적인 공포심이 몰려든다...";
         private string dialogueLine03 = "빛에서 멀어지지 않는게 좋겠다.";
@@ -64,12 +64,12 @@ namespace FaintFear
             lightZone.SetLightsActive(false);
 
             //손전등 튜토리얼 대사 출력
-            sequenceUI.gameObject.SetActive(true);
-            sequenceText.text = dialogueLine01;
+            sequenceText.gameObject.SetActive(true);
+            sequenceText.ShowPersistentMessage(dialogueLine01);
 
             //손전등 on까지 대기
             yield return new WaitUntil(() => flashlight.IsOn);
-            sequenceText.text = "";
+            sequenceText.targetText.gameObject.SetActive(false);
 
             //손전등 못 끄게 막기 
             playerMove.enabled = false;
@@ -91,11 +91,10 @@ namespace FaintFear
             yield return new WaitForSeconds(0.5f);
 
             //텍스트 출력
-            sequenceText.text = dialogueLine02;
+            sequenceText.ShowMessage(dialogueLine02);
             yield return new WaitForSeconds(2.5f);
-            sequenceText.text = dialogueLine03;
+            sequenceText.ShowMessage(dialogueLine03);
             yield return new WaitForSeconds(2.5f);
-            sequenceText.text = "";
 
             //정신력 시스템 활성화
             PlayerStatus.Instance.isMentalSystemActive = true;
