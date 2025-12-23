@@ -7,7 +7,7 @@ namespace FaintFear
     /// <summary>
     /// 플레이어 이동 및 시점 조작 처리
     /// </summary>
-    
+
     // 이 컴포넌트가 있으면 CharacterController를 자동으로 추가함
     [RequireComponent(typeof(CharacterController))]
     public class PlayerMove : MonoBehaviour
@@ -103,43 +103,45 @@ namespace FaintFear
             // + 시점은 항상 처리
             Look();
 
+
+        }
+
+        private void FixedUpdate()
+        {
             // + 이동만 선택적으로 차단
             if (!canMove)
                 return;
 
             Move();
-
-            /* if (!canMove)
-                 return;
-             Look();
-             Move(); */
         }
-
         #endregion
 
         #region Custom Method
         void Move()
         {
-            //  바닥 체크 및 중력 초기화
+            // 1. 바닥 체크 및 중력 초기화
             if (controller.isGrounded && velocity.y < 0)
             {
-                velocity.y = -2f;
+                velocity.y = -2f; // 바닥에 붙어있도록 약간의 하방 힘 유지
             }
 
-            // 입력에 따른 수평 이동 처리
+            // 2. 수평 이동 벡터 계산
+            Vector3 horizontalMove = Vector3.zero;
             if (currentMoveInput != Vector2.zero)
             {
                 // 방향 계산
-                Vector3 moveDir = transform.right * currentMoveInput.x + transform.forward * currentMoveInput.y;
-
-                controller.Move(moveDir * speed * Time.deltaTime);
+                horizontalMove = transform.right * currentMoveInput.x + transform.forward * currentMoveInput.y;
+                horizontalMove *= speed; // 속도 적용
             }
 
-            // 중력 적용 (수직 이동)
+            // 3. 수직 이동(중력) 계산
             velocity.y += gravity * Time.deltaTime;
 
-            // 중력 이동 적용 (낙하)
-            controller.Move(velocity * Time.deltaTime);
+            // 4. 최종 이동 벡터 합성 (수평 + 수직)
+            Vector3 finalMove = horizontalMove + Vector3.up * velocity.y;
+
+            // 5. 실제 이동 적용
+            controller.Move(finalMove * Time.deltaTime);
         }
 
         void Look()
@@ -188,10 +190,10 @@ namespace FaintFear
 
         private void OnFlashLightInteraction(InputAction.CallbackContext context)
         {
-            if(context.performed)
+            if (context.performed)
             {
                 OnFlashLightEvent?.Invoke();
-            }    
+            }
         }
 
         private void OnPushStarted(InputAction.CallbackContext context)
