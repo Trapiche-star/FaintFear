@@ -339,7 +339,7 @@ PrefabInstance:
     - target: {fileID: 8072504086039504652, guid: 4b05a736cd6cb704ca14b326ee2c5362, type: 3}
       propertyPath: DocumentUI
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 944925543}
     - target: {fileID: 8072504086039504652, guid: 4b05a736cd6cb704ca14b326ee2c5362, type: 3}
       propertyPath: documentSprite
       value: 
@@ -883,6 +883,10 @@ PrefabInstance:
       propertyPath: m_Color.a
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2111921814397852804, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2173105015197709602, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1114,6 +1118,11 @@ MonoBehaviour:
   ghostSpeed: 10
   moveTarget: {fileID: 740514489}
   sequenceText: {fileID: 1466940450}
+--- !u!1 &944925543 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5776002620896843864, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
+  m_PrefabInstance: {fileID: 7684836878560161770}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &951726980
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1228,7 +1237,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isLocked: 1
   requiredKey: 2
-  sequenceTextManager: {fileID: 0}
+  sequenceTextManager: {fileID: 1466940450}
   messageDuration: 2
 --- !u!1 &1257131654 stripped
 GameObject:
@@ -1372,7 +1381,7 @@ MonoBehaviour:
   messageText: "\uC774\uAC78\uB85C \uC800\uCABD \uBB38\uC744 \uC5F4 \uC218 \uC788\uC744\uC9C0\uB3C4
     \uBAA8\uB978\uB2E4."
   messageDuration: 2
-  sequenceTextManager: {fileID: 0}
+  sequenceTextManager: {fileID: 1466940450}
 --- !u!1001 &1367687768
 PrefabInstance:
   m_ObjectHideFlags: 0
