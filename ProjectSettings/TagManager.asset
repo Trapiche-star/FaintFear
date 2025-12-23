@@ -7,6 +7,7 @@ TagManager:
   - Wall
   - Key
   - PushItem
+  - Obstacle
   layers:
   - Default
   - TransparentFX

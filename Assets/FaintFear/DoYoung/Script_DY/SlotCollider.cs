@@ -11,7 +11,7 @@ namespace FaintFear
         #region Variables
 
         [SerializeField] private SlotController slotController; // 슬롯 조건 확인과 실제 삽입 처리를 담당
-        [SerializeField] private HUDManager hud;                 // 상호작용 실패 시 안내 메시지를 출력
+        [SerializeField] private SequenceTextManager sequenceText; // HUD 텍스트 출력 도구
         [SerializeField] private string actionText;              // ActionUI에 표시될 기본 상호작용 문구
         [SerializeField] private string needLeverMessage;         // 레버가 없을 때 출력되는 안내 메시지
         [SerializeField] private string wrongLeverMessage;        // 슬롯에 맞지 않을 때 출력되는 실패 메시지
@@ -21,12 +21,12 @@ namespace FaintFear
 
         #region Unity Event Method
 
-        // 씬 시작 시 HUDManager 참조를 확보한다
+        // 씬 시작 시 sequenceText 참조를 확보한다
         private void Awake()
         {
-            if (hud == null)
-                hud = Object.FindAnyObjectByType<HUDManager>();
-            // 만약 HUD가 연결되어 있지 않으면 씬에 존재하는 HUDManager를 찾아 사용한다
+            if (sequenceText == null)
+                sequenceText = Object.FindAnyObjectByType<SequenceTextManager>();
+            // 만약 SequenceTextManager가 연결되어 있지 않으면 씬에 존재하는 SequenceTextManager 찾아 사용한다
         }
 
         #endregion
@@ -42,7 +42,7 @@ namespace FaintFear
 
             if (PuzzleInventory.Instance == null)
             {
-                hud?.ShowDialogue(needLeverMessage);
+                sequenceText?.ShowMessage(needLeverMessage);
                 // 만약 퍼즐 인벤토리가 존재하지 않으면 HUD가 존재할 때 레버 필요 메시지를 출력한다
                 return;
                 // 만약 위 조건이 참이면 이 메서드에서는 더 이상 상호작용하지 않는다
@@ -50,7 +50,7 @@ namespace FaintFear
 
             if (!PuzzleInventory.Instance.HasAnyLever())
             {
-                hud?.ShowDialogue(needLeverMessage);
+                sequenceText?.ShowMessage(needLeverMessage);
                 // 만약 레버를 하나도 가지고 있지 않으면 HUD가 존재할 때 레버 필요 메시지를 출력한다
                 return;
                 // 만약 위 조건이 참이면 이 메서드에서는 더 이상 상호작용하지 않는다
@@ -58,7 +58,7 @@ namespace FaintFear
 
             if (!PuzzleInventory.Instance.HasLever(slotController.RequiredLeverIndex))
             {
-                hud?.ShowDialogue(wrongLeverMessage);
+                sequenceText?.ShowMessage(wrongLeverMessage);
                 // 만약 슬롯에 필요한 레버가 없으면 HUD가 존재할 때 슬롯 불일치 메시지를 출력한다
                 return;
                 // 만약 위 조건이 참이면 이 메서드에서는 더 이상 상호작용하지 않는다

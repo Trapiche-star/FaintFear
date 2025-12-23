@@ -11,7 +11,8 @@ namespace FaintFear
         #region Variables
 
         [Header("참조")]
-        [SerializeField] private HUDManager hudManager; // HUD 도구
+        [SerializeField] private HUDManager hudManager; // 페이드 효과
+        [SerializeField] private SequenceTextManager sequenceText; //텍스트 출력 도구
 
         [Header("연출 설정")]
         [SerializeField] private float dialogueHoldTime = 2f; // 문장 유지 시간
@@ -65,7 +66,7 @@ namespace FaintFear
 
             // 오프닝 독백을 순서대로 출력한다
             yield return StartCoroutine(
-                hudManager.ShowDialogueSequence(
+                sequenceText.ShowDialogueSequence(
                     openingDialogueLines,
                     dialogueHoldTime
                 )
