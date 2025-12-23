@@ -3824,6 +3824,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
+--- !u!114 &855782232 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 991481533044275061, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
+  m_PrefabInstance: {fileID: 855782231}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c5c4c967ae44814baeb2c403e51565d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &880653047
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4164,7 +4175,8 @@ MonoBehaviour:
   lightZone: {fileID: 803317310}
   triggerRestrict: {fileID: 803317311}
   vcam: {fileID: 438918824}
-  playerCamera: {fileID: 1960307504}
+  sequenceUI: {fileID: 0}
+  cameraPosition: {fileID: 0}
   windowLookPoint: {fileID: 62703778}
   rotateSpeed: 5
   ghost: {fileID: 1824717617}
@@ -18351,8 +18363,41 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 236520129318838511, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7684836878560161773}
   m_SourcePrefab: {fileID: 100100000, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
+--- !u!1 &7684836878560161771 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 236520129318838511, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
+  m_PrefabInstance: {fileID: 7684836878560161770}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7684836878560161772 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8162890610884242762, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
+  m_PrefabInstance: {fileID: 7684836878560161770}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7684836878560161771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33dfd00a402e93f488742c6b1e637fab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7684836878560161773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7684836878560161771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7fb81cebc513614daef1f732f9d9b53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerGaugePlayer: {fileID: 7684836878560161772}
+  gaugeUI: {fileID: 855782232}
 --- !u!23 &7694767198692797023
 MeshRenderer:
   m_ObjectHideFlags: 0
