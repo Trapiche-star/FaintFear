@@ -1573,10 +1573,10 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e3039df8ac8829c4bb38c2013bad93c6, type: 2}
-  m_sharedMaterial: {fileID: -5658785806089299815, guid: e3039df8ac8829c4bb38c2013bad93c6, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials:
-  - {fileID: -5658785806089299815, guid: e3039df8ac8829c4bb38c2013bad93c6, type: 2}
+  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -2068,14 +2068,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a709d30efbfac408030a9f72eba85e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hudManager: {fileID: 0}
   lookTarget: {fileID: 1528933196}
-  sequenceText: {fileID: 2148102938596244176}
-  lookRotateDuration: 1
-  dialogueHoldTime: 2
-  dialogueLine: "\uB0B4 \uC190\uC804\uB4F1\uACFC \uD638\uD658\uB418\uB294 \uBC30\uD130\uB9AC\uAC00
-    \uC788\uB2E4."
   vcam: {fileID: 438918824}
   playerCamera: {fileID: 8817918804143317994}
+  lookRotateDuration: 1
+  dialogueHoldTime: 2
+  itemDialogueLines:
+  - "\uB0B4 \uC190\uC804\uB4F1\uACFC \uD638\uD658\uB418\uB294 \uBC30\uD130\uB9AC\uAC00
+    \uC788\uB2E4."
 --- !u!1001 &6837488261142070011
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2185,7 +2186,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textManager: {fileID: 3622327845740412568}
-  dialogueHoldTime: 1
 --- !u!1001 &7743453281080048902
 PrefabInstance:
   m_ObjectHideFlags: 0
