@@ -30,10 +30,12 @@ namespace FaintFear
         [SerializeField] private float corpseRoomDrain = 0.4f;       //시체와 같은 방에 있었을 때 
         [SerializeField] private float flashlightDamage = 0.6f;      //손전등을 껐을 때
 
-    [SerializeField] private float flashlightheal = 1.6f;       //손전등 정신력 회복
+        [Header("Mental Heal Factors")]
+        [SerializeField] private float safeZoneHeal = 3.0f;          // 안전구역 정신력 회복량
+        [SerializeField] private float flashlightheal = 1.6f;        //손전등 정신력 회복
 
         public UnityAction onDie;
-
+        private bool isInSafeZone = false;
         public event Action<MentalState> OnMentalStateChanged;
 
         #endregion
@@ -41,6 +43,12 @@ namespace FaintFear
         #region Property
         //정신력 상태
         public MentalState CurrentMentalState { get; private set; }
+
+        public void SetSafeZone(bool value)
+        {
+            isInSafeZone = value;
+        }
+
         #endregion
 
         #region Unity Event Method
@@ -65,11 +73,15 @@ namespace FaintFear
 
             float mentalDelta = 0f;
 
-        //손전등 on/off
-        if (flashlight != null && flashlight.IsOn)
-            mentalDelta += flashlightheal;
-        else
-            mentalDelta -= flashlightDamage;
+            //손전등 on/off
+            if (flashlight != null && flashlight.IsOn)
+                mentalDelta += flashlightheal;
+            else
+                mentalDelta -= flashlightDamage;
+
+            // 안전 구역 회복
+            if (isInSafeZone)
+                mentalDelta += safeZoneHeal;
 
             //적을 응시했을 때 
             /*if (isEnemyLooking)
