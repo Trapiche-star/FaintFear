@@ -20,6 +20,8 @@ namespace FaintFear
         bool isPushHeld;
         bool isTouchingPushItem;
 
+        [SerializeField] private GameObject flashlight;
+
         public bool IsCharging { get; private set; }
         public bool HasRemainingCharge => currentCharge > 0f;
 
@@ -63,6 +65,20 @@ namespace FaintFear
         void OnPushStateChanged(bool isHeld)
         {
             isPushHeld = isHeld;
+
+            if (flashlight == null) return;
+
+            //상호작용 중 일때 배터리 소모 끄기, 오브젝트 비활성화
+            if (isHeld)
+            {
+                PlayerStatus.Instance.isBatteryActive = false;
+                flashlight.SetActive(false);
+            }
+            else
+            {
+                PlayerStatus.Instance.isBatteryActive = true;
+                flashlight.SetActive(true);
+            }
         }
 
         // =========================
