@@ -1,63 +1,82 @@
 using UnityEngine;
 using System.Collections;
 using TMPro;
-
 public class SequenceTextManager : MonoBehaviour
 {
     public TextMeshProUGUI targetText;
+    private Coroutine currentTimer;
 
     void Start()
     {
         if (targetText == null)
-        {
             targetText = GetComponentInChildren<TextMeshProUGUI>();
-        }
 
-        if (targetText != null)
-        {
-            targetText.gameObject.SetActive(false);
-        }
+        targetText.gameObject.SetActive(false);
     }
-
     // 단일 문장을 즉시 출력한다
-    public void ShowMessage(string message)
+    public void ShowMessage(string message, float duration = 3f)
     {
-        // 만약 텍스트가 없다면 여기서 끝낸다
         if (targetText == null) return;
 
-        // 전달받은 문장을 설정한다
         targetText.text = message;
-
-        // 텍스트를 화면에 표시한다
         targetText.gameObject.SetActive(true);
 
-        // 이전 타이머가 있다면 중단한다
-        StopAllCoroutines();
+        if (currentTimer != null)
+            StopCoroutine(currentTimer);
 
-        // 자동 숨김 타이머를 시작한다
-        StartCoroutine(DisableTimer());
+        currentTimer = StartCoroutine(DisableTimer(duration));
     }
 
-    // 일정 시간이 지나면 텍스트를 숨긴다
-    IEnumerator DisableTimer()
+    // 여러 문장을 순서대로 출력하는 텍스트 시퀀스를 실행한다
+    public IEnumerator ShowDialogueSequence(string[] lines, float holdTime)
     {
-        // 그동안 3초를 기다린다
-        yield return new WaitForSeconds(3.0f);
+        // 그동안 전달받은 모든 문장을 하나씩 순서대로 반복한다
+        foreach (string line in lines)
+        {
+            // 그래서 현재 문장을 HUD에 출력한다
+            ShowMessage(line);
 
-        // 그래서 텍스트를 비활성화한다
+            // 그리고 지정된 시간만큼 화면에 유지되도록 기다린다
+            yield return new WaitForSeconds(holdTime);
+        }
+
+        // 모든 문장 출력이 끝났으므로 텍스트를 숨긴다
         Hide();
+    }
+
+    // 조건 만족 전까지 유지되는 메시지
+    public void ShowPersistentMessage(string message)
+    {
+        if (targetText == null) return;
+
+        if (currentTimer != null)
+        {
+            StopCoroutine(currentTimer);
+            currentTimer = null;
+        }
+
+        targetText.text = message;
+        targetText.gameObject.SetActive(true);
     }
 
     // 텍스트를 즉시 숨긴다
     public void Hide()
     {
-        // 만약 텍스트가 없다면 아무 것도 하지 않는다
         if (targetText == null) return;
 
-        // 실행 중인 코루틴을 모두 중단한다
-        StopAllCoroutines();
+        if (currentTimer != null)
+        {
+            StopCoroutine(currentTimer);
+            currentTimer = null;
+        }
 
-        // 텍스트를 화면에서 숨긴다
         targetText.gameObject.SetActive(false);
+    }
+
+    // 일정 시간이 지나면 텍스트를 숨긴다
+    IEnumerator DisableTimer(float time)
+    {
+        yield return new WaitForSeconds(time);
+        Hide();
     }
 }

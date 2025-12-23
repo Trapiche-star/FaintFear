@@ -12,7 +12,7 @@ namespace FaintFear
         #region Variables
 
         [Header("참조")]
-        [SerializeField] private HUDManager hudManager; // HUD 텍스트 출력 도구
+        [SerializeField] private SequenceTextManager sequenceText; // HUD 텍스트 출력 도구
         [SerializeField] private Transform lookTarget;  // 카메라가 바라볼 대상
 
         [Header("카메라")]
@@ -101,9 +101,9 @@ namespace FaintFear
             }
 
             // 아이템 대사 출력
-            if (hudManager != null)
+            if (sequenceText != null)
                 yield return StartCoroutine(
-                    hudManager.ShowDialogueSequence(itemDialogueLines, dialogueHoldTime)
+                    sequenceText.ShowDialogueSequence(itemDialogueLines, dialogueHoldTime)
                 );
 
             // 조작 복구
