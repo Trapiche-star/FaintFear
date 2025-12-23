@@ -4,152 +4,115 @@ using System.Collections;
 namespace FaintFear
 {
     /// <summary>
-    /// 열쇠가 있어야 열리는 잠금 문
-    /// PlayerStatus_DY의 열쇠 보유 여부를 검사하여 문을 열고 닫는다.
+    /// 열쇠 보유 여부를 검사하여 잠긴 문을 열고 닫는 상호작용 도어
     /// </summary>
     public class DoorLock : Interactive, IActionProvider
     {
         #region Variables
 
-        // 문 회전 축
-        private Transform hinge;
+        private Transform hinge;                // 문 회전을 담당하는 힌지 트랜스폼
+        private bool isMoving = false;           // 문 애니메이션 진행 여부
+        private bool isOpen = false;             // 문 개방 상태
 
-        // 문이 현재 움직이는 중인지
-        private bool isMoving = false;
+        [SerializeField] private bool isLocked = true;           // 초기 잠금 상태
+        [SerializeField] private RoomKeyType requiredKey;        // 문에 필요한 열쇠 타입
 
-        // 문이 열려 있는지 여부
-        private bool isOpen = false;
-
-        // 시작 시 잠금 여부
-        [SerializeField] private bool isLocked = true;
-
-        // 필요한 열쇠 타입
-        [SerializeField] private RoomKeyType requiredKey = RoomKeyType.None;
-
-        // 시퀀스 텍스트 출력용
-        [SerializeField] private SequenceTextManager sequenceTextManager;
-
-        // 메시지 표시 시간
-        [SerializeField] private float messageDuration = 2.0f;
+        private HUDManager hud;                  // HUD 메시지 출력 담당
 
         #endregion
+
 
         #region Unity Event Method
 
+        // 문 초기 설정 및 HUD 참조 준비
         private void Awake()
         {
-            // 첫 번째 자식을 문 회전축으로 사용
-            hinge = transform.GetChild(0);
+            hinge = transform.GetChild(0);       // 첫 번째 자식을 문 힌지로 사용
+            hud = Object.FindFirstObjectByType<HUDManager>(); // 씬 내 첫 HUDManager를 일관되게 탐색
         }
 
         #endregion
 
-        #region Interaction Logic
 
-        // E 키 상호작용 시 호출
+        #region Custom Method
+
+        // 플레이어 상호작용 처리
         public override void Interaction()
         {
-            // 문이 움직이는 중이면 무시
+            // 문이 이미 움직이는 중이면 중복 입력 방지
             if (isMoving)
                 return;
 
-            // 플레이어 상태 가져오기
-            PlayerStatus player = PlayerStatus.Instance;
+            PlayerStatus player = PlayerStatus.Instance; // 플레이어 상태 접근
             if (player == null)
                 return;
 
-            // 잠긴 문 처리
+            // 문이 잠겨 있는 경우
             if (isLocked)
             {
-                // 열쇠가 없으면 열리지 않음
+                // 열쇠가 없으면 실패 메시지 출력 후 종료
                 if (!player.HasKey(requiredKey))
                 {
-                    ShowSequenceMessage("문이 단단히 잠겨 있다.");
+                    ShowHUDMessage("문이 단단히 잠겨 있다.");
                     return;
                 }
 
-                // 열쇠가 있으면 잠금 해제
+                // 열쇠가 있으면 잠금 해제 메시지 출력
                 isLocked = false;
-                ShowSequenceMessage("열쇠로 잠금이 해제되었다.");
+                ShowHUDMessage("열쇠로 잠금이 해제되었다.");
             }
 
-            // 문 열기 / 닫기
-            if (!isOpen)
-                StartCoroutine(MoveDoorRoutine(-90f));
-            else
-                StartCoroutine(MoveDoorRoutine(0f));
+            // 문 상태에 따라 열기 또는 닫기 실행
+            StartCoroutine(MoveDoorRoutine(isOpen ? 0f : -90f));
 
-            // 문 상태 반전
-            isOpen = !isOpen;
+            isOpen = !isOpen; // 문 상태 반전
         }
 
-        #endregion
-
-        #region Door Animation
-
-        // 문 회전 애니메이션
+        // 문 회전 애니메이션 처리
         private IEnumerator MoveDoorRoutine(float targetAngle)
         {
-            isMoving = true;
+            isMoving = true; // 애니메이션 시작 표시
 
-            float duration = 1.0f;
-            float elapsed = 0f;
+            float duration = 1.0f;               // 회전 소요 시간
+            float elapsed = 0f;                  // 경과 시간
 
-            Quaternion startRot = hinge.localRotation;
-            Quaternion targetRot = Quaternion.Euler(0f, targetAngle, 0f);
+            Quaternion startRot = hinge.localRotation;                   // 시작 회전값
+            Quaternion targetRot = Quaternion.Euler(0f, targetAngle, 0f); // 목표 회전값
 
+            // 지정 시간 동안 회전 보간 수행
             while (elapsed < duration)
             {
-                elapsed += Time.deltaTime;
+                elapsed += Time.deltaTime; // 프레임 시간 누적
                 hinge.localRotation = Quaternion.Lerp(startRot, targetRot, elapsed / duration);
                 yield return null;
             }
 
-            hinge.localRotation = targetRot;
-            isMoving = false;
+            hinge.localRotation = targetRot; // 최종 회전값 고정
+            isMoving = false;                // 애니메이션 종료
+        }
+
+        // HUD에 메시지 출력 위임
+        private void ShowHUDMessage(string message)
+        {
+            if (hud != null)                 // HUDManager가 존재할 경우에만
+                hud.ShowDialogue(message);   // 메시지 출력 요청
+        }
+
+        // 외부 퍼즐 오브젝트에서 문 잠금 상태를 제어한다
+        public void SetLocked(bool locked)
+        {
+            isLocked = locked;
         }
 
         #endregion
 
-        #region UI & Message
 
-        // 시퀀스 텍스트 출력
-        private void ShowSequenceMessage(string message)
-        {
-            if (sequenceTextManager == null)
-                return;
+        #region Property
 
-            sequenceTextManager.gameObject.SetActive(true);
-            sequenceTextManager.ShowMessage(message);
-            StartCoroutine(HideSequenceAfterDelay());
-        }
-
-        // 일정 시간 후 시퀀스 텍스트 숨김
-        private IEnumerator HideSequenceAfterDelay()
-        {
-            yield return new WaitForSeconds(messageDuration);
-
-            if (sequenceTextManager != null)
-                sequenceTextManager.gameObject.SetActive(false);
-        }
-
-        #endregion
-
-        #region Action Provider
-
-        // ActionUI에 표시할 문구 제공
+        // Action UI에 표시될 문구 제공
         public string GetActionText()
         {
-            // 잠겨 있고 열쇠가 필요한 경우
-            if (isLocked && requiredKey != RoomKeyType.None)
-                return "문 열기";
-
-            // 열린 상태면 닫기
-            if (isOpen)
-                return "문 닫기";
-
-            // 기본 문구
-            return "문 열기";
+            return isOpen ? "문 닫기" : "문 열기"; // 문 상태에 따라 문구 반환
         }
 
         #endregion
