@@ -9,7 +9,7 @@ namespace FaintFear
     {
         #region Variables
 
-        private HUDManager hud; // HUD 메시지 출력 담당
+        private SequenceTextManager sequenceText; // HUD 텍스트 출력 담당
 
         #endregion
 
@@ -19,8 +19,8 @@ namespace FaintFear
         // 픽업 오브젝트 초기 설정
         private void Awake()
         {
-            // 씬에 존재하는 HUDManager를 탐색하여 참조한다
-            hud = Object.FindFirstObjectByType<HUDManager>();
+            // 씬에 존재하는 SequenceTextManager를 탐색하여 참조한다
+            sequenceText = Object.FindFirstObjectByType<SequenceTextManager>();
         }
 
         #endregion
@@ -52,12 +52,11 @@ namespace FaintFear
             gameObject.SetActive(false);
         }
 
-        // HUD 메시지 출력 위임
+        // SequenceTextManager를 통해 메시지 출력
         private void ShowHUDMessage(string message)
         {
-            // HUDManager가 존재할 경우에만 메시지를 출력한다
-            if (hud != null)
-                hud.ShowDialogue(message);
+            if (sequenceText != null)
+                sequenceText.ShowMessage(message);
         }
 
         #endregion
