@@ -1,8 +1,7 @@
 using UnityEngine;
-
 namespace FaintFear
 {
-    public class MentalSafeZone : MonoBehaviour
+    public class MentalDangerZone : MonoBehaviour
     {
         private void OnTriggerEnter(Collider other)
         {
@@ -10,7 +9,7 @@ namespace FaintFear
             {
                 PlayerHealth health = other.GetComponent<PlayerHealth>();
                 if (health != null)
-                    health.IsInSafeZone =true;
+                    health.IsInCorpseRoom = true;
             }
         }
 
@@ -20,7 +19,7 @@ namespace FaintFear
             {
                 PlayerHealth health = other.GetComponent<PlayerHealth>();
                 if (health != null)
-                    health.IsInSafeZone = false;
+                    health.IsInCorpseRoom = false;
             }
         }
     }

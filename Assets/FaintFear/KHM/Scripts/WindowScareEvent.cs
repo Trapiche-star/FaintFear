@@ -13,7 +13,6 @@ namespace FaintFear
         public LightZone01 lightZone;
         public TriggerRestrict triggerRestrict;
         public CinemachineCamera vcam;
-        public GameObject sequenceUI;
 
         public Transform cameraPosition;
         public Transform windowLookPoint;                         // 창문 바라볼 target
@@ -69,7 +68,7 @@ namespace FaintFear
 
             //손전등 on까지 대기
             yield return new WaitUntil(() => flashlight.IsOn);
-            sequenceText.targetText.gameObject.SetActive(false);
+            sequenceText.Hide();
 
             //손전등 못 끄게 막기 
             playerMove.enabled = false;
