@@ -1153,6 +1153,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Third Person Aim Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 5357233762441905026, guid: cf90c45b98e376e4d9807b0c579e6fb3, type: 3}
+      propertyPath: AmplitudeGain
+      value: 1.096706e-15
+      objectReference: {fileID: 0}
     - target: {fileID: 5669124564287646063, guid: cf90c45b98e376e4d9807b0c579e6fb3, type: 3}
       propertyPath: Target.TrackingTarget
       value: 
@@ -5908,6 +5912,10 @@ PrefabInstance:
     - target: {fileID: 236520129318838511, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 1352344263430870358, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1563633127144959883, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
       propertyPath: vcam
