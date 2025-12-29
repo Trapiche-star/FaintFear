@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class PushGaugeUI : MonoBehaviour
 {
-    public Image thickGauge; // 굵은 원 (Filled Image)
+    public Image thickGauge; // 굵은 원 (Filled Image)    
 
     public void SetGauge(float value)
     {
