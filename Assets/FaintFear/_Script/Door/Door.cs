@@ -6,7 +6,7 @@ namespace FaintFear
     /// <summary>
     /// 문 상호작용 처리
     /// </summary>
-    public class Door : Interactive
+    public class Door : Interactive, IActionProvider
     {
         #region Variables
         Transform hinge;
@@ -31,13 +31,11 @@ namespace FaintFear
             if (!isOpen)
             {
                 // 닫혀있으면 -> 연다 (목표 각도 -90도)
-                Debug.Log("문 여는 중");
                 StartCoroutine(MoveDoorRoutine(-90f));
             }
             else
             {
                 // 열려있으면 -> 닫는다 (목표 각도 0도)
-                Debug.Log("문 닫는 중");
                 StartCoroutine(MoveDoorRoutine(0f));
             }
 
@@ -72,6 +70,12 @@ namespace FaintFear
             hinge.localRotation = targetRotation;
 
             isMoving = false; // 움직임 종료
+        }
+
+        // Action UI에 표시될 문구 제공
+        public string GetActionText()
+        {
+            return isOpen ? "닫기" : "열기";
         }
 
         #endregion
