@@ -23,19 +23,19 @@ namespace FaintFear
         public void StartNewGame()
         {
             SaveSystem.DeleteSave();
-            SceneManager.LoadScene("loadToScene");
+            SceneManager.LoadScene(loadToScene);
         }
 
         //이어하기
         public void ContinueGame()
         {
-            SceneManager.LoadScene("loadToScene");
+            SceneManager.LoadScene(loadToScene);
         }
 
         //게임 오버
         public void RestartFromCheckpoint()
         {
-            SceneManager.LoadScene("loadToScene");
+            SceneManager.LoadScene(loadToScene);
         }
 
         //메인메뉴로 가기
