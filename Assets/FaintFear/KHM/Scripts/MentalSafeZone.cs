@@ -10,7 +10,7 @@ namespace FaintFear
             {
                 PlayerHealth health = other.GetComponent<PlayerHealth>();
                 if (health != null)
-                    health.SetSafeZone(true);
+                    health.IsInSafeZone =true;
             }
         }
 
@@ -20,7 +20,7 @@ namespace FaintFear
             {
                 PlayerHealth health = other.GetComponent<PlayerHealth>();
                 if (health != null)
-                    health.SetSafeZone(false);
+                    health.IsInSafeZone = false;
             }
         }
     }
