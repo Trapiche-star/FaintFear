@@ -53,6 +53,17 @@ namespace FaintFear
 
             Time.timeScale = isPaused ? 0f : 1f;
             pauseUI.SetActive(isPaused);
+
+            if (isPaused)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
         }
 
         //이어하기

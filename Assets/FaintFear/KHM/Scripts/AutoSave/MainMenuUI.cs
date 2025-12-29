@@ -8,6 +8,8 @@ namespace FaintFear
     public class MainMenuUI : MonoBehaviour
     {
         public GameObject continueButton;
+        public GameObject mainMenuPanel;
+        public GameObject optionsPanel;
 
         void Start()
         {
@@ -27,9 +29,17 @@ namespace FaintFear
             GameManager.Instance.ContinueGame();
         }
 
+        //옵션
+        public void OnOptions()
+        {
+            mainMenuPanel.SetActive(false);
+            optionsPanel.SetActive(true);
+        }
+
         //게임 종료
         public void OnQuit()
         {
+            Debug.Log("Quit 버튼을 눌렀습니다");
             Application.Quit();
         }
     }
