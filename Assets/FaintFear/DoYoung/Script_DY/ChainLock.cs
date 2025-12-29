@@ -1,31 +1,29 @@
 using UnityEngine;
+using System.Collections;
 
 namespace FaintFear
 {
     /// <summary>
-    /// 볼트 커터 보유 여부에 따라 사슬과 자물쇠를 제거하여 문 봉인을 해제하는 퍼즐 락
+    /// 사슬과 자물쇠로 봉인된 문을 제어하는 체인락 도어 컨트롤러
+    /// 볼트 커터로 사슬을 제거한 이후에만 문을 열 수 있다.
     /// </summary>
     public class ChainLock : Interactive, IActionProvider
     {
         #region Variables
 
-        [SerializeField] private GameObject cutRoot; // 절단 시 제거될 체인·자물쇠 오브젝트 묶음
-        [SerializeField] private DoorLock doorLock;  // 봉인 해제 대상 도어락
+        [Header("Door")]
+        [SerializeField] private Transform hinge;          // 문 회전을 담당하는 힌지 트랜스폼
+        [SerializeField] private float openAngle = -90f;   // 문이 열릴 목표 각도
+        [SerializeField] private float rotateDuration = 1f;// 문 회전에 걸리는 시간
 
-        private SequenceTextManager sequenceText;    // HUD 텍스트 출력 담당
-        private bool isUnlocked = false;             // 이미 체인이 제거되었는지 여부
+        [Header("Chain")]
+        [SerializeField] private GameObject chainRoot;     // 사슬·자물쇠 오브젝트 묶음 (자식)
 
-        #endregion
+        [Header("UI")]
+        [SerializeField] private SequenceTextManager sequenceText; // 텍스트 출력과 시퀀스를 담당
 
-
-        #region Unity Event Method
-
-        // 체인락 초기 설정 및 HUD 참조 준비
-        private void Awake()
-        {
-            // 씬에 존재하는 SequenceTextManager를 탐색하여 참조한다
-            sequenceText = Object.FindFirstObjectByType<SequenceTextManager>();
-        }
+        private bool isOpen = false;                        // 문 개방 상태
+        private bool isMoving = false;                      // 문 회전 중 여부
 
         #endregion
 
@@ -35,51 +33,86 @@ namespace FaintFear
         // 플레이어 상호작용 처리
         public override void Interaction()
         {
-            // 이미 체인이 제거된 상태라면 더 이상 반응하지 않는다
-            if (isUnlocked)
-                return;
+            if (isMoving) return;
+            // 만약 [문이 회전 중이라면] [중복 상호작용을 막기 위해 종료한다]
 
-            // 퍼즐 인벤토리가 존재하지 않으면 조건 판단이 불가능하므로 중단한다
-            if (PuzzleInventory.Instance == null)
-                return;
-
-            // 볼트 커터를 보유하지 않은 경우 실패 메시지를 출력한다
-            if (!PuzzleInventory.Instance.HasBoltCutter)
+            if (IsLocked())
             {
-                ShowHUDMessage("문이 사슬과 자물쇠로 단단히 감겨 있다.");
+                TryCutChain();
                 return;
+                // 만약 [체인이 남아 있다면] [문을 열지 않고 체인 처리만 시도한다]
             }
 
-            // 볼트 커터를 보유 중이므로 체인 제거 처리로 넘어간다
-            UnlockChain();
+            ToggleDoor();
+            // 체인이 제거된 상태라면 문 열기 또는 닫기를 수행한다
         }
 
-        // 사슬과 자물쇠를 제거하고 도어 봉인을 해제한다
-        private void UnlockChain()
+        // 현재 문이 체인에 의해 잠겨 있는지 여부
+        private bool IsLocked()
         {
-            // 성공 메시지를 HUD에 출력한다
-            ShowHUDMessage("볼트 커터로 자물쇠와 체인을 끊어냈다.");
-
-            // 절단 대상 오브젝트가 존재할 경우 비활성화한다
-            if (cutRoot != null)
-                cutRoot.SetActive(false);
-
-            // 도어락이 존재할 경우 잠금 상태를 해제한다
-            if (doorLock != null)
-                doorLock.SetLocked(false);
-
-            // 체인이 제거되었음을 상태로 기록한다
-            isUnlocked = true;
-
-            // 체인락 자체를 비활성화하여 문 인터랙션을 허용한다
-            gameObject.SetActive(false);
+            return chainRoot != null && chainRoot.activeSelf;
+            // 사슬 오브젝트가 활성화되어 있으면 잠긴 상태로 판단한다
         }
 
-        // SequenceTextManager를 통해 메시지 출력
-        private void ShowHUDMessage(string message)
+        // 볼트 커터로 체인을 제거 시도
+        private void TryCutChain()
         {
-            if (sequenceText != null)
-                sequenceText.ShowMessage(message);
+            if (PuzzleInventory.Instance == null ||
+                !PuzzleInventory.Instance.HasBoltCutter)
+            {
+                ShowMessage("사슬과 자물쇠로 단단히 잠겨 있다.\n자를 것이 필요하다.");
+                return;
+                // 만약 [볼트 커터가 없다면] [힌트 메시지를 출력하고 종료한다]
+            }
+
+            chainRoot.SetActive(false);
+            // 사슬과 자물쇠 오브젝트를 제거한다
+
+            ShowMessage("볼트 커터로 사슬과 자물쇠를 끊어냈다.");
+            // 체인 제거 성공 메시지를 출력한다
+        }
+
+        // 문 열기 / 닫기 토글
+        private void ToggleDoor()
+        {
+            StartCoroutine(RotateDoor(isOpen ? 0f : openAngle));
+            // 현재 문 상태에 따라 목표 각도를 결정하여 회전을 시작한다
+
+            isOpen = !isOpen;
+            // 문 개방 상태를 반전시킨다
+        }
+
+        // 문 회전 애니메이션 처리
+        private IEnumerator RotateDoor(float targetAngle)
+        {
+            isMoving = true;
+            // 문 회전 중 상태로 전환한다
+
+            Quaternion startRot = hinge.localRotation;
+            Quaternion targetRot = Quaternion.Euler(0f, targetAngle, 0f);
+
+            float elapsed = 0f;
+            while (elapsed < rotateDuration)
+            {
+                elapsed += Time.deltaTime;
+                hinge.localRotation = Quaternion.Lerp(startRot, targetRot, elapsed / rotateDuration);
+                yield return null;
+                // 지정된 시간 동안 문을 부드럽게 회전시킨다
+            }
+
+            hinge.localRotation = targetRot;
+            isMoving = false;
+            // 회전 완료 후 상태를 복구한다
+        }
+
+        // HUD 메시지 출력
+        private void ShowMessage(string message)
+        {
+            if (sequenceText == null) return;
+            // 텍스트 매니저가 없으면 메시지를 출력하지 않는다
+
+            sequenceText.ShowMessage(message);
+            // 시퀀스 텍스트로 메시지를 출력한다
         }
 
         #endregion
@@ -87,19 +120,11 @@ namespace FaintFear
 
         #region Property
 
-        // 액션 UI에 표시될 문구 제공
+        // Action UI에 표시될 문구 제공
         public string GetActionText()
         {
-            // 이미 해제된 상태라면 문구를 표시하지 않는다
-            if (isUnlocked)
-                return string.Empty;
-
-            // 볼트 커터 보유 여부에 따라 액션 문구를 분기한다
-            if (PuzzleInventory.Instance != null &&
-                PuzzleInventory.Instance.HasBoltCutter)
-                return "볼트 커터로 자르기";
-
-            return "사슬 조사";
+            return isOpen ? "문 닫기" : "문 열기";
+            // 문 상태에 따라 액션 UI 텍스트를 반환한다
         }
 
         #endregion

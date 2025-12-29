@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace FaintFear
 {
@@ -102,15 +101,7 @@ namespace FaintFear
         // 플레이어가 트리거를 벗어났을 때 호출된다
         private void OnTriggerExit(Collider other)
         {
-            // 만약 나간 대상이 플레이어일 때
-            if (other.CompareTag("Player"))
-            {
-                // 그래서 라이트와 에미션을 끈다
-                SetLightsActive(false);
-
-                // 그리고 이후 다시 켜지지 않도록 영구 OFF 처리한다
-                lightsPermanentlyOff = true;
-            }
+            
         }
 
         #endregion

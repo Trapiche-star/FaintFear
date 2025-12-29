@@ -144,6 +144,24 @@ namespace FaintFear
             return ownedKeys.Contains(key);
         }
 
+        // 특정 열쇠를 소모 (문/퍼즐에서 사용 시 호출)
+        public bool ConsumeKey(RoomKeyType key)
+        {
+            // None 타입은 소모 개념이 없으므로 실패 처리
+            if (key == RoomKeyType.None)
+                return false;
+
+            // 해당 열쇠를 보유하고 있지 않으면 소모 불가
+            if (!ownedKeys.Contains(key))
+                return false;
+
+            // 열쇠를 보유 목록에서 제거하여 소모 처리
+            ownedKeys.Remove(key);
+
+            // 열쇠 소모가 정상적으로 완료되었음을 알림
+            return true;
+        }
+
         #endregion
     }
 }

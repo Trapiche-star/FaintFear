@@ -730,6 +730,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1807902829}
+  playerRadius: 0.3
   pushBackOffset: 0.2
   sequenceText: {fileID: 1466940450}
 --- !u!1 &804914822
@@ -1129,19 +1130,13 @@ MonoBehaviour:
   lightZone: {fileID: 803317310}
   triggerRestrict: {fileID: 803317311}
   vcam: {fileID: 438918824}
-  sequenceUI: {fileID: 934806957}
   cameraPosition: {fileID: 1890372530}
   windowLookPoint: {fileID: 62703778}
   rotateSpeed: 5
   ghost: {fileID: 1824717617}
-  ghostSpeed: 10
   moveTarget: {fileID: 740514489}
+  ghostSpeed: 10
   sequenceText: {fileID: 1466940450}
---- !u!1 &934806957 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7409235931580200916, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
-  m_PrefabInstance: {fileID: 855782231}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &951726980
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1386,10 +1381,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0db226948e449c45b1276a935162a53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactionEnabled: 1
   isLocked: 1
   requiredKey: 2
-  sequenceTextManager: {fileID: 1466940450}
-  messageDuration: 2
+  sequenceText: {fileID: 0}
 --- !u!1 &1257131654 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6651127945994960785, guid: deafd461784c5bf40bd020ba7dada2bf, type: 3}
@@ -1542,7 +1537,6 @@ MonoBehaviour:
   keyType: 2
   messageText: "\uC774\uAC78\uB85C \uC800\uCABD \uBB38\uC744 \uC5F4 \uC218 \uC788\uC744\uC9C0\uB3C4
     \uBAA8\uB978\uB2E4."
-  messageDuration: 2
   sequenceTextManager: {fileID: 1466940450}
 --- !u!1001 &1367687768
 PrefabInstance:
@@ -1633,7 +1627,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2312052754023712571, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
   m_PrefabInstance: {fileID: 855782231}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 934806957}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3783119746c13f4499865a86790440b6, type: 3}
@@ -1717,6 +1711,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.36532354, y: 0.40313485, z: 0.40947056}
   m_Center: {x: -0.09075308, y: 0.17656742, z: -0.005920887}
+--- !u!1 &1575132823 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4798505586484529201, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
+  m_PrefabInstance: {fileID: 7684836878560161770}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1627325662
 GameObject:
   m_ObjectHideFlags: 0
@@ -1894,10 +1893,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0db226948e449c45b1276a935162a53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactionEnabled: 1
   isLocked: 0
   requiredKey: 0
-  sequenceTextManager: {fileID: 0}
-  messageDuration: 2
+  sequenceText: {fileID: 0}
 --- !u!4 &1800842506 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5099307694970354947, guid: 54f457b7b64fc174aadd1e923afb1c74, type: 3}
@@ -2054,10 +2053,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0db226948e449c45b1276a935162a53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactionEnabled: 1
   isLocked: 1
   requiredKey: 2
-  sequenceTextManager: {fileID: 0}
-  messageDuration: 2
+  sequenceText: {fileID: 0}
 --- !u!1001 &1941148673
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2436,6 +2435,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 592723124030721549, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
+      propertyPath: crossHair
+      value: 
+      objectReference: {fileID: 1575132823}
     - target: {fileID: 1563633127144959883, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
       propertyPath: vcam
       value: 

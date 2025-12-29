@@ -11,10 +11,7 @@ namespace FaintFear
         [SerializeField] private RoomKeyType keyType = RoomKeyType.None;
 
         // 획득 시 출력할 메시지
-        [SerializeField] private string messageText = "이걸로 저쪽 문을 열 수 있을지도 모른다.";
-
-        // 메시지 표시 시간
-        [SerializeField] private float messageDuration = 2.0f;
+        [SerializeField] private string messageText = "이걸로 저쪽 문을 열 수 있을지도 모른다.";        
 
         // 시퀀스 텍스트 출력용
         [SerializeField] private SequenceTextManager sequenceTextManager;
@@ -42,22 +39,12 @@ namespace FaintFear
             if (sequenceTextManager != null)
             {
                 sequenceTextManager.gameObject.SetActive(true);
-                sequenceTextManager.ShowMessage(messageText);
-                StartCoroutine(HideMessageAfterDelay());
+                sequenceTextManager.ShowMessage(messageText);                
             }
 
             // 열쇠 오브젝트 제거
             Destroy(gameObject);
-        }
-
-        // 일정 시간 후 메시지 숨김
-        private System.Collections.IEnumerator HideMessageAfterDelay()
-        {
-            yield return new WaitForSeconds(messageDuration);
-
-            if (sequenceTextManager != null)
-                sequenceTextManager.gameObject.SetActive(false);
-        }
+        }      
 
         // ActionUI에 표시할 문구 제공
         public string GetActionText()

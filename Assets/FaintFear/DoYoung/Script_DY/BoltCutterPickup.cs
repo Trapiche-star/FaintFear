@@ -9,7 +9,8 @@ namespace FaintFear
     {
         #region Variables
 
-        private SequenceTextManager sequenceText; // HUD 텍스트 출력 담당
+        [SerializeField]
+        private SequenceTextManager sequenceText; // HUD 텍스트 출력 담당 (System UI)
 
         #endregion
 
@@ -19,8 +20,9 @@ namespace FaintFear
         // 픽업 오브젝트 초기 설정
         private void Awake()
         {
-            // 씬에 존재하는 SequenceTextManager를 탐색하여 참조한다
-            sequenceText = Object.FindFirstObjectByType<SequenceTextManager>();
+            // 인스펙터에서 지정되지 않았다면 경고만 출력한다
+            if (sequenceText == null)
+                Debug.LogWarning($"{name}: SequenceTextManager가 지정되지 않음");
         }
 
         #endregion
@@ -55,8 +57,11 @@ namespace FaintFear
         // SequenceTextManager를 통해 메시지 출력
         private void ShowHUDMessage(string message)
         {
-            if (sequenceText != null)
-                sequenceText.ShowMessage(message);
+            // 텍스트 매니저가 없으면 출력하지 않는다
+            if (sequenceText == null)
+                return;
+
+            sequenceText.ShowMessage(message);
         }
 
         #endregion
@@ -67,7 +72,7 @@ namespace FaintFear
         // 액션 UI에 표시될 문구 제공
         public string GetActionText()
         {
-            return "볼트 커터 줍기";
+            return "줍기";
         }
 
         #endregion
