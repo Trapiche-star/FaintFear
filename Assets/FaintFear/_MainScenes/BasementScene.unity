@@ -315,7 +315,7 @@ GameObject:
   m_Component:
   - component: {fileID: 97598963}
   - component: {fileID: 97598964}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_Machine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -372,7 +372,7 @@ GameObject:
   - component: {fileID: 109559561}
   - component: {fileID: 109559560}
   - component: {fileID: 109559559}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -481,7 +481,7 @@ GameObject:
   - component: {fileID: 160589958}
   - component: {fileID: 160589957}
   - component: {fileID: 160589956}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -828,7 +828,7 @@ GameObject:
   - component: {fileID: 515880621}
   - component: {fileID: 515880620}
   - component: {fileID: 515880619}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1052,7 +1052,7 @@ GameObject:
   m_Component:
   - component: {fileID: 607978932}
   - component: {fileID: 607978933}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_SeclusionRoomB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1252,7 +1252,7 @@ GameObject:
   - component: {fileID: 770175001}
   - component: {fileID: 770175000}
   - component: {fileID: 770174999}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1568,7 +1568,7 @@ GameObject:
   - component: {fileID: 846288345}
   - component: {fileID: 846288344}
   - component: {fileID: 846288343}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_Frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1774,6 +1774,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BatteryC_SeclusionRoomA
       objectReference: {fileID: 0}
+    - target: {fileID: 2514064300818425012, guid: 93df9a80e84a2f7449400bd4b1a7588e, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1816,7 +1820,7 @@ GameObject:
   - component: {fileID: 1280721959}
   - component: {fileID: 1280721958}
   - component: {fileID: 1280721957}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DoorD_Frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1925,7 +1929,7 @@ GameObject:
   - component: {fileID: 1307786371}
   - component: {fileID: 1307786370}
   - component: {fileID: 1307786369}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_Frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2128,7 +2132,7 @@ GameObject:
   - component: {fileID: 1380147706}
   - component: {fileID: 1380147705}
   - component: {fileID: 1380147704}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_Frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2234,7 +2238,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1416396659}
-  m_Layer: 0
+  - component: {fileID: 1416396660}
+  m_Layer: 7
   m_Name: Door_BasementEntrance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2258,6 +2263,23 @@ Transform:
   - {fileID: 1607998005}
   m_Father: {fileID: 1748811199}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1416396660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1416396658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d82a2dbdd16cac4085ed9d98bb31f9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetSceneName: Level01
+  doorPivot: {fileID: 160589955}
+  openedAngle: 90
+  openSpeed: 90
+  sequenceText: {fileID: 1973401339}
 --- !u!1 &1542694548
 GameObject:
   m_ObjectHideFlags: 0
@@ -2270,7 +2292,7 @@ GameObject:
   - component: {fileID: 1542694552}
   - component: {fileID: 1542694551}
   - component: {fileID: 1542694550}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DoorD_Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2379,7 +2401,7 @@ GameObject:
   - component: {fileID: 1607998008}
   - component: {fileID: 1607998007}
   - component: {fileID: 1607998006}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_Frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2488,7 +2510,7 @@ GameObject:
   - component: {fileID: 1614234116}
   - component: {fileID: 1614234115}
   - component: {fileID: 1614234114}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DoorD_Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3018,7 +3040,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1701731203}
   - component: {fileID: 1701731204}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_SeclusionRoomA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3192,7 +3214,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1930128763}
   - component: {fileID: 1930128764}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_Morgue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3746,7 +3768,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7367292786685990135, guid: 9bf9a1ae78e0b9e4981839972ca1e21d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7563801220497785363, guid: 9bf9a1ae78e0b9e4981839972ca1e21d, type: 3}
       propertyPath: m_Name
