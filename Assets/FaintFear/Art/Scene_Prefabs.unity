@@ -1547,69 +1547,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rayDistance: 2
   cameraRoot: {fileID: 0}
+  crossHiair: {fileID: 0}
+  playerCrossHair: {fileID: 0}
   targetLayer:
     serializedVersion: 2
     m_Bits: 2368
-  crossHair: {fileID: 0}
-  playerCrossHair: {fileID: 0}
   actionUI: {fileID: 0}
---- !u!1001 &2114362324872244296
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1029088989803576214, guid: 26e34990531d52c4fb8d465d35b17fb3, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2.64
-      objectReference: {fileID: 0}
-    - target: {fileID: 1029088989803576214, guid: 26e34990531d52c4fb8d465d35b17fb3, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.13
-      objectReference: {fileID: 0}
-    - target: {fileID: 1029088989803576214, guid: 26e34990531d52c4fb8d465d35b17fb3, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.24
-      objectReference: {fileID: 0}
-    - target: {fileID: 1029088989803576214, guid: 26e34990531d52c4fb8d465d35b17fb3, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.011993522
-      objectReference: {fileID: 0}
-    - target: {fileID: 1029088989803576214, guid: 26e34990531d52c4fb8d465d35b17fb3, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1029088989803576214, guid: 26e34990531d52c4fb8d465d35b17fb3, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.9999281
-      objectReference: {fileID: 0}
-    - target: {fileID: 1029088989803576214, guid: 26e34990531d52c4fb8d465d35b17fb3, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1029088989803576214, guid: 26e34990531d52c4fb8d465d35b17fb3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1029088989803576214, guid: 26e34990531d52c4fb8d465d35b17fb3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 178.626
-      objectReference: {fileID: 0}
-    - target: {fileID: 1029088989803576214, guid: 26e34990531d52c4fb8d465d35b17fb3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3679006340148463457, guid: 26e34990531d52c4fb8d465d35b17fb3, type: 3}
-      propertyPath: m_Name
-      value: MetalCabinet
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 26e34990531d52c4fb8d465d35b17fb3, type: 3}
 --- !u!1001 &2939860445504744015
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1818,7 +1761,6 @@ MonoBehaviour:
   enemyChaseDrain: 1.6
   corpseRoomDrain: 0.4
   flashlightDamage: 0.6
-  safeZoneHeal: 3
   flashlightheal: 1.6
 --- !u!1001 &3695663130106486242
 PrefabInstance:
@@ -2142,7 +2084,6 @@ MonoBehaviour:
   lookSensitivity: 15
   minXRotation: -85
   maxXRotation: 85
-  canMove: 1
 --- !u!1001 &5186458501726488196
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2534,4 +2475,3 @@ SceneRoots:
   - {fileID: 2939860445504744015}
   - {fileID: 8902339108949488932}
   - {fileID: 5315219358313225941}
-  - {fileID: 2114362324872244296}
