@@ -1,4 +1,3 @@
-using FaintFear;
 using System;
 using UnityEngine;
 using UnityEngine.Events;
@@ -34,8 +33,11 @@ namespace FaintFear
         [SerializeField] private float safeZoneHeal = 3.0f;          // 안전구역 정신력 회복량
         [SerializeField] private float flashlightheal = 1.6f;        //손전등 정신력 회복
 
-        public UnityAction onDie;
+        //정신력 이벤트
         private bool isInSafeZone = false;
+        private bool isInCorpseRoom = false;
+
+        public UnityAction onDie;
         public event Action<MentalState> OnMentalStateChanged;
 
         #endregion
@@ -43,12 +45,24 @@ namespace FaintFear
         #region Property
         //정신력 상태
         public MentalState CurrentMentalState { get; private set; }
-
-        public void SetSafeZone(bool value)
+        //세이프 존
+        public bool IsInSafeZone
         {
-            isInSafeZone = value;
+            get { return isInSafeZone; }
+            set
+            {
+                isInSafeZone = value;
+            }
         }
-
+        //시체와 같은 방에 있을 때
+        public bool IsInCorpseRoom
+        {
+            get { return isInCorpseRoom; }
+            set
+            {
+                isInCorpseRoom = value;
+            }
+        }
         #endregion
 
         #region Unity Event Method
@@ -70,30 +84,32 @@ namespace FaintFear
         {
             //손전등 사용 가능 후부터 정신력 깎이게
             if (isDeath || !PlayerStatus.Instance.isMentalSystemActive) return;
-
             float mentalDelta = 0f;
 
-            //손전등 on/off
-            if (flashlight != null && flashlight.IsOn)
-                mentalDelta += flashlightheal;
-            else
-                mentalDelta -= flashlightDamage;
-
-            // 안전 구역 회복
-            if (isInSafeZone)
+            if (isInSafeZone)   //세이프 존 - 무조건 회복
+            {
                 mentalDelta += safeZoneHeal;
+            }
+            else
+            {
+                //손전등 on/off
+                if (flashlight != null && flashlight.IsOn)
+                    mentalDelta += flashlightheal;
+                else
+                    mentalDelta -= flashlightDamage;
 
-            //적을 응시했을 때 
-            /*if (isEnemyLooking)
-                mentalDelta -= enemyLookDrain;*/
+                //적을 응시했을 때 
+                /*if (isEnemyLooking)
+                    mentalDelta -= enemyLookDrain;*/
 
-            //적이 추적해올 때
-            /*if (isBeingChased)
-                mentalDelta -= enemyChaseDrain;*/
+                //적이 추적해올 때
+                /*if (isBeingChased)
+                    mentalDelta -= enemyChaseDrain;*/
 
-            //시체와 같은 방에 있었을 때 
-            /*if (isInCorpseRoom)
-                mentalDelta -= corpseRoomDrain;*/
+                //시체와 같은 방에 있었을 때 
+                if (isInCorpseRoom)
+                    mentalDelta -= corpseRoomDrain;
+            }
 
             ApplyMentalChange(mentalDelta);
         }

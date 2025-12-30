@@ -39,8 +39,8 @@ namespace FaintFear
             currentCharge = 0f;
             IsCharging = false;
 
-            gaugeUI.Show(false);
-            gaugeUI.SetGauge(0f);
+            ShowGauge(false);
+            SetGauge(0f);
         }
 
         void OnEnable()
@@ -127,8 +127,7 @@ namespace FaintFear
             if (isPushHeld)
             {
                 IsCharging = true;
-                gaugeUI.Show(true);
-
+                ShowGauge(true);
                 currentCharge += Time.deltaTime / maxChargeTime;
             }
             else
@@ -138,7 +137,7 @@ namespace FaintFear
             }
 
             currentCharge = Mathf.Clamp01(currentCharge);
-            gaugeUI.SetGauge(currentCharge);
+            SetGauge(currentCharge);
 
             // 가득 차면 밀기
             if (currentCharge >= 1f)
@@ -162,8 +161,8 @@ namespace FaintFear
             currentCharge -= Time.deltaTime * drainSpeed;
             currentCharge = Mathf.Clamp01(currentCharge);
 
-            gaugeUI.SetGauge(currentCharge);
-            gaugeUI.Show(showUI);
+            SetGauge(currentCharge);
+            ShowGauge(showUI);
         }
 
         // =========================
@@ -174,8 +173,19 @@ namespace FaintFear
             currentCharge = 0f;
             IsCharging = false;
 
-            gaugeUI.SetGauge(0f);
-            gaugeUI.Show(false);
+            SetGauge(0f);
+            ShowGauge(false);
+        }
+        void ShowGauge(bool show)
+        {
+            if (gaugeUI == null) return;
+            gaugeUI.Show(show);
+        }
+
+        void SetGauge(float value)
+        {
+            if (gaugeUI == null) return;
+            gaugeUI.SetGauge(value);
         }
 
 #if UNITY_EDITOR

@@ -3,44 +3,28 @@ using UnityEngine;
 namespace FaintFear
 {
     /// <summary>
-    /// 플레이어 상호작용 처리
-    /// 카메라 전방으로 Raycast를 발사하여 상호작용 대상 감지 및 처리
+    /// 플레이어 시점 기준 Raycast로 상호작용 대상을 감지하고 처리한다
     /// </summary>
     public class PlayerInteraction : MonoBehaviour
     {
         #region Variables
 
-        // Raycast 최대 거리
-        [SerializeField] private float rayDistance = 2f;
+        [Header("Ray Settings")]
+        [SerializeField] private float rayDistance = 2f;      // 상호작용 Ray 최대 거리
+        [SerializeField] private Transform cameraRoot;        // Ray 발사 기준 카메라
+        [SerializeField] private LayerMask targetLayer;       // 상호작용 대상 레이어
 
-        // Raycast 발사 기준 (카메라)
-        [SerializeField] private Transform cameraRoot;
+        [Header("UI")]
+        [SerializeField] private GameObject crossHair;        // 중앙 크로스헤어
+        [SerializeField] private GameObject playerCrossHair;  // 전체 크로스헤어 UI
+        [SerializeField] private ActionUI actionUI;           // 상호작용 문구 UI
 
-        // 화면 중앙 크로스헤어 UI
-        [SerializeField] private GameObject crossHiair;
-        // 전체 크로스헤어 UI
-        [SerializeField] private GameObject playerCrossHair;
+        private PlayerMove playerMove;                         // 플레이어 이동 제어
+        private GameObject target;                             // 현재 Ray에 맞은 오브젝트
+        private IActionProvider currentAction;                 // 현재 상호작용 대상
 
-        // 상호작용 가능한 레이어 마스크
-        [SerializeField] private LayerMask targetLayer;
-
-        // 상호작용 문구 UI
-        [SerializeField] private ActionUI actionUI;
-
-        // 플레이어 이동 및 입력 이벤트 처리용
-        private PlayerMove playerMove;
-
-        // Ray가 대상에 맞았는지 여부
-        private bool isOnLay = false;
-
-        // 현재 대상이 벽인지 여부
-        private bool isWall = false;
-
-        // Ray에 맞은 오브젝트
-        private GameObject target;
-
-        // 현재 바라보는 상호작용 대상 (문, 열쇠 등)
-        private IActionProvider currentAction;
+        private bool isOnRay = false;                           // Ray 적중 여부
+        private bool isWall = false;                            // 벽 판정 여부
 
         #endregion
 
@@ -49,61 +33,43 @@ namespace FaintFear
 
         private void Awake()
         {
-            // PlayerMove 컴포넌트 가져오기
             playerMove = GetComponent<PlayerMove>();
+            // 플레이어 이동 컴포넌트를 캐싱한다
 
-            // 카메라가 지정되지 않았으면 자동 탐색
             if (cameraRoot == null)
-                cameraRoot = GetComponentInChildren<Camera>().transform;
+                cameraRoot = GetComponentInChildren<Camera>()?.transform;
+            // 만약 [카메라가 지정되지 않았다면] [자식 Camera를 기준으로 설정한다]
 
-            // 크로스헤어 자동 연결 (플레이어 하위 구조 기준)
-            crossHiair = transform.GetChild(1).GetChild(0).gameObject;
-
-            playerCrossHair = transform.GetChild(1).gameObject;
-
-            // ActionUI 자동 탐색 (씬에 하나만 있다고 가정)
-            if (actionUI == null)
-                actionUI = FindFirstObjectByType<ActionUI>();
-
-            // 시작 시 크로스헤어 비활성화
-            if (crossHiair != null)
-                crossHiair.SetActive(false);
+            if (crossHair != null)
+                crossHair.SetActive(false);
+            // 시작 시 크로스헤어를 비활성화한다
         }
 
         private void OnEnable()
         {
-            // E 키 입력 이벤트 구독
             if (playerMove != null)
                 playerMove.OnInteractEvent += Interact;
+            // 상호작용 입력 이벤트를 구독한다
         }
 
         private void OnDisable()
         {
-            // E 키 입력 이벤트 해제
             if (playerMove != null)
                 playerMove.OnInteractEvent -= Interact;
+            // 상호작용 입력 이벤트를 해제한다
         }
 
         private void Update()
         {
-            // UI가 열려 있으면 상호작용 중단
-            if (UIState.IsUIOpen)
+            if (playerMove == null || !playerMove.enabled)
             {
-                playerCrossHair?.SetActive(false);
+                crossHair?.SetActive(false);
                 actionUI?.HideAction();
-                return;
+                return; // 만약 [플레이어 이동이 불가능한 상태라면] [상호작용을 중단한다]
             }
 
-            // 플레이어 이동이 잠겨 있으면 상호작용 중단
-            if (!playerMove.enabled)
-            {
-                crossHiair?.SetActive(false);
-                actionUI?.HideAction();
-                return;
-            }
-
-            // 상호작용 Raycast 실행
             ShootRay();
+            // 이동 가능한 상태일 때만 상호작용 Raycast를 실행한다
         }
 
         #endregion
@@ -111,78 +77,73 @@ namespace FaintFear
 
         #region Custom Method
 
-        // 카메라 전방으로 Raycast를 발사하여 상호작용 대상 감지
+        // 카메라 전방으로 Ray를 발사해 상호작용 대상을 감지한다
         private void ShootRay()
         {
             playerCrossHair?.SetActive(true);
+            // 전체 크로스헤어 UI를 활성화한다
 
-            Vector3 rayOrigin = cameraRoot.position;
-            Vector3 rayDirection = cameraRoot.forward;
+            Vector3 origin = cameraRoot.position;
+            Vector3 direction = cameraRoot.forward;
 
-            // Scene 뷰 디버그용 Ray
-            Debug.DrawRay(rayOrigin, rayDirection * rayDistance, Color.green, 1f);
+            Debug.DrawRay(origin, direction * rayDistance, Color.green);
+            // Scene 뷰에서 Ray 방향을 시각화한다
 
-            RaycastHit hit;
-            if (Physics.Raycast(rayOrigin, rayDirection, out hit, rayDistance, targetLayer))
+            if (Physics.Raycast(origin, direction, out RaycastHit hit, rayDistance, targetLayer))
             {
-                // Ray가 무언가에 맞았을 때
                 target = hit.transform.gameObject;
-                isOnLay = true;
+                isOnRay = true;
+                // Ray가 대상에 적중했음을 기록한다
 
-                // 벽이면 상호작용 차단
                 if (target.CompareTag("Wall"))
                 {
                     isWall = true;
-                    crossHiair.SetActive(false);
+                    crossHair?.SetActive(false);
                     actionUI?.HideAction();
                     currentAction = null;
+                    return; // 만약 [벽이라면] [상호작용을 차단한다]
+                }
+
+                isWall = false;
+                crossHair?.SetActive(true);
+                // 상호작용 가능한 대상이므로 크로스헤어를 표시한다
+
+                IActionProvider action = target.GetComponentInParent<IActionProvider>();
+                if (action != null)
+                {
+                    currentAction = action;
+                    actionUI?.ShowAction(action.GetActionText());
+                    // 만약 [상호작용 인터페이스가 있다면] [액션 문구를 출력한다]
                 }
                 else
                 {
-                    // 상호작용 가능한 대상
-                    isWall = false;
-                    crossHiair.SetActive(true);
-
-                    // IActionProvider 구현 여부 확인
-                    IActionProvider action = target.GetComponentInParent<IActionProvider>();
-                    if (action != null)
-                    {
-                        // 대상이 제공하는 문구 표시
-                        actionUI?.ShowAction(action.GetActionText());
-                        currentAction = action;
-                    }
-                    else
-                    {
-                        // 상호작용 대상이 아니면 UI 숨김
-                        actionUI?.HideAction();
-                        currentAction = null;
-                    }
+                    actionUI?.HideAction();
+                    currentAction = null;
+                    // 상호작용 불가 대상이면 UI를 숨긴다
                 }
             }
             else
             {
-                // 아무것도 맞지 않았을 때 상태 초기화
-                crossHiair.SetActive(false);
+                crossHair?.SetActive(false);
                 actionUI?.HideAction();
 
                 target = null;
-                isOnLay = false;
+                isOnRay = false;
                 isWall = false;
                 currentAction = null;
+                // Ray가 아무것도 맞추지 못했을 경우 상태를 초기화한다
             }
         }
 
-        // E 키 입력 시 호출
+        // 상호작용 입력(E 키)이 들어왔을 때 호출된다
         private void Interact()
         {
-            // 벽이 아니고 상호작용 대상이 있을 때만 실행
-            if (!isWall && isOnLay && target != null)
+            if (!isWall && isOnRay && target != null)
             {
                 Interactive interactive = target.GetComponentInParent<Interactive>();
                 if (interactive != null)
-                {
                     interactive.Interaction();
-                }
+                // 만약 [상호작용 대상이 존재한다면] [상호작용을 실행한다]
             }
         }
 
