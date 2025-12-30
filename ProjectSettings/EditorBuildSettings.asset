@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/FaintFear/_MainScenes/Level01.unity
     guid: 81c3e74987ad8e547a443f1b544489c3
+  - enabled: 1
+    path: Assets/FaintFear/_MainScenes/BasementScene.unity
+    guid: 256bd1a48c0afc24b8b13ee161228ba1
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
