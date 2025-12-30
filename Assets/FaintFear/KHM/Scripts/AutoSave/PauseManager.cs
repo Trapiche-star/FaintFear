@@ -69,6 +69,7 @@ namespace FaintFear
         //이어하기
         public void Resume()
         {
+            Debug.Log("이어하기");
             if (!isPaused) return;
             TogglePause();
         }
@@ -76,6 +77,7 @@ namespace FaintFear
         //메인메뉴
         public void GoToMainMenu()
         {
+            Debug.Log("메인메뉴로 이동");
             Time.timeScale = 1f;
             GameManager.Instance.GoToMainMenu();
         }
