@@ -281,7 +281,7 @@ MonoBehaviour:
   speed: 3
   gravity: -9.81
   jumpHeight: 1
-  cameraRoot: {fileID: 0}
+  cameraRoot: {fileID: 8650879924654022536}
   lookSensitivity: 15
   minXRotation: -85
   maxXRotation: 85
@@ -299,11 +299,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rayDistance: 2
-  cameraRoot: {fileID: 0}
+  cameraRoot: {fileID: 8650879924654022536}
   targetLayer:
     serializedVersion: 2
-    m_Bits: 14784
-  crossHair: {fileID: 0}
+    m_Bits: 31168
+  crossHair: {fileID: 4798505586484529201}
   playerCrossHair: {fileID: 1981718588793620915}
   actionUI: {fileID: 6644771746777386345}
 --- !u!114 &8613019285101603701
@@ -1435,7 +1435,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8917519622233418153, guid: 1314fa248f727fd49a41f4096da5ff03, type: 3}
       propertyPath: m_Antialiasing
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8917519622233418153, guid: 1314fa248f727fd49a41f4096da5ff03, type: 3}
       propertyPath: 'm_Cameras.Array.data[0]'
@@ -1445,7 +1445,8 @@ PrefabInstance:
       propertyPath: m_VolumeFrameworkUpdateModeOption
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3032631575286850519, guid: 1314fa248f727fd49a41f4096da5ff03, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

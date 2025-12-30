@@ -1288,7 +1288,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1767312136973765093, guid: cf90c45b98e376e4d9807b0c579e6fb3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.08
+      value: 1.6
       objectReference: {fileID: 0}
     - target: {fileID: 1767312136973765093, guid: cf90c45b98e376e4d9807b0c579e6fb3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1334,7 +1334,9 @@ PrefabInstance:
       propertyPath: Profile
       value: 
       objectReference: {fileID: 11400000, guid: adb29608d38f0564bb112965bdb7844c, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8065417663703819096, guid: cf90c45b98e376e4d9807b0c579e6fb3, type: 3}
+    - {fileID: 5947117729633789503, guid: cf90c45b98e376e4d9807b0c579e6fb3, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -137278,6 +137280,10 @@ PrefabInstance:
       propertyPath: crossHair
       value: 
       objectReference: {fileID: 844950312}
+    - target: {fileID: 592723124030721549, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
+      propertyPath: cameraRoot
+      value: 
+      objectReference: {fileID: 1890372530}
     - target: {fileID: 1563633127144959883, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
       propertyPath: vcam
       value: 
@@ -137354,7 +137360,8 @@ PrefabInstance:
       propertyPath: isMentalSystemActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 855393156240842465, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
