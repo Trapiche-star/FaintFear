@@ -44,10 +44,16 @@ namespace FaintFear
 
         private void Start()
         {
-            // 플레이어 이동 컴포넌트를 준비한다
-            playerMove = GameObject.FindWithTag("Player")?.GetComponent<PlayerMove>();
+            SaveData data = SaveSystem.LoadPreview();
+            //튜토리얼을 클리어 했으면 돌아가기
+            if (data != null && data.tutorialCompleted)
+            {
+                Destroy(this);
+                return;
+            }
 
-            // 손전등 컴포넌트를 탐색한다
+            //참조
+            playerMove = GameObject.FindWithTag("Player")?.GetComponent<PlayerMove>();
             flashlight = GameObject.FindAnyObjectByType<Flashlight>();
         }
 
@@ -121,6 +127,9 @@ namespace FaintFear
 
             // 정신력 시스템 활성화
             PlayerStatus.Instance.isMentalSystemActive = true;
+
+            //세이브 포인트 저장
+            SaveSystem.SaveGame("TutorialEnd", tutorialCompleted: true);
         }
 
         // 카메라를 창문 방향으로 부드럽게 회전시킨다

@@ -3655,7 +3655,7 @@ MonoBehaviour:
   lightZone: {fileID: 803317310}
   triggerRestrict: {fileID: 803317311}
   vcam: {fileID: 438918824}
-  cameraPosition: {fileID: 62703778}
+  cameraPosition: {fileID: 1890372530}
   windowLookPoint: {fileID: 62703778}
   rotateSpeed: 5
   ghost: {fileID: 1824717617}

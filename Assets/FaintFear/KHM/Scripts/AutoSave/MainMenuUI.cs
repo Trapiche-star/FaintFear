@@ -40,6 +40,8 @@ namespace FaintFear
         public void OnQuit()
         {
             Debug.Log("Quit 버튼을 눌렀습니다");
+            //치팅: 저장된 데이터 리셋
+            PlayerPrefs.DeleteAll();
             Application.Quit();
         }
     }

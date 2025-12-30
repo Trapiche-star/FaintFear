@@ -17,4 +17,7 @@ public class SaveData
 
     // 시간 (선택)
     public string saveTime;
+
+    //튜토리얼 완료
+    public bool tutorialCompleted;
 }
