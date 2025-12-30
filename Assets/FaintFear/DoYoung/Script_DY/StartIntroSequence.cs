@@ -36,6 +36,14 @@ namespace FaintFear
         // 게임이 시작되자마자 오프닝 연출을 실행한다
         private IEnumerator Start()
         {
+            var data = SaveSystem.HasSave() ? SaveSystem.LoadPreview() : null;
+
+            if (data != null && data.checkpointId == "TutorialEnd")
+            {
+                // 튜토리얼 이후 상태 → 오프닝 스킵
+                yield break;
+            }
+
             // 만약 HUD 매니저가 없다면 더 이상 진행할 수 없으므로 끝낸다
             if (hudManager == null)
                 yield break;

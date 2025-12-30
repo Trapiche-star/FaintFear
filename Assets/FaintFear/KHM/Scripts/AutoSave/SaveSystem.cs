@@ -10,7 +10,7 @@ namespace FaintFear
             Path.Combine(Application.persistentDataPath, "save.json");
 
         // ===================== SAVE =====================
-        public static void SaveGame(string checkpointId = "")
+        public static void SaveGame(string checkpointId = "", bool tutorialCompleted = false)
         {
             SaveData data = new SaveData();
 
@@ -28,14 +28,22 @@ namespace FaintFear
 
             // 체크포인트
             data.checkpointId = checkpointId;
-            data.saveTime = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            data.tutorialCompleted = tutorialCompleted;
 
             // JSON 변환
             string json = JsonUtility.ToJson(data, true);
-
             File.WriteAllText(SavePath, json);
 
             Debug.Log($"[SaveSystem] Saved to {SavePath}");
+        }
+
+        public static SaveData LoadPreview()
+        {
+            if (!File.Exists(SavePath))
+                return null;
+
+            string json = File.ReadAllText(SavePath);
+            return JsonUtility.FromJson<SaveData>(json);
         }
 
         // ===================== LOAD =====================
