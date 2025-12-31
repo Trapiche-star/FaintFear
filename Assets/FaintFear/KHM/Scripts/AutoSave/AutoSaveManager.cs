@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections;
 
 namespace FaintFear
@@ -11,6 +12,8 @@ namespace FaintFear
         bool isEnemyChasing = false;   // EnemyManager에서 세팅
         bool pendingSave = false;
         string pendingCheckpointId;
+        public static event Action OnAutoSaveStart;
+        public static event Action OnAutoSaveEnd;
 
         // 싱글톤이 최초 생성될 때 단 한 번 실행
         protected override void OnPreInitialize()
@@ -56,13 +59,13 @@ namespace FaintFear
 
         IEnumerator SaveRoutine()
         {
-            AutoSaveUI.Instance.Show(); // "저장하는 중..."
+            OnAutoSaveStart?.Invoke(); // ✅ UI 있으면 반응
 
-            yield return new WaitForSeconds(0.8f); // 연출용
+            yield return new WaitForSeconds(2.0f);
 
             SaveSystem.SaveGame(pendingCheckpointId);
 
-            AutoSaveUI.Instance.Hide();
+            OnAutoSaveEnd?.Invoke();   // ✅
         }
 
         // 외부에서 호출

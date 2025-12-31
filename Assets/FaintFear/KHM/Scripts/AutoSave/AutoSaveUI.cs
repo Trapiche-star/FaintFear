@@ -13,16 +13,26 @@ namespace FaintFear
         {
             base.OnInitialize();
         }
+        private void OnEnable()
+        {
+            AutoSaveManager.OnAutoSaveStart += Show;
+            AutoSaveManager.OnAutoSaveEnd += Hide;
+        }
 
-        //UI 보여주기
+        private void OnDisable()
+        {
+            AutoSaveManager.OnAutoSaveStart -= Show;
+            AutoSaveManager.OnAutoSaveEnd -= Hide;
+        }
         public void Show()
         {
+            if (root == null) return;
             root.SetActive(true);
         }
 
-        //UI 숨기기
         public void Hide()
         {
+            if (root == null) return;
             root.SetActive(false);
         }
     }

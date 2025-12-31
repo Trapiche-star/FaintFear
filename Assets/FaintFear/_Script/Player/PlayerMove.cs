@@ -54,6 +54,7 @@ namespace FaintFear
 
             if (cameraRoot == null) cameraRoot = transform.GetChild(0);
             inputActions = new PlayerInputAction();
+            canMove = true;
         }
 
         private void OnEnable()
