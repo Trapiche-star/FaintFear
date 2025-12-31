@@ -22,8 +22,13 @@ namespace FaintFear
         [SerializeField] private bool isLocked = true;          // 초기 잠금 상태
         [SerializeField] private RoomKeyType requiredKey;       // 문 개방에 필요한 열쇠 타입
 
-        [Header("UI")]
-        [SerializeField] private SequenceTextManager sequenceText; // 텍스트 출력과 시퀀스를 담당
+        [Header("Sequence")]
+        [SerializeField] private SequenceTextManager sequenceText; // HUD 시퀀스 출력 관리자
+
+        [Header("Custom Sequences")]
+        [SerializeField, TextArea] private string lockedSequence;        // 열쇠 미보유 시 출력
+        [SerializeField, TextArea] private string unlockedSequence;      // 잠금 해제 시 출력
+        [SerializeField, TextArea] private string cannotUseKeySequence;  // 열쇠 사용 실패 시 출력
 
         private bool isMoving = false;   // 문 애니메이션 진행 여부
         private bool isOpen = false;     // 문 개방 상태
@@ -63,8 +68,11 @@ namespace FaintFear
 
                 if (!player.HasKey(requiredKey))
                 {
-                    ShowHUDMessage("문이 단단히 잠겨 있다.");
-                    // 만약 [열쇠를 보유하지 않았다면] [실패 메시지를 출력한다]
+                    ShowSequence(
+                        lockedSequence,
+                        "문이 단단히 잠겨 있다."
+                    );
+                    // 만약 [열쇠를 보유하지 않았다면] [잠김 시퀀스를 출력한다]
 
                     return;
                     // 열쇠가 없으므로 더 이상 진행하지 않는다
@@ -72,8 +80,11 @@ namespace FaintFear
 
                 if (!player.ConsumeKey(requiredKey))
                 {
-                    ShowHUDMessage("열쇠를 사용할 수 없다.");
-                    // 만약 [열쇠 소모에 실패했다면] [실패 메시지를 출력한다]
+                    ShowSequence(
+                        cannotUseKeySequence,
+                        "열쇠를 사용할 수 없다."
+                    );
+                    // 만약 [열쇠 소모에 실패했다면] [실패 시퀀스를 출력한다]
 
                     return;
                     // 열쇠 사용이 실패했으므로 처리를 중단한다
@@ -82,8 +93,11 @@ namespace FaintFear
                 isLocked = false;
                 // 열쇠 사용에 성공했으므로 잠금 상태를 해제한다
 
-                ShowHUDMessage("열쇠로 잠금이 해제되었다.");
-                // 잠금 해제 메시지를 출력한다
+                ShowSequence(
+                    unlockedSequence,
+                    "열쇠로 잠금이 해제되었다."
+                );
+                // 잠금 해제 시퀀스를 출력한다
             }
 
             StartCoroutine(MoveDoorRoutine(isOpen));
@@ -146,14 +160,22 @@ namespace FaintFear
             // 문 이동이 완료되었음을 표시한다
         }
 
-        // HUD에 메시지를 출력한다
-        private void ShowHUDMessage(string message)
+        // 시퀀스를 출력한다 (직접 입력 우선, 없으면 기본 문구 사용)
+        private void ShowSequence(string customSequence, string defaultMessage)
         {
             if (sequenceText == null) return;
             // 만약 [텍스트 매니저가 존재하지 않으면] [출력을 중단한다]
 
-            sequenceText.ShowMessage(message);
-            // 시퀀스 텍스트로 메시지를 출력한다
+            if (!string.IsNullOrEmpty(customSequence))
+            {
+                sequenceText.ShowMessage(customSequence);
+                // 인스펙터에 입력된 시퀀스를 출력한다
+            }
+            else
+            {
+                sequenceText.ShowMessage(defaultMessage);
+                // 기본 메시지를 출력한다
+            }
         }
 
         #endregion
