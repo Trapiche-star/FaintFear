@@ -1,53 +1,36 @@
 using UnityEngine;
 
-namespace NavKeypad
+public class LockedSlidingDoor : MonoBehaviour
 {
-    public class LockedSlidingDoor : MonoBehaviour
+    [SerializeField] private Animator animator;
+
+    public bool IsUnlocked { get; private set; }
+    public bool IsOpen { get; private set; }
+
+    public void UnlockDoor()
     {
-        [SerializeField] private SlidingDoor slidingDoor;
-        [SerializeField] private GameObject interactUI; // "E 눌러 문열기"
+        IsUnlocked = true;
+        Debug.Log("문 잠금 해제됨");
+    }
 
-        private bool isUnlocked = false;
-        private bool mouseOver = false;
-
-        void Start()
+    public void TryOpen()
+    {
+        if (!IsUnlocked)
         {
-            if (interactUI != null)
-                interactUI.SetActive(false);
+            Debug.Log("아직 잠겨 있음");
+            return;
         }
 
-        void Update()
-        {
-            if (!isUnlocked) return;
-            if (!mouseOver) return;
+        if (IsOpen) return;
 
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                slidingDoor.OpenDoor();
-                if (interactUI != null)
-                    interactUI.SetActive(false);
-            }
-        }
+        IsOpen = true;
+        animator.SetBool("isOpen", true);
+    }
 
-        // 🔓 키패드 성공 시 호출
-        public void UnlockDoor()
-        {
-            isUnlocked = true;
-        }
-
-        void OnMouseEnter()
-        {
-            if (!isUnlocked) return;
-            mouseOver = true;
-            if (interactUI != null)
-                interactUI.SetActive(true);
-        }
-
-        void OnMouseExit()
-        {
-            mouseOver = false;
-            if (interactUI != null)
-                interactUI.SetActive(false);
-        }
+    public void Close()
+    {
+        IsOpen = false;
+        animator.SetBool("isOpen", false);
     }
 }
+

@@ -12,14 +12,14 @@ namespace NavKeypad
         [SerializeField] private float moveDist = 0.0025f;
         [SerializeField] private float buttonPressedTime = 0.1f;
         [Header("Component References")]
-        [SerializeField] private Keypad keypad;
+        [SerializeField] private Keypad1 keypad1;
 
 
         public void PressButton()
         {
             if (!moving)
             {
-                keypad.AddInput(value);
+                keypad1.AddInput(value);
                 StartCoroutine(MoveSmooth());
             }
         }
