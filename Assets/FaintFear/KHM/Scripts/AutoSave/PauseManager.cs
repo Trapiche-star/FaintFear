@@ -12,6 +12,7 @@ namespace FaintFear
         public static PauseManager Instance;
         public GameObject pauseUI;
         bool isPaused;
+        public GameObject optionsPanel;
         #endregion
 
         #region Unity Event Method
@@ -80,6 +81,21 @@ namespace FaintFear
             Debug.Log("메인메뉴로 이동");
             Time.timeScale = 1f;
             GameManager.Instance.GoToMainMenu();
+        }
+
+        //옵션
+        public void OnOptions()
+        {
+            optionsPanel.SetActive(true);
+        }
+
+        //게임 종료
+        public void OnQuit()
+        {
+            Debug.Log("Quit 버튼을 눌렀습니다");
+            //치팅: 저장된 데이터 리셋
+            PlayerPrefs.DeleteAll();
+            Application.Quit();
         }
         #endregion
     }

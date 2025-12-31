@@ -34,10 +34,9 @@ namespace FaintFear
         #region Unity Event Method
         private IEnumerator Start()
         {
-            //튜토리얼 이미 끝났으면 즉시 제거
-            if (GameManager.TutorialCompleted)
+            if (IsTutorialCompleted())
             {
-                Destroy(this);
+                Destroy(gameObject);
                 yield break;
             }
 
@@ -77,6 +76,12 @@ namespace FaintFear
 
             //1회용
             Destroy(this);
+        }
+
+        private bool IsTutorialCompleted()
+        {
+            var data = SaveSystem.LoadPreview();
+            return data != null && data.tutorialCompleted;
         }
         #endregion
     }

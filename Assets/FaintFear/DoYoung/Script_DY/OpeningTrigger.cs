@@ -17,7 +17,7 @@ namespace FaintFear
 
         [Header("카메라")]
         public CinemachineCamera vcam;                  // 시네머신 가상 카메라
-        public Transform playerCamera;                  // 플레이어 실제 카메라
+        [SerializeField] private Transform cameraPosition;                  // 플레이어 실제 카메라
 
         [Header("연출 설정")]
         [SerializeField] private float lookRotateDuration = 1.0f;
@@ -37,22 +37,29 @@ namespace FaintFear
 
 
         #region Unity Event Method
-
+        private void Start()
+        {
+            if (IsTutorialCompleted())
+            {
+                Destroy(gameObject);
+            }
+        }
         // 플레이어가 트리거에 들어왔을 때 아이템 연출 실행
         private void OnTriggerEnter(Collider other)
         {
-            // 만약 이미 실행됐다면 종료
+            if (IsTutorialCompleted()) return;
             if (hasPlayed) return;
-
-            // 만약 플레이어가 아닐 때는 무시
             if (!other.CompareTag("Player")) return;
 
+            cameraPosition = other.transform.Find("CameraPosition");
+            if (cameraPosition == null)
+            {
+                Debug.LogError("[OpeningTrigger] CameraRoot not found");
+                return;
+            }
+
             hasPlayed = true;
-
-            // 그래서 트리거를 다시 못 밟게 막는다
-            Collider col = GetComponent<Collider>();
-            if (col != null) col.enabled = false;
-
+            GetComponent<Collider>().enabled = false;
             StartCoroutine(ItemSequence(other));
         }
 
@@ -80,24 +87,21 @@ namespace FaintFear
             }
 
             // 만약 타겟과 카메라가 있을 때만 시점 연출
-            if (lookTarget != null && playerCamera != null)
+            if (lookTarget != null && cameraPosition != null)
             {
-                Quaternion startRot = playerCamera.rotation;
-                Vector3 dir = (lookTarget.position - playerCamera.position).normalized;
+                Quaternion startRot = cameraPosition.rotation;
+                Vector3 dir = (lookTarget.position - cameraPosition.position).normalized;
                 Quaternion targetRot = Quaternion.LookRotation(dir, Vector3.up);
 
                 float elapsed = 0f;
-
-                // 그동안 회전 시간이 끝날 때까지 반복
                 while (elapsed < lookRotateDuration)
                 {
                     elapsed += Time.deltaTime;
-                    float t = Mathf.Clamp01(elapsed / lookRotateDuration);
-                    playerCamera.rotation = Quaternion.Slerp(startRot, targetRot, t);
+                    float t = elapsed / lookRotateDuration;
+                    cameraPosition.rotation = Quaternion.Slerp(startRot, targetRot, t);
                     yield return null;
                 }
-
-                playerCamera.rotation = targetRot;
+                cameraPosition.rotation = targetRot;
             }
 
             // 아이템 대사 출력
@@ -113,7 +117,11 @@ namespace FaintFear
                 playerMove.enabled = true;
             }
         }
-
+        private bool IsTutorialCompleted()
+        {
+            var data = SaveSystem.LoadPreview();
+            return data != null && data.tutorialCompleted;
+        }
         #endregion
     }
 }

@@ -61,6 +61,13 @@ namespace FaintFear
         // 첫 프레임에 플레이어가 트리거 안에 있는지 검사해 초기 상태를 결정한다
         private void Start()
         {
+            if (IsTutorialCompleted())
+            {
+                lightsPermanentlyOff = true;
+                SetLightsActive(false);
+                return;
+            }
+
             // 만약 라이트와 에미션 대상이 모두 없다면
             if (lights == null && emissiveRenderers == null)
                 return; // 더 이상 처리할 것이 없으므로 끝낸다
@@ -219,7 +226,16 @@ namespace FaintFear
                 }
             }
         }
-
+        public void SetPermanentlyOff()
+        {
+            lightsPermanentlyOff = true;
+            SetLightsActive(false);
+        }
+        private bool IsTutorialCompleted()
+        {
+            var data = SaveSystem.LoadPreview();
+            return data != null && data.tutorialCompleted;
+        }
         #endregion
     }
 }
