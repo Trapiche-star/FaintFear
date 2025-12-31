@@ -120,5 +120,12 @@ namespace FaintFear
         }
 
         #endregion
+
+        #region Property
+
+        public bool IsPowerSupplied => isPowerSupplied;
+
+        #endregion
+
     }
 }

@@ -6,49 +6,70 @@ using System.Collections.Generic;
 namespace FaintFear
 {
     /// <summary>
-    /// 씬 이동을 전담하는 영속 관리자
-    /// 다른 오브젝트로부터 씬 이동 요청을 받아 처리한다
+    /// 씬 이동과 씬 상태 관리를 담당하는 영속 관리자
+    /// Additive 로드 후 이전 씬을 비활성화한다
     /// </summary>
     public class SceneLoadManager : MonoBehaviour
     {
         #region Singleton
 
-        public static SceneLoadManager Instance;
-
-        private void Awake()
-        {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(gameObject);
-                return; // 만약 [이미 존재한다면] [중복 생성을 막고 제거한다]
-            }
-
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-            // 씬 전환 시에도 파괴되지 않도록 설정한다
-        }
+        public static SceneLoadManager Instance { get; private set; }
 
         #endregion
 
 
         #region Variables
 
-        private string currentScene;                             // 현재 활성 씬 이름
-        private Stack<string> sceneStack = new Stack<string>();  // 이전 씬 기록 스택
-        private HashSet<string> loadedScenes = new HashSet<string>(); // 로드된 씬 목록
+        // 현재 활성 씬 이름
+        private string currentSceneName;
 
-        private bool isLoading = false; // 씬 로딩 중 여부
+        // 이전 씬 이름
+        private string previousSceneName;
+
+        // 로드된 씬 목록
+        private HashSet<string> loadedScenes = new HashSet<string>();
 
         #endregion
 
 
         #region Unity Event Method
 
-        private void Start()
+        private void Awake()
         {
-            currentScene = SceneManager.GetActiveScene().name;
-            loadedScenes.Add(currentScene);
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+                // 만약 [이미 인스턴스가 존재한다면] [중복 생성을 방지한다]
+            }
+
+            Instance = this;
+            // 이 객체를 SceneLoadManager 싱글톤으로 등록한다
+
+            DontDestroyOnLoad(gameObject);
+            // 씬 이동 시에도 파괴되지 않도록 설정한다
+
+            currentSceneName = SceneManager.GetActiveScene().name;
+            loadedScenes.Add(currentSceneName);
             // 최초 시작 씬을 현재 씬으로 등록한다
+        }
+
+        #endregion
+
+
+        #region Public Method
+
+        // 외부 오브젝트에서 씬 이동을 요청할 때 호출된다
+        public void RequestMoveToScene(string targetSceneName)
+        {
+            if (string.IsNullOrEmpty(targetSceneName)) return;
+            // 만약 [씬 이름이 비어 있다면] [이 메서드에서는 더 이상 처리하지 않는다]
+
+            if (targetSceneName == currentSceneName) return;
+            // 만약 [이미 현재 씬이라면] [중복 이동을 방지한다]
+
+            StartCoroutine(LoadSceneRoutine(targetSceneName));
+            // 씬 로드 루틴을 시작한다
         }
 
         #endregion
@@ -56,98 +77,73 @@ namespace FaintFear
 
         #region Custom Method
 
-        // 외부 오브젝트에서 씬 이동을 요청할 때 호출
-        public void RequestMoveToScene(string targetSceneName)
+        // 씬을 Additive로 로드하고 이전 씬을 비활성화한다
+        private IEnumerator LoadSceneRoutine(string targetSceneName)
         {
-            if (isLoading) return;
-            // 만약 [씬 로딩 중이라면] [중복 요청을 차단한다]
+            previousSceneName = currentSceneName;
+            // 이동 전 씬을 이전 씬으로 기록한다
 
-            if (string.IsNullOrEmpty(targetSceneName)) return;
-            // 만약 [씬 이름이 비어 있다면] [요청을 무시한다]
-
-            if (targetSceneName == currentScene) return;
-            // 만약 [이미 현재 씬이라면] [이동하지 않는다]
-
-            sceneStack.Push(currentScene);
-            // 현재 씬을 이전 씬 스택에 저장한다
-
-            StartCoroutine(LoadSceneInternal(targetSceneName));
-            // 실제 씬 로드 처리를 시작한다
-        }
-
-        // 이전 씬으로 돌아가는 요청
-        public void RequestReturnToPreviousScene()
-        {
-            if (isLoading) return;
-            // 만약 [씬 로딩 중이라면] [요청을 차단한다]
-
-            if (sceneStack.Count == 0) return;
-            // 만약 [돌아갈 씬이 없다면] [요청을 무시한다]
-
-            string previousScene = sceneStack.Pop();
-            // 가장 최근의 씬을 꺼낸다
-
-            StartCoroutine(LoadSceneInternal(previousScene));
-            // 이전 씬으로 이동한다
-        }
-
-        // 실제 씬 로드 공통 처리 (Additive + 안전 활성화)
-        private IEnumerator LoadSceneInternal(string sceneName)
-        {
-            isLoading = true;
-            // 씬 로딩 시작 상태로 전환한다
-
-            if (!loadedScenes.Contains(sceneName))
+            // 아직 로드되지 않은 씬이라면 Additive 로드
+            if (!loadedScenes.Contains(targetSceneName))
             {
-                AsyncOperation op = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-                // 아직 로드되지 않은 씬을 Additive로 로드한다
+                yield return SceneManager.LoadSceneAsync(
+                    targetSceneName,
+                    LoadSceneMode.Additive
+                );
 
-                if (op == null)
-                {
-                    isLoading = false;
-                    yield break;
-                    // 만약 [로드 요청에 실패했다면] [처리를 중단한다]
-                }
-
-                while (!op.isDone)
-                    yield return null;
-                // 씬 로드가 완료될 때까지 대기한다
-
-                loadedScenes.Add(sceneName);
-                // 로드 완료된 씬을 목록에 등록한다
+                loadedScenes.Add(targetSceneName);
+                // 로드된 씬 목록에 추가한다
             }
+
+            Scene targetScene = SceneManager.GetSceneByName(targetSceneName);
+            if (!targetScene.IsValid()) yield break;
+            // 만약 [씬이 유효하지 않다면] [이 메서드에서는 더 이상 처리하지 않는다]
+
+            SceneManager.SetActiveScene(targetScene);
+            // 새 씬을 활성 씬으로 설정한다
+
+            DisableScene(previousSceneName);
+            // 이전 씬을 화면에서 보이지 않게 비활성화한다
+
+            currentSceneName = targetSceneName;
+            // 현재 씬 정보를 갱신한다
+        }
+
+        // 특정 씬의 모든 루트 오브젝트를 비활성화한다
+        private void DisableScene(string sceneName)
+        {
+            if (string.IsNullOrEmpty(sceneName)) return;
+            // 만약 [씬 이름이 없다면] [이 메서드에서는 더 이상 처리하지 않는다]
 
             Scene scene = SceneManager.GetSceneByName(sceneName);
-            if (!scene.IsValid() || !scene.isLoaded)
+            if (!scene.IsValid()) return;
+            // 만약 [씬이 유효하지 않다면] [비활성화하지 않는다]
+
+            GameObject[] roots = scene.GetRootGameObjects();
+            for (int i = 0; i < roots.Length; i++)
             {
-                isLoading = false;
-                yield break;
-                // 만약 [씬이 유효하지 않거나 로드되지 않았다면] [처리를 중단한다]
+                roots[i].SetActive(false);
+                // 이전 씬의 모든 루트 오브젝트를 비활성화한다
             }
-
-            SceneManager.SetActiveScene(scene);
-            // 로드가 완료된 씬을 활성 씬으로 설정한다
-
-            currentScene = sceneName;
-            // 현재 씬 정보를 갱신한다
-
-            isLoading = false;
-            // 씬 로딩 상태를 해제한다
         }
 
-        #endregion
+        // 다시 돌아올 때 사용할 수 있는 씬 활성화 메서드
+        public void EnableScene(string sceneName)
+        {
+            if (string.IsNullOrEmpty(sceneName)) return;
+            // 만약 [씬 이름이 없다면] [이 메서드에서는 더 이상 처리하지 않는다]
 
+            Scene scene = SceneManager.GetSceneByName(sceneName);
+            if (!scene.IsValid()) return;
+            // 만약 [씬이 유효하지 않다면] [활성화하지 않는다]
 
-        #region Property
-
-        public string CurrentScene => currentScene;
-        // 현재 활성 씬 이름을 반환한다
-
-        public bool HasPreviousScene => sceneStack.Count > 0;
-        // 이전 씬이 존재하는지 여부를 반환한다
-
-        public bool IsLoading => isLoading;
-        // 씬 로딩 중인지 여부를 반환한다
+            GameObject[] roots = scene.GetRootGameObjects();
+            for (int i = 0; i < roots.Length; i++)
+            {
+                roots[i].SetActive(true);
+                // 해당 씬의 모든 루트 오브젝트를 다시 활성화한다
+            }
+        }
 
         #endregion
     }

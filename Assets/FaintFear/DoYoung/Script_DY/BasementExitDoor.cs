@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 namespace FaintFear
@@ -25,6 +26,7 @@ namespace FaintFear
         private PlayerMove playerMove;   // 플레이어 이동/시점 제어
         private bool isOpened = false;   // 문이 완전히 열렸는지 여부
         private bool isOpening = false;  // 문 개방 연출 중 여부
+        private bool pendingUnlock = false; // 씬 로드 후 잠금 해제 예약 여부
 
         #endregion
 
@@ -35,6 +37,18 @@ namespace FaintFear
         {
             playerMove = FindAnyObjectByType<PlayerMove>();
             // 씬 내 플레이어 이동 컴포넌트를 참조한다
+        }
+
+        private void OnEnable()
+        {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            // 씬 로드 완료 이벤트를 구독한다
+        }
+
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+            // 씬 로드 완료 이벤트를 해제한다
         }
 
         #endregion
@@ -65,6 +79,9 @@ namespace FaintFear
             isOpening = true;
             // 문 개방 연출 시작 상태로 전환한다
 
+            CachePlayer();
+            // 플레이어 참조를 최신으로 확보한다
+
             LockPlayer(true);
             // 문이 열리는 동안 플레이어 이동/시점을 차단한다
 
@@ -81,6 +98,9 @@ namespace FaintFear
             isOpened = true;
             isOpening = false;
             // 문 개방 완료 상태로 전환한다
+
+            pendingUnlock = true;
+            // 씬 로드 후 잠금 해제를 예약한다
 
             MoveToScene();
             // 문 개방이 끝난 직후 씬 이동을 실행한다
@@ -111,6 +131,35 @@ namespace FaintFear
 
             doorPivot.localEulerAngles = new Vector3(0f, targetAngle, 0f);
             // 문이 완전히 열린 상태를 보장한다
+        }
+
+        // 씬 로드 완료 시 잠금 해제 처리
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            if (!pendingUnlock) return;
+            // 만약 [잠금 해제 예약이 없다면] [아무 처리도 하지 않는다]
+
+            if (scene.name != targetSceneName) return;
+            // 만약 [목표 씬이 아니라면] [이 스크립트에서는 처리하지 않는다]
+
+            CachePlayer();
+            // 새 씬 기준으로 플레이어 참조를 다시 확보한다
+
+            LockPlayer(false);
+            // 씬 전환 완료 후 플레이어 이동/시점을 복구한다
+
+            pendingUnlock = false;
+            // 잠금 해제 예약 상태를 해제한다
+        }
+
+        // 플레이어 참조를 최신으로 확보한다
+        private void CachePlayer()
+        {
+            if (playerMove != null) return;
+            // 만약 [이미 참조가 있다면] [재탐색하지 않는다]
+
+            playerMove = FindAnyObjectByType<PlayerMove>();
+            // 씬 내에서 PlayerMove를 다시 찾는다
         }
 
         // 플레이어 이동 및 시점 고정 처리

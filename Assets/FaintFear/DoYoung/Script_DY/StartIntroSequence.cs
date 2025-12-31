@@ -36,6 +36,8 @@ namespace FaintFear
         // 게임이 시작되자마자 오프닝 연출을 실행한다
         private IEnumerator Start()
         {
+            Debug.Log("StartIntroSequence Start() called");
+
             var data = SaveSystem.HasSave() ? SaveSystem.LoadPreview() : null;
 
             if (data != null && data.checkpointId == "TutorialEnd")
@@ -66,6 +68,7 @@ namespace FaintFear
             // 그래서 페이드 연출 여유를 준다
             yield return new WaitForSeconds(0.5f);
 
+            Debug.Log("Calling FadeFromBlack()");
             // 화면을 서서히 밝힌다
             hudManager.FadeFromBlack();
 
