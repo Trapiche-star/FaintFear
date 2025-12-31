@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2394240687883166797}
   - component: {fileID: 2394240687884493933}
   - component: {fileID: 2394240687885592237}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: blood2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 8781775374400614747}
   - component: {fileID: 5171737454211059670}
   - component: {fileID: 5015825820581436355}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bone2_Low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -181,7 +181,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1092429033433785196}
-  m_Layer: 0
+  - component: {fileID: 6983851325709675350}
+  m_Layer: 8
   m_Name: Dagger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -206,6 +207,19 @@ Transform:
   - {fileID: 2394240687883166797}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!114 &6983851325709675350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6293673681000387548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff51337bc3e1e1f4c80b830def7331bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionText: "\uB300\uAC70\uB97C \uC90D\uB294\uB2E4"
 --- !u!1 &7777202914705984586
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,7 +231,8 @@ GameObject:
   - component: {fileID: 3635274383564192875}
   - component: {fileID: 1151174322861509595}
   - component: {fileID: 2763408902423437701}
-  m_Layer: 0
+  - component: {fileID: 5450446997129538660}
+  m_Layer: 8
   m_Name: Bone1_Low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -292,3 +307,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &5450446997129538660
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7777202914705984586}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.9955679, y: 0.13085604, z: 0.26695606}
+  m_Center: {x: -0.002216011, y: -7.105336e-18, z: -0.0004999937}
