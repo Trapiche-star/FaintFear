@@ -44,26 +44,25 @@ namespace FaintFear
 
         private void Start()
         {
-            SaveData data = SaveSystem.LoadPreview();
-            //튜토리얼을 클리어 했으면 돌아가기
-            if (data != null && data.tutorialCompleted)
+            if (GameManager.TutorialCompleted)
             {
                 Destroy(this);
                 return;
             }
 
-            //참조
             playerMove = GameObject.FindWithTag("Player")?.GetComponent<PlayerMove>();
             flashlight = GameObject.FindAnyObjectByType<Flashlight>();
         }
 
         private void Update()
         {
-            // 아직 이벤트가 실행되지 않았고 && 배터리가 충전된 상태라면
+            if (GameManager.TutorialCompleted)
+                return;
+
             if (!eventTriggered && PlayerStatus.Instance.currentBattery > 0f)
             {
-                eventTriggered = true;                     // 재실행 방지 플래그 설정
-                StartCoroutine(SequencePlay());            // 시퀀스 실행
+                eventTriggered = true;
+                StartCoroutine(SequencePlay());
             }
         }
 
@@ -75,6 +74,9 @@ namespace FaintFear
         // 창문 공포 연출 전체 흐름을 처리하는 메인 시퀀스
         private IEnumerator SequencePlay()
         {
+            if (GameManager.TutorialCompleted)
+                yield break;
+
             // 플레이어 이동 및 카메라 잠금
             playerMove.canMove = false;
             vcam.enabled = false;
@@ -99,10 +101,6 @@ namespace FaintFear
 
             // 시선 고정
             yield return StartCoroutine(LookAtTarget());
-
-            // 놀람 대사 (짧게)
-            sequenceText.ShowMessage("…방금 뭐지?", 2.0f);
-            yield return new WaitForSeconds(2.0f);
 
             // 귀신 이동
             yield return StartCoroutine(MoveGhost());
@@ -130,11 +128,17 @@ namespace FaintFear
 
             //세이브 포인트 저장
             SaveSystem.SaveGame("TutorialEnd", tutorialCompleted: true);
+            AutoSaveManager.Instance.RequestSave("TutorialEnd");
+            
+            sequenceText.Hide();
         }
 
         // 카메라를 창문 방향으로 부드럽게 회전시킨다
         private IEnumerator LookAtTarget()
         {
+            if (cameraPosition == null || windowLookPoint == null)
+                yield break;
+
             Quaternion startRot = cameraPosition.rotation;
 
             Vector3 dir = (windowLookPoint.position - cameraPosition.position).normalized;
