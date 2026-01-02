@@ -1,8 +1,9 @@
 using UnityEngine;
+using System.Collections;
 
 namespace FaintFear
 {
-    public class PushItem : MonoBehaviour
+    public class PushItem : Interactive
     {
         [Header("Move Target")]
         public Transform targetPoint;
@@ -12,6 +13,12 @@ namespace FaintFear
 
         [HideInInspector]
         public bool isCleared = false;
+
+        public override void Interaction()
+        {
+            // ⭐ V키 상호작용 시작
+            MoveToTarget();
+        }
 
         public void MoveToTarget()
         {
@@ -24,10 +31,11 @@ namespace FaintFear
             }
 
             isCleared = true;
+            Debug.Log($"[PushItem] {name} moving to target");
             StartCoroutine(MoveRoutine());
         }
 
-        System.Collections.IEnumerator MoveRoutine()
+        private IEnumerator MoveRoutine()
         {
             while (Vector3.Distance(transform.position, targetPoint.position) > 0.05f)
             {
@@ -38,6 +46,9 @@ namespace FaintFear
                 );
                 yield return null;
             }
+
+            transform.position = targetPoint.position;
+            Debug.Log($"[PushItem] {name} reached target");
         }
     }
 }

@@ -10,26 +10,37 @@ namespace FaintFear
     /// </summary>
     public class SceneFader : MonoBehaviour
     {
-        public Image panelImage; // 화면을 덮는 페이드용 이미지
+        public Image panelImage;
 
-        // SceneFader가 활성화될 때 한 번 호출된다
-        private void Start()
+        private void Awake()  
         {
-            // 만약 페이드 이미지가 아직 연결되지 않았다면
             if (panelImage == null)
             {
-                // 자식 오브젝트에서 Image 컴포넌트를 찾아서 연결한다
-                panelImage = GetComponentInChildren<Image>();
-            }
+                // ⭐ 비활성화된 오브젝트도 찾도록 true 파라미터 추가
+                panelImage = GetComponentInChildren<Image>(true);
 
-            // 시작 알파값은 HUDManager에서 제어한다
-            // 여기서는 알파값을 건드리지 않는다
+                if (panelImage != null)
+                {
+                    Debug.Log("[SceneFader] Panel Image found (including inactive)");
+
+                    // ⭐ Panel을 활성화
+                    panelImage.gameObject.SetActive(true);
+                }
+                else
+                {
+                    Debug.LogError("[SceneFader] Panel Image not found!");
+                }
+            }
         }
 
         // 화면을 밝게 만든다 (알파 1 → 0)
         public void FadeOutToZero(Action onComplete = null)
         {
-            if (panelImage == null) return;
+            if (panelImage == null)
+            {
+                Debug.LogError("[SceneFader] FadeOutToZero - panelImage is null!");
+                return;
+            }
 
             StopAllCoroutines();
             StartCoroutine(FadeAlpha(1f, 0f, onComplete));
@@ -38,7 +49,11 @@ namespace FaintFear
         // 화면을 검게 만든다 (알파 0 → 1)
         public void FadeInToOne(Action onComplete = null)
         {
-            if (panelImage == null) return;
+            if (panelImage == null)
+            {
+                Debug.LogError("[SceneFader] FadeInToOne - panelImage is null!");
+                return;
+            }
 
             StopAllCoroutines();
             StartCoroutine(FadeAlpha(0f, 1f, onComplete));
@@ -47,27 +62,22 @@ namespace FaintFear
         // 알파값을 시간에 따라 보간하는 공용 코루틴
         private IEnumerator FadeAlpha(float startAlpha, float endAlpha, Action onComplete)
         {
-            float elapsedTime = 0f; // 경과 시간
-            float duration = 1.0f; // 페이드 지속 시간
+            float elapsedTime = 0f;
+            float duration = 1.0f;
 
             Color c = panelImage.color;
             c.a = startAlpha;
             panelImage.color = c;
 
+            Debug.Log($"[SceneFader] FadeAlpha started: {startAlpha} → {endAlpha}");
+
             while (elapsedTime < duration)
             {
-                /* 기존 코드 (게임 시간 기준)
-                elapsedTime += Time.deltaTime;
-                */
-
-                // 수정 코드 (연출용, Time.timeScale 무시)
                 elapsedTime += Time.unscaledDeltaTime;
-
                 float newAlpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / duration);
+
                 c.a = newAlpha;
                 panelImage.color = c;
-
-                Debug.Log($"FadeAlpha running: {panelImage.color.a}");
 
                 yield return null;
             }
@@ -75,6 +85,8 @@ namespace FaintFear
             // 최종 알파값 보정
             c.a = endAlpha;
             panelImage.color = c;
+
+            Debug.Log($"[SceneFader] FadeAlpha completed: alpha = {endAlpha}");
 
             onComplete?.Invoke();
         }

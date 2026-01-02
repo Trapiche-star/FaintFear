@@ -41,19 +41,21 @@ namespace FaintFear
 
 
         #region Unity Event Method
-
         private void Start()
         {
-            if (IsTutorialCompleted())
+            var data = SaveSystem.LoadPreview();
+            bool tutorialDone = data != null && data.tutorialCompleted;
+
+            if (tutorialDone || GameManager.TutorialCompleted)
             {
+                Debug.Log("[WindowScareEvent] Tutorial already done - destroying");
                 Destroy(gameObject);
-                return;
             }
 
             var player = GameObject.FindWithTag("Player");
             if (player != null)
             {
-                cameraPosition = GameObject.FindWithTag("Player")?.transform.Find("CameraPosition");
+                cameraPosition = player.transform.Find("CameraPosition");
                 flashlight = player.GetComponentInChildren<Flashlight>(true);
                 playerMove = player.GetComponent<PlayerMove>();
             }
@@ -146,11 +148,16 @@ namespace FaintFear
 
             // 정신력 시스템 활성화
             PlayerStatus.Instance.isMentalSystemActive = true;
-
-            //세이브 포인트 저장
+            // 세이브 포인트 저장
             SaveSystem.SaveGame("TutorialEnd", tutorialCompleted: true);
+
+            // ⭐ GameManager의 static 변수도 즉시 업데이트
+            GameManager.TutorialCompleted = true;
+
+            Debug.Log("[WindowScareEvent] Tutorial completed and saved");
+
             AutoSaveManager.Instance.RequestSave("TutorialEnd");
-            
+
             sequenceText.Hide();
         }
 
