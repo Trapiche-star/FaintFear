@@ -7,6 +7,7 @@ public class SaveData
     // 기본 상태
     public float mental;
     public float battery;
+    public int batteryCount;
 
     // 위치
     public Vector3 playerPosition;

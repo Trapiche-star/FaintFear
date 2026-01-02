@@ -17,6 +17,7 @@ namespace FaintFear
 
             data.mental = PlayerStatus.Instance.currentMentalPower;
             data.battery = PlayerStatus.Instance.currentBattery;
+            data.batteryCount = PlayerStatus.Instance.batteryCount;
 
             GameObject player = GameObject.FindWithTag("Player");
             if (player != null)
@@ -63,6 +64,8 @@ namespace FaintFear
             // 상태 복원
             PlayerStatus.Instance.SetHealth(data.mental);
             PlayerStatus.Instance.currentBattery = data.battery;
+            PlayerStatus.Instance.batteryCount = data.batteryCount;
+
 
             // 위치 복원
             GameObject player = GameObject.FindWithTag("Player");
