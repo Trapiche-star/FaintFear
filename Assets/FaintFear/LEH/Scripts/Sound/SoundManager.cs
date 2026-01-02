@@ -1,6 +1,5 @@
 using UnityEngine;
 using System;
-using System.Collections.Generic;
 
 namespace FaintFear
 {
@@ -8,27 +7,25 @@ namespace FaintFear
     {
         public static SoundManager Instance;
 
-        [Header("All Sounds")]
+        [Header("Sound Data")]
         public Sound[] sounds;
 
-        AudioSource bgmSource;
-        AudioSource sfxSource;
+        private AudioSource bgmSource;
+        private AudioSource sfxSource;
 
-        void Awake()
+        private void Awake()
         {
-            // 싱글톤
-            if (Instance == null)
-            {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-            else
+            //안전한 싱글톤 (Assertion 방지 핵심)
+            if (Instance != null && Instance != this)
             {
                 Destroy(gameObject);
                 return;
             }
 
-            // AudioSource 2개 생성
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+
+            // AudioSource 2개만 사용
             bgmSource = gameObject.AddComponent<AudioSource>();
             sfxSource = gameObject.AddComponent<AudioSource>();
 
@@ -36,37 +33,38 @@ namespace FaintFear
             sfxSource.loop = false;
         }
 
-        // =========================
-        // SFX 재생
-        // =========================
-        public void PlaySFX(string name)
+        // ======================
+        // SFX
+        // ======================
+        public void PlaySFX(string soundName)
         {
-            Sound s = Array.Find(sounds, sound => sound.name == name);
+            Sound s = Array.Find(sounds, x => x.name == soundName);
 
-            if (s == null)
+            if (s == null || s.clip == null)
             {
-                Debug.LogWarning($"[SoundManager] SFX not found : {name}");
+                Debug.LogWarning($"[SoundManager] SFX not found: {soundName}");
                 return;
             }
 
-            sfxSource.pitch = s.pitch;
             sfxSource.volume = s.volume;
+            sfxSource.pitch = s.pitch;
             sfxSource.PlayOneShot(s.clip);
         }
 
-        // =========================
-        // BGM 재생
-        // =========================
-        public void PlayBGM(string name)
+        // ======================
+        // BGM
+        // ======================
+        public void PlayBGM(string soundName)
         {
-            Sound s = Array.Find(sounds, sound => sound.name == name);
+            Sound s = Array.Find(sounds, x => x.name == soundName);
 
-            if (s == null)
+            if (s == null || s.clip == null)
             {
-                Debug.LogWarning($"[SoundManager] BGM not found : {name}");
+                Debug.LogWarning($"[SoundManager] BGM not found: {soundName}");
                 return;
             }
 
+            // 같은 BGM이면 재실행 안 함
             if (bgmSource.clip == s.clip) return;
 
             bgmSource.Stop();
@@ -80,7 +78,7 @@ namespace FaintFear
         public void StopBGM()
         {
             bgmSource.Stop();
+            bgmSource.clip = null;
         }
     }
 }
-

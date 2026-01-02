@@ -2,56 +2,74 @@ using UnityEngine;
 
 namespace FaintFear
 {
-    /// <summary>
-    /// 메인메뉴 UI를 관리하는 클래스
-    /// </summary>
     public class MainMenuUI : MonoBehaviour
     {
         public GameObject continueButton;
         public GameObject mainMenuPanel;
         public GameObject optionsPanel;
 
-        void Start()
+        private void Start()
         {
-            continueButton.SetActive(SaveSystem.HasSave());
+            if (continueButton != null)
+                continueButton.SetActive(SaveSystem.HasSave());
         }
 
-        //새 게임 
+        // 새 게임
         public void OnNewGame()
         {
-            //경고 팝업 띄워도 됨
+            // 🔴 에디터에서 눌렀을 경우 차단
+            if (!Application.isPlaying)
+            {
+                Debug.LogWarning("[MainMenuUI] Play 모드에서만 실행됩니다.");
+                return;
+            }
+
+            if (GameManager.Instance == null)
+            {
+                Debug.LogError("[MainMenuUI] GameManager가 씬에 없습니다!");
+                return;
+            }
+
             GameManager.Instance.StartNewGame();
         }
 
-        //이어하기
+        // 이어하기
         public void OnContinue()
         {
+            if (!Application.isPlaying)
+            {
+                Debug.LogWarning("[MainMenuUI] Play 모드에서만 실행됩니다.");
+                return;
+            }
+
+            if (GameManager.Instance == null)
+            {
+                Debug.LogError("[MainMenuUI] GameManager가 씬에 없습니다!");
+                return;
+            }
+
             GameManager.Instance.ContinueGame();
         }
 
-        //옵션
+        // 옵션
         public void OnOptions()
         {
-            mainMenuPanel.SetActive(false);
-            optionsPanel.SetActive(true);
+            if (mainMenuPanel != null)
+                mainMenuPanel.SetActive(false);
+
+            if (optionsPanel != null)
+                optionsPanel.SetActive(true);
         }
 
-        //게임 종료
+        // 종료
         public void OnQuit()
         {
-            Debug.Log("Quit 버튼을 눌렀습니다 - 모든 데이터 초기화");
+            if (!Application.isPlaying)
+                return;
 
-            // PlayerPrefs 삭제
             PlayerPrefs.DeleteAll();
-
-            // ⭐ SaveSystem의 JSON 파일도 삭제
             SaveSystem.DeleteSave();
-
-            // ⭐ GameManager의 튜토리얼 상태도 초기화
-            if (GameManager.Instance != null)
-            {
-                GameManager.TutorialCompleted = false;
-            }
+            GameManager.TutorialCompleted = false;
 
             Application.Quit();
         }
