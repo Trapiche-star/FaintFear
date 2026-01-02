@@ -14,6 +14,7 @@ namespace FaintFear
         [Header("참조")]
         [SerializeField] private SequenceTextManager sequenceText; // HUD 텍스트 출력 도구
         [SerializeField] private Transform lookTarget;  // 카메라가 바라볼 대상
+        private PlayerMove playerMove;                    // 플레이어 이동 제어 컴포넌트
 
         [Header("카메라")]
         public CinemachineCamera vcam;                  // 시네머신 가상 카메라
@@ -37,13 +38,20 @@ namespace FaintFear
 
 
         #region Unity Event Method
-        private void Start()
+        private void Awake()
         {
-            if (IsTutorialCompleted())
+            if (GameManager.TutorialCompleted)
             {
                 Destroy(gameObject);
+                return;
+            }
+            var player = GameObject.FindWithTag("Player");
+            if (player != null)
+            {
+                playerMove = player.GetComponent<PlayerMove>();
             }
         }
+
         // 플레이어가 트리거에 들어왔을 때 아이템 연출 실행
         private void OnTriggerEnter(Collider other)
         {
@@ -71,19 +79,11 @@ namespace FaintFear
         // 아이템 발견 연출 흐름을 처리하는 코루틴
         private IEnumerator ItemSequence(Collider playerCollider)
         {
-            var playerMove = playerCollider.GetComponent<PlayerMove>();
-
             // 만약 플레이어 조작 컴포넌트가 있다면
             if (playerMove != null)
             {
-                // 이동 입력을 초기화하고
-                playerMove.OnMove(new UnityEngine.InputSystem.InputAction.CallbackContext());
-
                 // 그래서 조작을 잠근다
                 playerMove.enabled = false;
-
-                // 그리고 시네머신도 끈다
-                if (vcam != null) vcam.enabled = false;
             }
 
             // 만약 타겟과 카메라가 있을 때만 시점 연출
@@ -113,7 +113,6 @@ namespace FaintFear
             // 조작 복구
             if (playerMove != null)
             {
-                if (vcam != null) vcam.enabled = true;
                 playerMove.enabled = true;
             }
         }

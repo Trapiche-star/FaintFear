@@ -39,9 +39,20 @@ namespace FaintFear
         //게임 종료
         public void OnQuit()
         {
-            Debug.Log("Quit 버튼을 눌렀습니다");
-            //치팅: 저장된 데이터 리셋
+            Debug.Log("Quit 버튼을 눌렀습니다 - 모든 데이터 초기화");
+
+            // PlayerPrefs 삭제
             PlayerPrefs.DeleteAll();
+
+            // ⭐ SaveSystem의 JSON 파일도 삭제
+            SaveSystem.DeleteSave();
+
+            // ⭐ GameManager의 튜토리얼 상태도 초기화
+            if (GameManager.Instance != null)
+            {
+                GameManager.TutorialCompleted = false;
+            }
+
             Application.Quit();
         }
     }
