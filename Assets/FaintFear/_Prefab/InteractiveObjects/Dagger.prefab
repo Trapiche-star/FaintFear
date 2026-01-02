@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 8781775374400614747}
   - component: {fileID: 5171737454211059670}
   - component: {fileID: 5015825820581436355}
+  - component: {fileID: 4584828323308279175}
   m_Layer: 8
   m_Name: Bone2_Low
   m_TagString: Untagged
@@ -172,6 +173,21 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &4584828323308279175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3455977174855722520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee2028d4f450c9e419a71bcc6fea668d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emissionColor: {r: 1, g: 1, b: 1, a: 1}
+  intensity: 0.5
+  pulseSpeed: 1
 --- !u!1 &6293673681000387548
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,6 +248,7 @@ GameObject:
   - component: {fileID: 1151174322861509595}
   - component: {fileID: 2763408902423437701}
   - component: {fileID: 5450446997129538660}
+  - component: {fileID: 8787994633075847931}
   m_Layer: 8
   m_Name: Bone1_Low
   m_TagString: Untagged
@@ -328,3 +345,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.9955679, y: 0.13085604, z: 0.26695606}
   m_Center: {x: -0.002216011, y: -7.105336e-18, z: -0.0004999937}
+--- !u!114 &8787994633075847931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7777202914705984586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee2028d4f450c9e419a71bcc6fea668d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emissionColor: {r: 1, g: 1, b: 1, a: 1}
+  intensity: 0.5
+  pulseSpeed: 1

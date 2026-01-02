@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 429222543473262235}
   - component: {fileID: 9076323197023470032}
+  - component: {fileID: 4601105710172720141}
   m_Layer: 0
   m_Name: bolt_05
   m_TagString: Untagged
@@ -89,6 +90,21 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.05127921, y: 0.009221036, z: -0.0000420399}
     m_Extent: {x: 0.0063607395, y: 0.0064719487, z: 0.011785479}
   m_DirtyAABB: 0
+--- !u!114 &4601105710172720141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 35332309094239281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee2028d4f450c9e419a71bcc6fea668d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emissionColor: {r: 1, g: 1, b: 1, a: 1}
+  intensity: 0.5
+  pulseSpeed: 1
 --- !u!1 &291521276709163342
 GameObject:
   m_ObjectHideFlags: 0
@@ -130,6 +146,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5216406516061852145}
+  - component: {fileID: 2881441094205714121}
   m_Layer: 0
   m_Name: Mesh_GRP
   m_TagString: Untagged
@@ -162,6 +179,21 @@ Transform:
   - {fileID: 872167534064379237}
   m_Father: {fileID: 1210431652356770797}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2881441094205714121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 658782836148373362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee2028d4f450c9e419a71bcc6fea668d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emissionColor: {r: 1, g: 1, b: 1, a: 1}
+  intensity: 0.5
+  pulseSpeed: 1
 --- !u!1 &1039838758070761086
 GameObject:
   m_ObjectHideFlags: 0
@@ -204,6 +236,7 @@ GameObject:
   m_Component:
   - component: {fileID: 872167534064379237}
   - component: {fileID: 576684936169150081}
+  - component: {fileID: 4947635733859091193}
   m_Layer: 0
   m_Name: handle_02
   m_TagString: Untagged
@@ -283,6 +316,21 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.16440177, y: 0.12574853, z: 0.0002234932}
     m_Extent: {x: 0.19803616, y: 0.13778608, z: 0.020950722}
   m_DirtyAABB: 0
+--- !u!114 &4947635733859091193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844428152178341136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee2028d4f450c9e419a71bcc6fea668d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emissionColor: {r: 1, g: 1, b: 1, a: 1}
+  intensity: 0.5
+  pulseSpeed: 1
 --- !u!1 &1969013384346064690
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,6 +341,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5210736854721820845}
   - component: {fileID: 5355259722370563175}
+  - component: {fileID: 917410152753645003}
   m_Layer: 0
   m_Name: bolt_01
   m_TagString: Untagged
@@ -372,6 +421,21 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.000000009313226, y: 0.0000000121071935, z: 9.313226e-10}
     m_Extent: {x: 0.0063607413, y: 0.0064719478, z: 0.011603343}
   m_DirtyAABB: 0
+--- !u!114 &917410152753645003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1969013384346064690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee2028d4f450c9e419a71bcc6fea668d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emissionColor: {r: 1, g: 1, b: 1, a: 1}
+  intensity: 0.5
+  pulseSpeed: 1
 --- !u!1 &2081093389342289239
 GameObject:
   m_ObjectHideFlags: 0
@@ -382,6 +446,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6320079301475275006}
   - component: {fileID: 2626042578040213891}
+  - component: {fileID: 1599455359964671676}
   m_Layer: 0
   m_Name: bolt_03
   m_TagString: Untagged
@@ -461,6 +526,21 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.020032655, y: -0.031333417, z: -0.000112086535}
     m_Extent: {x: 0.006353814, y: 0.006438598, z: 0.011715431}
   m_DirtyAABB: 0
+--- !u!114 &1599455359964671676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2081093389342289239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee2028d4f450c9e419a71bcc6fea668d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emissionColor: {r: 1, g: 1, b: 1, a: 1}
+  intensity: 0.5
+  pulseSpeed: 1
 --- !u!1 &4604104350217988919
 GameObject:
   m_ObjectHideFlags: 0
@@ -502,6 +582,7 @@ GameObject:
   m_Component:
   - component: {fileID: 652076650075018153}
   - component: {fileID: 1164786317079282157}
+  - component: {fileID: 8040757229578360101}
   m_Layer: 0
   m_Name: bolt_04
   m_TagString: Untagged
@@ -581,6 +662,21 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.02016515, y: 0.032045342, z: -0.000112086535}
     m_Extent: {x: 0.0063519925, y: 0.0064371014, z: 0.011715431}
   m_DirtyAABB: 0
+--- !u!114 &8040757229578360101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5305224910464595039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee2028d4f450c9e419a71bcc6fea668d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emissionColor: {r: 1, g: 1, b: 1, a: 1}
+  intensity: 0.5
+  pulseSpeed: 1
 --- !u!1 &5500891824933182882
 GameObject:
   m_ObjectHideFlags: 0
@@ -591,6 +687,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3761607053533409221}
   - component: {fileID: 498314770236915926}
+  - component: {fileID: 6239323721164838855}
   m_Layer: 0
   m_Name: handle_01
   m_TagString: Untagged
@@ -670,6 +767,21 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.16464819, y: -0.12495977, z: 0.000045586377}
     m_Extent: {x: 0.19833569, y: 0.13759321, z: 0.02095072}
   m_DirtyAABB: 0
+--- !u!114 &6239323721164838855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5500891824933182882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee2028d4f450c9e419a71bcc6fea668d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emissionColor: {r: 1, g: 1, b: 1, a: 1}
+  intensity: 0.5
+  pulseSpeed: 1
 --- !u!1 &5532169002427245491
 GameObject:
   m_ObjectHideFlags: 0
@@ -776,6 +888,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8698331673360999138}
   - component: {fileID: 7958944468933606255}
+  - component: {fileID: 6678205502684616438}
   m_Layer: 0
   m_Name: CutterClip
   m_TagString: Untagged
@@ -856,6 +969,21 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0013040937, y: 0.030307263, z: 0.0001498186}
     m_Extent: {x: 0.02050284, y: 0.049408227, z: 0.008679196}
   m_DirtyAABB: 0
+--- !u!114 &6678205502684616438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6530683976143123337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee2028d4f450c9e419a71bcc6fea668d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emissionColor: {r: 1, g: 1, b: 1, a: 1}
+  intensity: 0.5
+  pulseSpeed: 1
 --- !u!1 &6563785366160725902
 GameObject:
   m_ObjectHideFlags: 0
@@ -897,6 +1025,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1899824506362719368}
   - component: {fileID: 6991379562606787044}
+  - component: {fileID: 6881501078968312621}
   m_Layer: 0
   m_Name: cutter_01
   m_TagString: Untagged
@@ -976,6 +1105,21 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.07535425, y: 0.002994122, z: 0.00011708308}
     m_Extent: {x: 0.09067172, y: 0.027686791, z: 0.004392348}
   m_DirtyAABB: 0
+--- !u!114 &6881501078968312621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6580876957383635374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee2028d4f450c9e419a71bcc6fea668d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emissionColor: {r: 1, g: 1, b: 1, a: 1}
+  intensity: 0.5
+  pulseSpeed: 1
 --- !u!1 &6722989320433512382
 GameObject:
   m_ObjectHideFlags: 0
@@ -986,6 +1130,7 @@ GameObject:
   m_Component:
   - component: {fileID: 476168486790372743}
   - component: {fileID: 9173282316974594338}
+  - component: {fileID: 2085420108934720955}
   m_Layer: 0
   m_Name: bolt_02
   m_TagString: Untagged
@@ -1065,6 +1210,21 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.000000013038516, y: 0.000000010244548, z: 9.313226e-10}
     m_Extent: {x: 0.0063607413, y: 0.0064719478, z: 0.011603343}
   m_DirtyAABB: 0
+--- !u!114 &2085420108934720955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6722989320433512382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee2028d4f450c9e419a71bcc6fea668d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emissionColor: {r: 1, g: 1, b: 1, a: 1}
+  intensity: 0.5
+  pulseSpeed: 1
 --- !u!1 &7022075325781765191
 GameObject:
   m_ObjectHideFlags: 0
@@ -1075,6 +1235,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3522102443585347363}
   - component: {fileID: 1016569849533723316}
+  - component: {fileID: 7612044940485619222}
   m_Layer: 0
   m_Name: cutter_02
   m_TagString: Untagged
@@ -1154,6 +1315,21 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.07512732, y: -0.0030309577, z: 0.00011708308}
     m_Extent: {x: 0.090654165, y: 0.027705133, z: 0.004392348}
   m_DirtyAABB: 0
+--- !u!114 &7612044940485619222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7022075325781765191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee2028d4f450c9e419a71bcc6fea668d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emissionColor: {r: 1, g: 1, b: 1, a: 1}
+  intensity: 0.5
+  pulseSpeed: 1
 --- !u!1 &7173904513064571018
 GameObject:
   m_ObjectHideFlags: 0
@@ -1243,7 +1419,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8355556599292919163}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.23, y: 0.2, z: 2.67}
   m_LocalScale: {x: 2.152941, y: 2.152941, z: 2.152941}
   m_ConstrainProportionsScale: 0
