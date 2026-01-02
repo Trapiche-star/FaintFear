@@ -1,5 +1,5 @@
 using UnityEngine;
-using System;
+using System.Collections.Generic;
 
 namespace FaintFear
 {
@@ -7,15 +7,16 @@ namespace FaintFear
     {
         public static SoundManager Instance;
 
-        [Header("Sound Data")]
-        public Sound[] sounds;
+        public Sound[] bgms;
+        public Sound[] sfxs;
 
-        private AudioSource bgmSource;
-        private AudioSource sfxSource;
+        private Dictionary<string, Sound> bgmDict;
+        private Dictionary<string, Sound> sfxDict;
+
+        private Sound currentBGM;
 
         private void Awake()
         {
-            //안전한 싱글톤 (Assertion 방지 핵심)
             if (Instance != null && Instance != this)
             {
                 Destroy(gameObject);
@@ -25,60 +26,66 @@ namespace FaintFear
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
-            // AudioSource 2개만 사용
-            bgmSource = gameObject.AddComponent<AudioSource>();
-            sfxSource = gameObject.AddComponent<AudioSource>();
-
-            bgmSource.loop = true;
-            sfxSource.loop = false;
+            Init();
         }
 
-        // ======================
-        // SFX
-        // ======================
-        public void PlaySFX(string soundName)
+        private void Init()
         {
-            Sound s = Array.Find(sounds, x => x.name == soundName);
+            bgmDict = new Dictionary<string, Sound>();
+            sfxDict = new Dictionary<string, Sound>();
 
-            if (s == null || s.clip == null)
+            foreach (var s in bgms)
             {
-                Debug.LogWarning($"[SoundManager] SFX not found: {soundName}");
-                return;
+                s.source = gameObject.AddComponent<AudioSource>();
+                s.source.clip = s.clip;
+                s.source.volume = s.volume;
+                s.source.pitch = s.pitch;
+                s.source.loop = false;
+
+                bgmDict[s.name] = s;
             }
 
-            sfxSource.volume = s.volume;
-            sfxSource.pitch = s.pitch;
-            sfxSource.PlayOneShot(s.clip);
+            foreach (var s in sfxs)
+            {
+                s.source = gameObject.AddComponent<AudioSource>();
+                s.source.clip = s.clip;
+                s.source.volume = s.volume;
+                s.source.pitch = s.pitch;
+                s.source.loop = false;
+
+                sfxDict[s.name] = s;
+            }
         }
 
-        // ======================
-        // BGM
-        // ======================
-        public void PlayBGM(string soundName)
+        //BGM
+        public void PlayBGM(string name)
         {
-            Sound s = Array.Find(sounds, x => x.name == soundName);
+            if (!bgmDict.ContainsKey(name)) return;
 
-            if (s == null || s.clip == null)
-            {
-                Debug.LogWarning($"[SoundManager] BGM not found: {soundName}");
+            if (currentBGM != null && currentBGM.name == name)
                 return;
-            }
 
-            // 같은 BGM이면 재실행 안 함
-            if (bgmSource.clip == s.clip) return;
+            if (currentBGM != null)
+                currentBGM.source.Stop();
 
-            bgmSource.Stop();
-            bgmSource.clip = s.clip;
-            bgmSource.volume = s.volume;
-            bgmSource.pitch = s.pitch;
-            bgmSource.loop = s.loop;
-            bgmSource.Play();
+            currentBGM = bgmDict[name];
+            currentBGM.source.Play();
         }
 
         public void StopBGM()
         {
-            bgmSource.Stop();
-            bgmSource.clip = null;
+            if (currentBGM != null)
+                currentBGM.source.Stop();
+
+            currentBGM = null;
+        }
+
+        //SFX
+        public void PlaySFX(string name)
+        {
+            if (!sfxDict.ContainsKey(name)) return;
+            sfxDict[name].source.PlayOneShot(sfxDict[name].clip);
         }
     }
 }
+
