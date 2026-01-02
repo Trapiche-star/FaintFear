@@ -3,7 +3,7 @@ using UnityEngine;
 public class ItemGlowPulse : MonoBehaviour
 {
     public Color emissionColor = Color.white;
-    public float intensity = 1f;
+    public float intensity = 0.5f;
     public float pulseSpeed = 1f;
 
     private Material mat;

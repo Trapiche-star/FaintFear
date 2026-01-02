@@ -7,6 +7,7 @@ namespace FaintFear
     public class GameManager : MonoBehaviour
     {
         public static GameManager Instance;
+
         [SerializeField] private string loadToScene = "Level01";
         private Transform newGameSpawnPoint;
         public static bool TutorialCompleted;
@@ -22,18 +23,17 @@ namespace FaintFear
 
         private void Awake()
         {
-            if (Instance != null)
+            if (Instance != null && Instance != this)
             {
                 Destroy(gameObject);
                 return;
             }
+
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
             var data = SaveSystem.LoadPreview();
             TutorialCompleted = data != null && data.tutorialCompleted;
-
-            Debug.Log($"[GameManager] Initialized - TutorialCompleted: {TutorialCompleted}");
         }
 
         private void OnEnable()
@@ -46,6 +46,40 @@ namespace FaintFear
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }
 
+        // =========================
+        // 🔹 메인메뉴에서 호출되는 함수들
+        // =========================
+
+        public void StartNewGame()
+        {
+            SaveSystem.DeleteSave();
+            TutorialCompleted = false;
+            currentStartMode = GameStartMode.NewGame;
+
+            SceneManager.LoadScene(loadToScene);
+        }
+
+        public void ContinueGame()
+        {
+            if (!SaveSystem.HasSave())
+            {
+                Debug.LogWarning("[GameManager] No save file to continue");
+                StartNewGame();
+                return;
+            }
+
+            currentStartMode = GameStartMode.Continue;
+            SceneManager.LoadScene(loadToScene);
+        }
+
+        public void RestartFromCheckpoint()
+        {
+            currentStartMode = GameStartMode.RestartFromCheckpoint;
+            SceneManager.LoadScene(loadToScene);
+        }
+
+        // =========================
+
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             if (scene.name != loadToScene)
@@ -54,13 +88,14 @@ namespace FaintFear
                 return;
             }
 
+            //상시 탐색 BGM
+            if (SoundManager.Instance != null)
+                SoundManager.Instance.PlayBGM("BGM_Explore");
+
             var data = SaveSystem.LoadPreview();
             TutorialCompleted = data != null && data.tutorialCompleted;
 
-            Debug.Log($"[GameManager] Scene loaded - Mode: {currentStartMode}, TutorialCompleted: {TutorialCompleted}");
-
             newGameSpawnPoint = GameObject.Find("StartSpawnPoint")?.transform;
-
             if (newGameSpawnPoint == null)
             {
                 Debug.LogError("StartSpawnPoint not found!");
@@ -93,175 +128,82 @@ namespace FaintFear
 
         private void HandleNewGame()
         {
-            Debug.Log("[GameManager] Starting NEW GAME");
-
             if (PlayerStatus.Instance != null)
-            {
                 PlayerStatus.Instance.ResetStatus();
-            }
 
             SpawnPlayerAtStart();
         }
 
         private void HandleLoadGame()
         {
-            Debug.Log("[GameManager] Loading saved game");
-
             if (!SaveSystem.HasSave())
             {
-                Debug.LogWarning("[GameManager] No save file found! Starting new game instead.");
                 HandleNewGame();
                 return;
             }
 
-            // ⭐ 페이드 효과와 함께 로드
             StartCoroutine(LoadGameWithFade());
         }
 
-        // ⭐ 페이드 효과를 포함한 로드 코루틴
         private IEnumerator LoadGameWithFade()
         {
-            // HUDManager 찾기
             HUDManager hudManager = FindFirstObjectByType<HUDManager>();
 
-            if (hudManager != null)
+            GameObject player = GameObject.FindWithTag("Player");
+            PlayerMove move = player?.GetComponent<PlayerMove>();
+
+            if (move != null)
             {
-                Debug.Log("[GameManager] Starting fade from black for load game");
+                move.canMove = false;
+                move.SetLookLock(true);
+            }
 
-                // 플레이어 조작 잠금
-                GameObject player = GameObject.FindWithTag("Player");
-                PlayerMove playerMove = null;
+            yield return new WaitForSeconds(0.3f);
 
-                if (player != null)
-                {
-                    playerMove = player.GetComponent<PlayerMove>();
-                    if (playerMove != null)
-                    {
-                        playerMove.canMove = false;
-                        playerMove.SetLookLock(true);
-                    }
-                }
+            LoadPlayerWithCharacterController();
 
-                // 약간의 딜레이
-                yield return new WaitForSeconds(0.3f);
-
-                // 데이터 로드 및 플레이어 배치
-                LoadPlayerWithCharacterController();
-
-                // 페이드 인 (검정 → 밝게)
+            if (hudManager != null)
                 hudManager.FadeFromBlack();
 
-                yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(1.5f);
 
-                // 플레이어 조작 복구
-                if (playerMove != null)
-                {
-                    playerMove.canMove = true;
-                    playerMove.SetLookLock(false);
-                }
-
-                Debug.Log("[GameManager] Load game fade completed");
-            }
-            else
+            if (move != null)
             {
-                // HUDManager가 없으면 바로 로드
-                Debug.LogWarning("[GameManager] HUDManager not found, loading without fade");
-                LoadPlayerWithCharacterController();
+                move.canMove = true;
+                move.SetLookLock(false);
             }
         }
 
         private void LoadPlayerWithCharacterController()
         {
             SaveData data = SaveSystem.LoadPreview();
-            if (data == null)
-            {
-                Debug.LogError("[GameManager] Failed to load save data!");
-                return;
-            }
+            if (data == null) return;
 
             GameObject player = GameObject.FindWithTag("Player");
-            if (player == null)
-            {
-                Debug.LogError("[GameManager] Player not found!");
-                return;
-            }
+            if (player == null) return;
 
             CharacterController cc = player.GetComponent<CharacterController>();
             PlayerMove move = player.GetComponent<PlayerMove>();
 
-            if (move != null)
-                move.enabled = false;
+            if (move != null) move.enabled = false;
+            if (cc != null) cc.enabled = false;
 
-            if (cc != null)
-                cc.enabled = false;
+            Vector3 pos = data.playerPosition;
+            pos.y += 0.5f;
 
-            Vector3 safePos = data.playerPosition;
-            safePos.y += 0.5f;
-
-            player.transform.SetPositionAndRotation(safePos, data.playerRotation);
+            player.transform.SetPositionAndRotation(pos, data.playerRotation);
 
             PlayerStatus.Instance.SetHealth(data.mental);
             PlayerStatus.Instance.currentBattery = data.battery;
 
             StartCoroutine(EnableCCNextFrame(cc, move));
-
-            Debug.Log($"[GameManager] Loaded - Position: {data.playerPosition}, Mental: {data.mental}, Battery: {data.battery}");
-        }
-
-        public void StartNewGame()
-        {
-            Debug.Log("[GameManager] StartNewGame called");
-
-            SaveSystem.DeleteSave();
-
-            if (SaveSystem.HasSave())
-            {
-                Debug.LogError("[GameManager] Failed to delete save file!");
-            }
-
-            TutorialCompleted = false;
-
-            if (PlayerStatus.Instance != null)
-            {
-                PlayerStatus.Instance.ResetStatus();
-            }
-
-            currentStartMode = GameStartMode.NewGame;
-
-            SceneManager.LoadScene(loadToScene);
-        }
-
-        public void ContinueGame()
-        {
-            Debug.Log("[GameManager] ContinueGame called");
-
-            if (!SaveSystem.HasSave())
-            {
-                Debug.LogWarning("[GameManager] No save file to continue!");
-                return;
-            }
-
-            currentStartMode = GameStartMode.Continue;
-            SceneManager.LoadScene(loadToScene);
-        }
-
-        public void RestartFromCheckpoint()
-        {
-            Debug.Log("[GameManager] RestartFromCheckpoint called");
-
-            if (!SaveSystem.HasSave())
-            {
-                Debug.LogWarning("[GameManager] No checkpoint to restart from!");
-                StartNewGame();
-                return;
-            }
-
-            currentStartMode = GameStartMode.RestartFromCheckpoint;
-            SceneManager.LoadScene(loadToScene);
         }
 
         public void GoToMainMenu()
         {
+            if (SoundManager.Instance != null)
+                SoundManager.Instance.StopBGM();
+
             SceneManager.LoadScene("MainMenu");
         }
 
@@ -275,11 +217,7 @@ namespace FaintFear
         private void SpawnPlayerAtStart()
         {
             GameObject player = GameObject.FindWithTag("Player");
-            if (player == null)
-            {
-                Debug.LogError("[GameManager] Player not found for spawn!");
-                return;
-            }
+            if (player == null) return;
 
             CharacterController cc = player.GetComponent<CharacterController>();
             PlayerMove move = player.GetComponent<PlayerMove>();
@@ -289,11 +227,8 @@ namespace FaintFear
 
         private IEnumerator NewGameSpawnRoutine(GameObject player, CharacterController cc, PlayerMove move)
         {
-            if (move != null)
-                move.enabled = false;
-
-            if (cc != null)
-                cc.enabled = false;
+            if (move != null) move.enabled = false;
+            if (cc != null) cc.enabled = false;
 
             Vector3 pos = newGameSpawnPoint.position;
             pos.y += 0.5f;
@@ -310,10 +245,7 @@ namespace FaintFear
 
             yield return null;
 
-            if (move != null)
-                move.enabled = true;
-
-            Debug.Log($"[GameManager] Player spawned at new game position: {pos}");
+            if (move != null) move.enabled = true;
         }
 
         private IEnumerator EnableCCNextFrame(CharacterController cc, PlayerMove move)
@@ -328,8 +260,7 @@ namespace FaintFear
 
             yield return null;
 
-            if (move != null)
-                move.enabled = true;
+            if (move != null) move.enabled = true;
         }
     }
 }

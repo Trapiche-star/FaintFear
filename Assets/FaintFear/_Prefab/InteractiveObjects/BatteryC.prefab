@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2514064300818425012}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.3980093, y: 0.254, z: -0.232}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -115,6 +115,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4b17199607ef6b640882e97ed67c0920, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2743195336352450028}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4b17199607ef6b640882e97ed67c0920, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5449503974664647161}
   m_SourcePrefab: {fileID: 100100000, guid: 4b17199607ef6b640882e97ed67c0920, type: 3}
 --- !u!4 &5946581280131581297 stripped
 Transform:
@@ -147,3 +150,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.03990804, y: 0.0630683, z: 0.038299378}
   m_Center: {x: 0, y: 0.008920573, z: 0}
+--- !u!114 &5449503974664647161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6470916777743966155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee2028d4f450c9e419a71bcc6fea668d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emissionColor: {r: 1, g: 1, b: 1, a: 1}
+  intensity: 0.5
+  pulseSpeed: 1

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 316340914465910104}
   - component: {fileID: 3231514763448208355}
   - component: {fileID: 4884328030710540347}
+  - component: {fileID: 3916079776275434628}
   m_Layer: 0
   m_Name: Key_Yellow
   m_TagString: Untagged
@@ -87,6 +88,21 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3916079776275434628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1396292886828188770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee2028d4f450c9e419a71bcc6fea668d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emissionColor: {r: 1, g: 1, b: 1, a: 1}
+  intensity: 0.5
+  pulseSpeed: 1
 --- !u!1 &5036877933076375229
 GameObject:
   m_ObjectHideFlags: 0
@@ -98,6 +114,7 @@ GameObject:
   - component: {fileID: 8868933269211326289}
   - component: {fileID: 7369490602598335059}
   - component: {fileID: 4180302678484780445}
+  - component: {fileID: 3211789257683849059}
   m_Layer: 0
   m_Name: Ring3
   m_TagString: Untagged
@@ -173,6 +190,21 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3211789257683849059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5036877933076375229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee2028d4f450c9e419a71bcc6fea668d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emissionColor: {r: 1, g: 1, b: 1, a: 1}
+  intensity: 0.5
+  pulseSpeed: 1
 --- !u!1 &6728676906473048675
 GameObject:
   m_ObjectHideFlags: 0
@@ -184,6 +216,7 @@ GameObject:
   - component: {fileID: 1517525488512731662}
   - component: {fileID: 1525852804592458654}
   - component: {fileID: 8218956237929241106}
+  - component: {fileID: 2959791110865336792}
   m_Layer: 0
   m_Name: Tag7
   m_TagString: Untagged
@@ -261,6 +294,21 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &2959791110865336792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6728676906473048675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee2028d4f450c9e419a71bcc6fea668d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emissionColor: {r: 1, g: 1, b: 1, a: 1}
+  intensity: 0.5
+  pulseSpeed: 1
 --- !u!1 &8666637535816001750
 GameObject:
   m_ObjectHideFlags: 0
@@ -272,6 +320,7 @@ GameObject:
   - component: {fileID: 5307870104106931409}
   - component: {fileID: 980695997228617517}
   - component: {fileID: 4675339257657209753}
+  - component: {fileID: 2267992719246762267}
   m_Layer: 0
   m_Name: Eyelets
   m_TagString: Untagged
@@ -347,3 +396,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &2267992719246762267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8666637535816001750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee2028d4f450c9e419a71bcc6fea668d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emissionColor: {r: 1, g: 1, b: 1, a: 1}
+  intensity: 0.5
+  pulseSpeed: 1
