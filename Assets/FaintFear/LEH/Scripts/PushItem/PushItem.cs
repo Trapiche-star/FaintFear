@@ -8,7 +8,9 @@ namespace FaintFear
         [Header("Move Settings")]
         [SerializeField] private Transform movePosition;
         [SerializeField] private float moveSpeed = 2f;
-        [SerializeField] private SequenceTextManager sequenceText; 
+        [SerializeField] private SequenceTextManager sequenceText;
+        [SerializeField] private GameObject flashlightObject;
+        private Flashlight flashlight;
 
 
         [Header("Push Settings")]
@@ -26,6 +28,7 @@ namespace FaintFear
 
         void Start()
         {
+            flashlight = flashlightObject.GetComponent<Flashlight>();
             if (movePosition == null)
             {
                 Debug.LogError($"[PushItem] {name}: movePosition이 설정되지 않았습니다!");
@@ -147,13 +150,14 @@ namespace FaintFear
                 if (gaugeUI != null)
                 {
                     gaugeUI.ShowGauge();
+                    sequenceText.Hide();
                 }
-
-                sequenceText.Hide();
+                
                 Debug.Log($"[PushItem] V키 누름 - 게이지 충전 중");
             }
             else
             {
+                
                 Debug.Log($"[PushItem] V키 뗌 - 게이지 감소 중");
             }
         }

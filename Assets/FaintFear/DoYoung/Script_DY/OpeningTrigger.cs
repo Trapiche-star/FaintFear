@@ -27,10 +27,7 @@ namespace FaintFear
         [Header("아이템 대사")]
         [TextArea]
         [SerializeField]
-        private string[] itemDialogueLines =
-        {
-            "내 손전등과 호환되는 배터리가 있다."
-        };
+        private string itemDialogue ="내 손전등과 호환되는 배터리가 있다.";
 
         private bool hasPlayed = false; // 1회 실행 보장
 
@@ -83,7 +80,7 @@ namespace FaintFear
             if (playerMove != null)
             {
                 // 그래서 조작을 잠근다
-                playerMove.enabled = false;
+                playerMove.canMove = false;
             }
 
             // 만약 타겟과 카메라가 있을 때만 시점 연출
@@ -103,17 +100,18 @@ namespace FaintFear
                 }
                 cameraPosition.rotation = targetRot;
             }
-
+            
             // 아이템 대사 출력
             if (sequenceText != null)
-                yield return StartCoroutine(
-                    sequenceText.ShowDialogueSequence(itemDialogueLines, dialogueHoldTime)
-                );
+            {
+                sequenceText.ShowMessage(itemDialogue, dialogueHoldTime);
+            }
 
+            yield return new WaitForSeconds(1.0f);
             // 조작 복구
             if (playerMove != null)
             {
-                playerMove.enabled = true;
+                playerMove.canMove = true;
             }
         }
         private bool IsTutorialCompleted()
