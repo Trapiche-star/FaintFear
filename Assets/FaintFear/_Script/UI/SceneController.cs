@@ -7,29 +7,29 @@ public class SceneController : MonoBehaviour
 {
     public SceneFader sceneFader;
     public SimpleBGMPlayer bgmPlayer;
+    public UISlideShowFade slideShow;
 
-    [SerializeField] private float Duration = 8f;
     public string nextSceneName;
 
     private void Start()
     {
+        // 인트로 시작 시 화면 페이드 아웃
         sceneFader.FadeOutToZero(() =>
         {
-            StartCoroutine(IntroFlow());
+            // 슬라이드 쇼 종료
+            slideShow.onSlideShowFinished += OnSlideShowFinished;
         });
     }
 
-    private IEnumerator IntroFlow()
+    private void OnSlideShowFinished()
     {
-        yield return new WaitForSeconds(Duration);
-
-        // 1. 화면 페이드 아웃
+        // 화면 페이드 인
         sceneFader.FadeInToOne(() =>
         {
-            // 2. 음악 페이드 아웃
+            // 음악 페이드 아웃
             bgmPlayer.StopBGM();
 
-            // 3. 음악 페이드 끝날 때까지 대기
+            // 음악 페이드 종료 후 씬 전환
             StartCoroutine(LoadNextSceneAfterBGM());
         });
     }
