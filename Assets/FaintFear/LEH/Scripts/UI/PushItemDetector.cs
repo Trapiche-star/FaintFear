@@ -1,4 +1,4 @@
-using FaintFear;
+/*using FaintFear;
 using TMPro;
 using UnityEngine;
 
@@ -199,4 +199,4 @@ public class PushItemDetector : MonoBehaviour
         Gizmos.DrawRay(transform.position, transform.forward * detectDistance);
     }
 #endif
-}
+}*/

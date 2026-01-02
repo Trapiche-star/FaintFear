@@ -240,7 +240,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: "[E] \uBB38\uC11C \uB2EB\uAE30"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e683a0b9ed983a34ba456f6294589e58, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 503647df19fbce84d952f88dc2d9ba2a, type: 2}
   m_sharedMaterial: {fileID: -5658785806089299815, guid: e683a0b9ed983a34ba456f6294589e58, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -306,7 +306,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &1365091484330828991
@@ -2022,7 +2022,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4287239773871037150
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2075,9 +2075,9 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
-  m_FillOrigin: 0
+  m_FillOrigin: 2
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
 --- !u!1 &4876292071236942990
@@ -2147,8 +2147,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e683a0b9ed983a34ba456f6294589e58, type: 2}
-  m_sharedMaterial: {fileID: -5658785806089299815, guid: e683a0b9ed983a34ba456f6294589e58, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 503647df19fbce84d952f88dc2d9ba2a, type: 2}
+  m_sharedMaterial: {fileID: -4837633322402602641, guid: 503647df19fbce84d952f88dc2d9ba2a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4378,7 +4378,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c5c4c967ae44814baeb2c403e51565d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thickGauge: {fileID: 5055460341788601556}
+  gaugePanel: {fileID: 8572671037270912656}
+  fillImage: {fileID: 5055460341788601556}
+  chargingColor: {r: 1, g: 1, b: 1, a: 1}
+  completeColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &8828305543509869777
 GameObject:
   m_ObjectHideFlags: 0
@@ -4512,7 +4515,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uC800\uC7A5\uD558\uB294 \uC911\xB7\xB7\xB7\xB7\xB7\xB7."
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e683a0b9ed983a34ba456f6294589e58, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 503647df19fbce84d952f88dc2d9ba2a, type: 2}
   m_sharedMaterial: {fileID: -5658785806089299815, guid: e683a0b9ed983a34ba456f6294589e58, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -4578,7 +4581,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1001 &7962402501387134848
