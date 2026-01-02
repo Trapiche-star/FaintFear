@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1444072666631554067}
   - component: {fileID: 2507957437047139022}
   - component: {fileID: 3271759026760078184}
+  - component: {fileID: 1350701880666033343}
   m_Layer: 8
   m_Name: SlotLever01
   m_TagString: Untagged
@@ -123,3 +124,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0012396137, y: 0.0039814417, z: 0.0005618699}
   m_Center: {x: -0.001201336, y: -0.0035302597, z: 0.004307967}
+--- !u!114 &1350701880666033343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5577769161022186536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee2028d4f450c9e419a71bcc6fea668d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emissionColor: {r: 1, g: 1, b: 1, a: 1}
+  intensity: 0.5
+  pulseSpeed: 1
