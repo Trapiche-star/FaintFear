@@ -231,19 +231,19 @@ MonoBehaviour:
   imageB: {fileID: 482931933}
   displayText: {fileID: 1544588350}
   images:
-  - {fileID: 21300000, guid: 0554013875868c843948b57f4ff5e476, type: 3}
-  - {fileID: 21300000, guid: 97fea303e6fc287448aaf961456b4f3d, type: 3}
-  - {fileID: 21300000, guid: 30eb16f8505094a439aaf15f2b98821b, type: 3}
-  - {fileID: 21300000, guid: 30eb16f8505094a439aaf15f2b98821b, type: 3}
+  - {fileID: 21300000, guid: fce0fd9ea5354274eb57c9b42f1324b4, type: 3}
+  - {fileID: 21300000, guid: 4c217e4a0a2168948ad52b1115d31221, type: 3}
+  - {fileID: 21300000, guid: fa310254236cb4448b704295663e9460, type: 3}
+  - {fileID: 21300000, guid: fa310254236cb4448b704295663e9460, type: 3}
   texts:
-  - "\uB2F9\uC2E0\uC740 \uBB38\uC774 \uC5F4\uB9AC\uC790\uB9C8\uC790 \uCD9C\uAD6C\uB85C
-    \uD5C8\uAC81\uC9C0\uAC81 \uB2EC\uB824\uB098\uAC14\uB2E4."
-  - "\uACBD\uCC30\uB4E4\uC740 \uD3D0\uBCD1\uC6D0\uC5D0\uC11C \uB2F9\uC2E0\uC774 \uB9D0\uD55C
-    \uADF8 \uC5B4\uB5A4 \uAC83\uB3C4 \uCC3E\uC744 \uC218 \uC5C6\uC5C8\uB2E4\uACE0
-    \uB9D0\uD588\uB2E4."
-  - "\uADF8\uC800 \uB098\uC05C \uAFC8\uC774\uC5C8\uB358 \uAC78\uAE4C? \uCC28\uB77C\uB9AC
-    \uADF8\uB807\uB2E4\uBA74 \uC88B\uC73C\uB828\uB9CC\u2026\u2026."
-  - "Ending B. \u201C\uD0C8\uCD9C\u201D"
+  - "\uB2F9\uC2E0\uC740 \uBB38\uC774 \uC5F4\uB9AC\uB294 \uC18C\uB9AC\uB97C \uB4E3\uC790\uB9C8\uC790
+    \uCD9C\uAD6C\uB77C\uACE0 \uC0DD\uAC01\uB418\uB294 \uACF3\uC73C\uB85C \uD5C8\uAC81\uC9C0\uAC81
+    \uB2EC\uB824\uB098\uAC14\uB2E4."
+  - "\uADF8\uAC83\uC774 \uACF5\uD3EC\uC2EC\uACFC \uC870\uAE09\uD568\uC774 \uBE5A\uC5B4\uB0B8
+    \uD658\uAC01\uC778 \uAC83\uB3C4 \uBAA8\uB978 \uCC44\u2026\u2026."
+  - "\uB2F9\uC2E0\uC740 \uACB0\uAD6D \uC55E\uC11C \uCAD3\uB358 \uC0AC\uB78C\uB4E4\uACFC
+    \uB611\uAC19\uC740 \uC6B4\uBA85\uC744 \uB9DE\uC774\uD558\uAC8C \uB418\uC5C8\uB2E4."
+  - "Ending A. \u201C\uC81C\uBB3C\u201D"
   slideCount: 4
   interval: 4
   fadeDuration: 1
@@ -1312,7 +1312,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 2022621236}
-  bgmClip: {fileID: 8300000, guid: 8c26cb679963e7b40be93a5d8d20d6aa, type: 3}
+  bgmClip: {fileID: 8300000, guid: 8205270bef23c7a45bd395e3ff190258, type: 3}
   playOnStart: 1
   loop: 0
   volume: 1

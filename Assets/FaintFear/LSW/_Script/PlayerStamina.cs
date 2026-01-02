@@ -1,60 +1,83 @@
-using System.Collections;
+using FaintFear;
 using UnityEngine;
 
 public class PlayerStamina : MonoBehaviour
 {
     [Header("Stamina Settings")]
-    [SerializeField] private float maxStamina = 100f; // 최대 스테미나
+    [SerializeField] private float maxStamina = 100f;
     [SerializeField] private float currentStamina = 0f;
+    [SerializeField] private float minStaminaToStart = 30.0f;
 
     [Header("Rate Settings")]
-    [SerializeField] private float consumeRate = 20f; // 초당 소모량
-    [SerializeField] private float recoverRate = 15f; // 초당 회복량
+    [SerializeField] private float consumeRate = 20f;
+    [SerializeField] private float recoverRate = 15f;
 
-    private bool onShift = false;
-    private bool recoveryCoolDown = false;
+    private bool onShift = false; // 사용자가 쉬프트를 누르고 있는가
+    private PlayerMove playerMove;
 
     private void Awake()
     {
+        playerMove = GetComponent<PlayerMove>();
         currentStamina = maxStamina;
     }
 
+    private void OnEnable() { playerMove.OnSprintEvent += ToggleShift; }
+    private void OnDisable() { playerMove.OnSprintEvent -= ToggleShift; }
+
     private void Update()
     {
-        if(currentStamina < 0)
+        HandleStaminaLogic();
+    }
+
+    private void HandleStaminaLogic()
+    {
+        // 1. 달리기 상태 판정 로직
+        if (onShift)
         {
-            StartCoroutine(RecoveryCoolDown());
+            // 걷는 중인데 스태미나가 30 이상이면 달리기 시작
+            if (playerMove.currentState == PlayerState.Walk && currentStamina >= minStaminaToStart)
+            {
+                playerMove.SetState(PlayerState.Run);
+            }
+
+            // 달리는 중인데 스태미나가 0 이하가 되면 강제 멈춤
+            if (playerMove.currentState == PlayerState.Run && currentStamina <= 0f)
+            {
+                playerMove.SetState(PlayerState.Walk);
+                ToggleShift();
+            }
         }
-        if(!recoveryCoolDown)
+        else
         {
-            if (onShift && currentStamina > 0)
-            {
-                ConsumeStamina();
-            }
-            else
-            {
-                RecoverStamina();
-            }
+            // 쉬프트를 떼면 즉시 걷기
+            playerMove.SetState(PlayerState.Walk);
         }
-      
+
+        // 2. 실제 수치 변화 적용
+        if (playerMove.currentState == PlayerState.Run)
+        {
+            ConsumeStamina();
+        }
+        else
+        {
+            RecoverStamina();
+        }
     }
 
     private void ConsumeStamina()
     {
         currentStamina -= consumeRate * Time.deltaTime;
-        currentStamina = Mathf.Clamp(currentStamina, 0f, maxStamina);
+        currentStamina = Mathf.Max(currentStamina, 0f);
     }
 
     private void RecoverStamina()
     {
         currentStamina += recoverRate * Time.deltaTime;
-        currentStamina = Mathf.Clamp(currentStamina, 0f, maxStamina);
+        currentStamina = Mathf.Min(currentStamina, maxStamina);
     }
 
-    IEnumerator RecoveryCoolDown()
+    private void ToggleShift()
     {
-        recoveryCoolDown = true;
-        yield return new WaitForSeconds(3f);
-        recoveryCoolDown = false;
+        onShift = !onShift;
     }
 }

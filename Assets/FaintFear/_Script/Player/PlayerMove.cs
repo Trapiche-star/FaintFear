@@ -4,17 +4,26 @@ using UnityEngine.InputSystem;
 
 namespace FaintFear
 {
+    public enum PlayerState
+    {
+        Walk,
+        Run
+    }
     /// <summary>
     /// 플레이어 이동 및 시점 조작 처리
     /// </summary>
 
-    // 이 컴포넌트가 있으면 CharacterController를 자동으로 추가함
+        // 이 컴포넌트가 있으면 CharacterController를 자동으로 추가함
     [RequireComponent(typeof(CharacterController))]
     public class PlayerMove : MonoBehaviour
     {
         #region Variables
         [Header("Movement Settings")]
-        [SerializeField] private float speed = 3f;
+        [SerializeField] private float walkSpeed = 3f;
+        [SerializeField] private float runSpeed = 6f;
+        private float currentSpeed;
+
+        public PlayerState currentState = PlayerState.Walk; // 현재 상태
         [SerializeField] private float gravity = -9.81f; // 중력 가속도 추가
         [SerializeField] private float jumpHeight = 1.0f; // 필요시 점프 높이
 
@@ -41,6 +50,7 @@ namespace FaintFear
         public Action OnInteractEvent;
         public Action OnFlashLightEvent;
         public Action<bool> OnPushEvent;
+        public Action OnSprintEvent;
 
         //움직임만 막기
         public bool canMove = true;
@@ -73,7 +83,10 @@ namespace FaintFear
 
             playerMap.Push.started += OnPushStarted;
             playerMap.Push.canceled += OnPushCanceled;
+
+            playerMap.Sprint.performed += OnSprint;
         }
+
 
 
         private void OnDisable()
@@ -90,6 +103,8 @@ namespace FaintFear
             playerMap.Flashlight.performed -= OnFlashLightInteraction;
             playerMap.Push.started -= OnPushStarted;
             playerMap.Push.canceled -= OnPushCanceled;
+
+            playerMap.Sprint.performed -= OnSprint;
         }
 
         private void Start()
@@ -120,28 +135,23 @@ namespace FaintFear
         #region Custom Method
         void Move()
         {
-            // 1. 바닥 체크 및 중력 초기화
             if (controller.isGrounded && velocity.y < 0)
             {
-                velocity.y = -2f; // 바닥에 붙어있도록 약간의 하방 힘 유지
+                velocity.y = -2f;
             }
 
-            // 2. 수평 이동 벡터 계산
             Vector3 horizontalMove = Vector3.zero;
             if (currentMoveInput != Vector2.zero)
             {
-                // 방향 계산
+                // 현재 상태에 따라 속도 선택
+                currentSpeed = (currentState == PlayerState.Run) ? runSpeed : walkSpeed;
+
                 horizontalMove = transform.right * currentMoveInput.x + transform.forward * currentMoveInput.y;
-                horizontalMove *= speed; // 속도 적용
+                horizontalMove *= currentSpeed; // 결정된 속도 적용
             }
 
-            // 3. 수직 이동(중력) 계산
             velocity.y += gravity * Time.deltaTime;
-
-            // 4. 최종 이동 벡터 합성 (수평 + 수직)
             Vector3 finalMove = horizontalMove + Vector3.up * velocity.y;
-
-            // 5. 실제 이동 적용
             controller.Move(finalMove * Time.deltaTime);
         }
 
@@ -162,6 +172,12 @@ namespace FaintFear
             {
                 cameraRoot.localRotation = Quaternion.Euler(currentXRotation, 0f, 0f);
             }
+        }
+
+        // 외부(Stamina)에서 상태를 변경할 수 있도록 public 메서드 추가
+        public void SetState(PlayerState newState)
+        {
+            currentState = newState;
         }
 
         // + 외부(카메라 컨트롤러)에서 호출
@@ -205,6 +221,11 @@ namespace FaintFear
         private void OnPushCanceled(InputAction.CallbackContext context)
         {
             OnPushEvent?.Invoke(false);
+        }
+
+        private void OnSprint(InputAction.CallbackContext context)
+        {
+            OnSprintEvent?.Invoke();
         }
         #endregion
     }

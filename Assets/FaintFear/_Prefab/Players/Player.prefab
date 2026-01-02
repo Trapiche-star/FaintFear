@@ -204,6 +204,7 @@ GameObject:
   - component: {fileID: 3628334409125768203}
   - component: {fileID: 1563633127144959883}
   - component: {fileID: 8162890610884242762}
+  - component: {fileID: 3420523123062599497}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -278,7 +279,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8faa8c112ff83244ba46221406fd881c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  walkSpeed: 3
+  runSpeed: 6
+  currentState: 0
   gravity: -9.81
   jumpHeight: 1
   cameraRoot: {fileID: 8650879924654022536}
@@ -425,6 +428,23 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 16384
   flashlight: {fileID: 0}
+--- !u!114 &3420523123062599497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 236520129318838511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a5d70b22b164944db32562631ec2f34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxStamina: 100
+  currentStamina: 0
+  minStaminaToStart: 30
+  consumeRate: 20
+  recoverRate: 15
 --- !u!1 &569378629108264318
 GameObject:
   m_ObjectHideFlags: 0
