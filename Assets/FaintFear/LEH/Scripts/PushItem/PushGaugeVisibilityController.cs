@@ -23,8 +23,7 @@ namespace FaintFear
             // 1. V키 누르고 있음
             // 2. 밀 수 있는 대상에 닿아 있음
             bool shouldShow =
-                powerGaugePlayer.IsCharging &&
-                powerGaugePlayer.CanZoom;
+                powerGaugePlayer.IsCharging;
 
             gaugeUI.Show(shouldShow);
         }

@@ -67,6 +67,11 @@ namespace FaintFear
 
             // 열쇠 목록 초기화
             ownedKeys.Clear();
+
+            if (!SaveSystem.HasSave())
+            {
+                ResetStatus(); 
+            }
         }
 
         // 씬이 로드될 때마다 실행
@@ -161,7 +166,12 @@ namespace FaintFear
             // 열쇠 소모가 정상적으로 완료되었음을 알림
             return true;
         }
-
+        public void ResetStatus()
+        {
+            currentMentalPower = maxMentalPower;
+            currentBattery = 0;
+            batteryCount = 0;
+        }
         #endregion
     }
 }

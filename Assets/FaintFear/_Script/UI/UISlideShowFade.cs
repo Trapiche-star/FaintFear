@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class UISlideShowFade : MonoBehaviour
 {
@@ -20,6 +21,9 @@ public class UISlideShowFade : MonoBehaviour
     [SerializeField] private float interval = 3f;
     [SerializeField] private float fadeDuration = 1f;
 
+    // 슬라이드 쇼 종료 
+    public Action onSlideShowFinished;
+
     private bool usingImageA = true;
 
     private void Start()
@@ -34,7 +38,7 @@ public class UISlideShowFade : MonoBehaviour
     {
         int count = Mathf.Min(slideCount, images.Length, texts.Length);
 
-        // 첫 슬라이드 초기 세팅
+        // 첫 슬라이드 세팅
         imageA.sprite = images[0];
         displayText.text = texts[0];
 
@@ -43,6 +47,12 @@ public class UISlideShowFade : MonoBehaviour
             yield return new WaitForSeconds(interval);
             yield return StartCoroutine(CrossFade(images[i], texts[i]));
         }
+
+        // 마지막 슬라이드 유지 시간
+        yield return new WaitForSeconds(interval);
+
+        // 슬라이드 쇼 종료 알림
+        onSlideShowFinished?.Invoke();
     }
 
     private IEnumerator CrossFade(Sprite nextSprite, string nextText)

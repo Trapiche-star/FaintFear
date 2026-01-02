@@ -12,13 +12,12 @@ namespace FaintFear
         // ===================== SAVE =====================
         public static void SaveGame(string checkpointId = "", bool tutorialCompleted = false)
         {
+            SaveData prev = LoadPreview();
             SaveData data = new SaveData();
 
-            // 플레이어 상태
             data.mental = PlayerStatus.Instance.currentMentalPower;
             data.battery = PlayerStatus.Instance.currentBattery;
 
-            // 플레이어 위치
             GameObject player = GameObject.FindWithTag("Player");
             if (player != null)
             {
@@ -26,13 +25,16 @@ namespace FaintFear
                 data.playerRotation = player.transform.rotation;
             }
 
-            // 체크포인트
             data.checkpointId = checkpointId;
-            data.tutorialCompleted = tutorialCompleted;
 
-            // JSON 변환
-            string json = JsonUtility.ToJson(data, true);
-            File.WriteAllText(SavePath, json);
+            // ⭐ 핵심
+            data.tutorialCompleted =
+                tutorialCompleted || (prev != null && prev.tutorialCompleted);
+
+            // ⭐ 조명 상태 저장 (튜토리얼 완료 시 영구 꺼짐)
+            data.lightsPermaOff = data.tutorialCompleted;
+
+            File.WriteAllText(SavePath, JsonUtility.ToJson(data, true));
 
             Debug.Log($"[SaveSystem] Saved to {SavePath}");
         }

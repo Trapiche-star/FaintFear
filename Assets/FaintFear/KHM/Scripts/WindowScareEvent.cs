@@ -41,22 +41,32 @@ namespace FaintFear
 
 
         #region Unity Event Method
-
         private void Start()
         {
-            if (GameManager.TutorialCompleted)
+            var data = SaveSystem.LoadPreview();
+            bool tutorialDone = data != null && data.tutorialCompleted;
+
+            if (tutorialDone || GameManager.TutorialCompleted)
             {
-                Destroy(this);
-                return;
+                Debug.Log("[WindowScareEvent] Tutorial already done - destroying");
+                Destroy(gameObject);
             }
 
-            playerMove = GameObject.FindWithTag("Player")?.GetComponent<PlayerMove>();
-            flashlight = GameObject.FindAnyObjectByType<Flashlight>();
+            var player = GameObject.FindWithTag("Player");
+            if (player != null)
+            {
+                cameraPosition = player.transform.Find("CameraPosition");
+                flashlight = player.GetComponentInChildren<Flashlight>(true);
+                playerMove = player.GetComponent<PlayerMove>();
+            }
+
+            if (cameraPosition == null)
+                Debug.LogError("[WindowScareEvent] Player camera not found");
         }
 
         private void Update()
         {
-            if (GameManager.TutorialCompleted)
+            if (IsTutorialCompleted())
                 return;
 
             if (!eventTriggered && PlayerStatus.Instance.currentBattery > 0f)
@@ -74,6 +84,15 @@ namespace FaintFear
         // 창문 공포 연출 전체 흐름을 처리하는 메인 시퀀스
         private IEnumerator SequencePlay()
         {
+            if (IsTutorialCompleted())
+                yield break;
+
+            if (flashlight == null)
+            {
+                Debug.LogError("[WindowScareEvent] Flashlight not found");
+                yield break;
+            }
+
             if (GameManager.TutorialCompleted)
                 yield break;
 
@@ -83,12 +102,16 @@ namespace FaintFear
 
             // 조명 끄기
             lightZone.SetLightsActive(false);
+            lightZone.SetPermanentlyOff();
 
             // 손전등 튜토리얼은 지속 출력
             sequenceText.ShowPersistentMessage(dialogueLine01);
 
             // 손전등 ON까지 대기
             yield return new WaitUntil(() => flashlight.IsOn);
+
+            if (IsTutorialCompleted())
+                yield break;
 
             // 튜토리얼 텍스트 제거
             sequenceText.Hide();
@@ -125,11 +148,16 @@ namespace FaintFear
 
             // 정신력 시스템 활성화
             PlayerStatus.Instance.isMentalSystemActive = true;
-
-            //세이브 포인트 저장
+            // 세이브 포인트 저장
             SaveSystem.SaveGame("TutorialEnd", tutorialCompleted: true);
+
+            // ⭐ GameManager의 static 변수도 즉시 업데이트
+            GameManager.TutorialCompleted = true;
+
+            Debug.Log("[WindowScareEvent] Tutorial completed and saved");
+
             AutoSaveManager.Instance.RequestSave("TutorialEnd");
-            
+
             sequenceText.Hide();
         }
 
@@ -175,6 +203,11 @@ namespace FaintFear
             Destroy(ghost);
         }
 
+        private bool IsTutorialCompleted()
+        {
+            var data = SaveSystem.LoadPreview();
+            return data != null && data.tutorialCompleted;
+        }
         #endregion
     }
 }
