@@ -1140,6 +1140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseUI: {fileID: 1364140295}
+  optionsPanel: {fileID: 0}
 --- !u!1 &305519705
 GameObject:
   m_ObjectHideFlags: 0
@@ -1581,8 +1582,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionEnabled: 1
   isLocked: 0
+  useKeypadLock: 0
   requiredKey: 0
   sequenceText: {fileID: 0}
+  lockedSequence: 
+  unlockedSequence: 
+  keypadSequence: 
+  cannotUseKeySequence: 
 --- !u!1 &422073898
 GameObject:
   m_ObjectHideFlags: 0
@@ -3135,6 +3141,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1164879421639733084, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1164879421639733084, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1599299180033430565, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3149,6 +3163,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1599299180033430565, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1705766168432179289, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1705766168432179289, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2111921814397852804, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
@@ -3235,6 +3257,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3083394084087377408, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3083394084087377408, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3083394084087377408, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4235516590612346303, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3281,6 +3315,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7284626583800872645, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7353243091352574593, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7353243091352574593, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7353243091352574593, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
+      propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8207660466685525251, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
@@ -4251,8 +4297,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionEnabled: 1
   isLocked: 1
+  useKeypadLock: 0
   requiredKey: 2
   sequenceText: {fileID: 1466940450}
+  lockedSequence: 
+  unlockedSequence: 
+  keypadSequence: 
+  cannotUseKeySequence: 
 --- !u!1 &1257131654 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6651127945994960785, guid: deafd461784c5bf40bd020ba7dada2bf, type: 3}
@@ -5785,8 +5836,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionEnabled: 1
   isLocked: 0
+  useKeypadLock: 0
   requiredKey: 0
   sequenceText: {fileID: 0}
+  lockedSequence: 
+  unlockedSequence: 
+  keypadSequence: 
+  cannotUseKeySequence: 
 --- !u!1 &1627325662
 GameObject:
   m_ObjectHideFlags: 0
@@ -5971,8 +6027,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionEnabled: 1
   isLocked: 0
+  useKeypadLock: 0
   requiredKey: 0
   sequenceText: {fileID: 1466940450}
+  lockedSequence: 
+  unlockedSequence: 
+  keypadSequence: 
+  cannotUseKeySequence: 
 --- !u!1 &1730473921
 GameObject:
   m_ObjectHideFlags: 0
@@ -6620,8 +6681,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionEnabled: 1
   isLocked: 1
+  useKeypadLock: 0
   requiredKey: 0
   sequenceText: {fileID: 0}
+  lockedSequence: 
+  unlockedSequence: 
+  keypadSequence: 
+  cannotUseKeySequence: 
 --- !u!1001 &1868654761
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6837,8 +6903,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionEnabled: 1
   isLocked: 1
+  useKeypadLock: 0
   requiredKey: 4
   sequenceText: {fileID: 1466940450}
+  lockedSequence: 
+  unlockedSequence: 
+  keypadSequence: 
+  cannotUseKeySequence: 
 --- !u!1001 &1941148673
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6966,8 +7037,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionEnabled: 1
   isLocked: 0
+  useKeypadLock: 0
   requiredKey: 0
   sequenceText: {fileID: 0}
+  lockedSequence: 
+  unlockedSequence: 
+  keypadSequence: 
+  cannotUseKeySequence: 
 --- !u!4 &1954465210
 Transform:
   m_ObjectHideFlags: 0
@@ -8325,8 +8401,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionEnabled: 1
   isLocked: 1
+  useKeypadLock: 0
   requiredKey: 0
   sequenceText: {fileID: 0}
+  lockedSequence: 
+  unlockedSequence: 
+  keypadSequence: 
+  cannotUseKeySequence: 
 --- !u!4 &153694524408087253
 Transform:
   m_ObjectHideFlags: 0
@@ -8699,8 +8780,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionEnabled: 1
   isLocked: 1
+  useKeypadLock: 0
   requiredKey: 0
   sequenceText: {fileID: 0}
+  lockedSequence: 
+  unlockedSequence: 
+  keypadSequence: 
+  cannotUseKeySequence: 
 --- !u!4 &1115316789224972368
 Transform:
   m_ObjectHideFlags: 0
@@ -9117,6 +9203,63 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1001 &1908758013966098838
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 193085606118671879, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.03679397
+      objectReference: {fileID: 0}
+    - target: {fileID: 193085606118671879, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.8723661
+      objectReference: {fileID: 0}
+    - target: {fileID: 193085606118671879, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -10.659183
+      objectReference: {fileID: 0}
+    - target: {fileID: 193085606118671879, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 193085606118671879, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 193085606118671879, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 193085606118671879, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 193085606118671879, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 193085606118671879, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 193085606118671879, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5048336352988005997, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: m_Name
+      value: SoundManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
 --- !u!1 &1925344037611544099
 GameObject:
   m_ObjectHideFlags: 0
@@ -10185,8 +10328,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionEnabled: 1
   isLocked: 1
+  useKeypadLock: 0
   requiredKey: 0
   sequenceText: {fileID: 0}
+  lockedSequence: 
+  unlockedSequence: 
+  keypadSequence: 
+  cannotUseKeySequence: 
 --- !u!222 &3898667729659361847
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11358,6 +11506,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetSceneName: BasementScene
+  doorPivot: {fileID: 0}
+  openedAngle: -90
+  openSpeed: 90
   sequenceText: {fileID: 1466940450}
 --- !u!223 &4789849435030344322
 Canvas:
@@ -12365,6 +12516,9 @@ MonoBehaviour:
   isLocked: 1
   requiredKey: 7
   sequenceText: {fileID: 1466940450}
+  lockedSequence: 
+  unlockedSequence: 
+  cannotUseKeySequence: 
 --- !u!33 &6520516729350640367
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -13845,8 +13999,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionEnabled: 1
   isLocked: 1
+  useKeypadLock: 0
   requiredKey: 0
   sequenceText: {fileID: 0}
+  lockedSequence: 
+  unlockedSequence: 
+  keypadSequence: 
+  cannotUseKeySequence: 
 --- !u!33 &8987651208136948640
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -14004,3 +14163,4 @@ SceneRoots:
   - {fileID: 84641765}
   - {fileID: 2114305055}
   - {fileID: 6273130981795280898}
+  - {fileID: 1908758013966098838}
