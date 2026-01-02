@@ -11,7 +11,7 @@ namespace FaintFear
         #region Variables
         Transform hinge;
         bool isMoving = false; // 문이 움직이는 중인지 확인
-        bool isOpen = false;   // 문이 현재 열려있는지 상태 확인 (true: 열림, false: 닫힘)
+        bool isOpen = false;   // 문이 현재 열려있는지 상태 확인
         #endregion
 
         #region Unity Event Method
@@ -22,64 +22,59 @@ namespace FaintFear
         #endregion
 
         #region Custom Method
-
         public override void Interaction()
         {
-            // 문이 움직이는 중이라면 입력 무시
+            // 문이 움직이는 중이면 무시
             if (isMoving) return;
 
             if (!isOpen)
             {
-                // 닫혀있으면 -> 연다 (목표 각도 -90도)
+                // 🔊 문 열리는 소리
+                SoundManager.Instance.PlaySFX("SFX_DoorOpen");
+
+                // 닫혀있으면 -> 연다
                 StartCoroutine(MoveDoorRoutine(-90f));
             }
             else
             {
-                // 열려있으면 -> 닫는다 (목표 각도 0도)
+                // 🔊 문 닫히는 소리
+                SoundManager.Instance.PlaySFX("SFX_DoorClose");
+
+                // 열려있으면 -> 닫는다
                 StartCoroutine(MoveDoorRoutine(0f));
             }
 
-            // 상태 반전 (열림 <-> 닫힘)
+            // 상태 반전
             isOpen = !isOpen;
         }
 
         IEnumerator MoveDoorRoutine(float targetAngle)
         {
-            isMoving = true; // 움직임 시작
+            isMoving = true;
 
             float duration = 1.0f;
             float elapsedTime = 0f;
 
-            // 시작 회전값
             Quaternion startRotation = hinge.localRotation;
-            // 목표 회전값 (인자로 받은 targetAngle 사용)
             Quaternion targetRotation = Quaternion.Euler(0, targetAngle, 0);
 
             while (elapsedTime < duration)
             {
                 elapsedTime += Time.deltaTime;
                 float t = elapsedTime / duration;
-
-                // 선형 보간으로 부드럽게 회전
                 hinge.localRotation = Quaternion.Lerp(startRotation, targetRotation, t);
-
                 yield return null;
             }
 
-            // 최종 각도 확실하게 고정
             hinge.localRotation = targetRotation;
-
-            isMoving = false; // 움직임 종료
+            isMoving = false;
         }
 
-        // Action UI에 표시될 문구 제공
+        // Action UI에 표시될 문구
         public string GetActionText()
         {
             return isOpen ? "닫기" : "열기";
         }
-
         #endregion
     }
-
 }
-

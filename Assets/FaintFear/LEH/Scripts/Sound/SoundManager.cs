@@ -1,4 +1,6 @@
 using UnityEngine;
+using System;
+using System.Collections.Generic;
 
 namespace FaintFear
 {
@@ -9,72 +11,76 @@ namespace FaintFear
         [Header("All Sounds")]
         public Sound[] sounds;
 
-        [Header("BGM")]
-        public string currentBGM;
+        AudioSource bgmSource;
+        AudioSource sfxSource;
 
-        private void Awake()
+        void Awake()
         {
-            if (Instance != null)
+            // 싱글톤
+            if (Instance == null)
+            {
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else
             {
                 Destroy(gameObject);
                 return;
             }
 
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
+            // AudioSource 2개 생성
+            bgmSource = gameObject.AddComponent<AudioSource>();
+            sfxSource = gameObject.AddComponent<AudioSource>();
 
-            foreach (Sound s in sounds)
-            {
-                s.source = gameObject.AddComponent<AudioSource>();
-                s.source.clip = s.clip;
-                s.source.volume = s.volume;
-                s.source.pitch = s.pitch;
-                s.source.loop = s.loop;
-                s.source.playOnAwake = s.playOnAwake;
-
-                if (s.playOnAwake)
-                    s.source.Play();
-            }
+            bgmSource.loop = true;
+            sfxSource.loop = false;
         }
 
-        //일반 재생
-        public void Play(string name)
+        // =========================
+        // SFX 재생
+        // =========================
+        public void PlaySFX(string name)
         {
-            Sound s = GetSound(name);
-            if (s == null) return;
-
-            s.source.Play();
-        }
-
-        //정지
-        public void Stop(string name)
-        {
-            Sound s = GetSound(name);
-            if (s == null) return;
-
-            s.source.Stop();
-        }
-
-        //BGM 교체 (기존 BGM 정지 후 새 BGM 재생)
-        public void PlayBGM(string name)
-        {
-            if (currentBGM == name) return;
-
-            if (!string.IsNullOrEmpty(currentBGM))
-                Stop(currentBGM);
-
-            currentBGM = name;
-            Play(name);
-        }
-
-        private Sound GetSound(string name)
-        {
-            Sound s = System.Array.Find(sounds, sound => sound.name == name);
+            Sound s = Array.Find(sounds, sound => sound.name == name);
 
             if (s == null)
-                Debug.LogWarning($"Sound not found: {name}");
+            {
+                Debug.LogWarning($"[SoundManager] SFX not found : {name}");
+                return;
+            }
 
-            return s;
+            sfxSource.pitch = s.pitch;
+            sfxSource.volume = s.volume;
+            sfxSource.PlayOneShot(s.clip);
+        }
+
+        // =========================
+        // BGM 재생
+        // =========================
+        public void PlayBGM(string name)
+        {
+            Sound s = Array.Find(sounds, sound => sound.name == name);
+
+            if (s == null)
+            {
+                Debug.LogWarning($"[SoundManager] BGM not found : {name}");
+                return;
+            }
+
+            if (bgmSource.clip == s.clip) return;
+
+            bgmSource.Stop();
+            bgmSource.clip = s.clip;
+            bgmSource.volume = s.volume;
+            bgmSource.pitch = s.pitch;
+            bgmSource.loop = s.loop;
+            bgmSource.Play();
+        }
+
+        public void StopBGM()
+        {
+            bgmSource.Stop();
         }
     }
 }
+

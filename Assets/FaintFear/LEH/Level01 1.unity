@@ -1140,7 +1140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseUI: {fileID: 1364140295}
-  optionsPanel: {fileID: 0}
+  optionsPanel: {fileID: 299206152}
 --- !u!1 &305519705
 GameObject:
   m_ObjectHideFlags: 0
@@ -5454,17 +5454,6 @@ Transform:
   - {fileID: 803317309}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1475593278 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 78784444985532123, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
-  m_PrefabInstance: {fileID: 855782231}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1491094617
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13208,11 +13197,11 @@ PrefabInstance:
     - target: {fileID: 135917209964894279, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
       propertyPath: screenText
       value: 
-      objectReference: {fileID: 1475593278}
+      objectReference: {fileID: 0}
     - target: {fileID: 135917209964894279, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
       propertyPath: crosshairText
       value: 
-      objectReference: {fileID: 1475593278}
+      objectReference: {fileID: 0}
     - target: {fileID: 236520129318838511, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
       propertyPath: m_Name
       value: Player
