@@ -1106,7 +1106,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &299206153
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3301,6 +3301,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6474444395083753979, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7284626583800872645, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4255,7 +4259,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1222169411
 Transform:
   m_ObjectHideFlags: 0
@@ -5334,6 +5338,7 @@ MonoBehaviour:
   movePosition: {fileID: 0}
   moveSpeed: 3
   sequenceText: {fileID: 0}
+  flashlightObject: {fileID: 0}
   chargeSpeed: 0.5
   drainSpeed: 1
   gaugeUI: {fileID: 0}
@@ -5973,13 +5978,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ac6469c828d2534e8e801ff0d9059c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hudManager: {fileID: 547749791}
-  sequenceText: {fileID: 1466940450}
-  dialogueHoldTime: 2
-  openingDialogueLines:
-  - "\uD3D0\uBCD1\uC6D0\uC744 \uC21C\uCC30\uD558\uB2E4 \uCE68\uC785\uC790\uB4E4\uC744
-    \uCAD3\uC544 \uB4E4\uC5B4\uC654\uB294\uB370\u2026"
-  - "\uBC30\uD130\uB9AC\uAC00 \uAEBC\uC838\uBC84\uB838\uAD70."
 --- !u!4 &1635383540
 Transform:
   m_ObjectHideFlags: 0
@@ -8032,6 +8030,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PushItem
       objectReference: {fileID: 0}
+    - target: {fileID: 7683404492861216788, guid: b57554e67d80a564aa3f900996d0b894, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9962,7 +9964,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3038157201140979746
 Transform:
   m_ObjectHideFlags: 0
@@ -11502,6 +11504,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetSceneName: BasementScene
+  sceneFader: {fileID: 0}
   doorPivot: {fileID: 0}
   openedAngle: -90
   openSpeed: 90
@@ -12085,6 +12088,7 @@ MonoBehaviour:
   movePosition: {fileID: 0}
   moveSpeed: 3
   sequenceText: {fileID: 0}
+  flashlightObject: {fileID: 0}
   chargeSpeed: 0.5
   drainSpeed: 1
   gaugeUI: {fileID: 0}
@@ -13299,8 +13303,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7fb81cebc513614daef1f732f9d9b53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerGaugePlayer: {fileID: 0}
-  gaugeUI: {fileID: 955759298}
 --- !u!114 &7684836878560161773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13905,7 +13907,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &8823751502856108222
 GameObject:
   m_ObjectHideFlags: 0

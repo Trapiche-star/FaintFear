@@ -18,12 +18,6 @@ namespace FaintFear
         #region Unity Event Method
         private void Awake()
         {
-            if (Instance != null)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
             Instance = this;
             inputActions = new PlayerInputAction();
         }

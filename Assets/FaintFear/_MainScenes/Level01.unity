@@ -527,7 +527,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 136095027}
-  m_Layer: 0
+  - component: {fileID: 136095028}
+  m_Layer: 7
   m_Name: Door_Basement
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -551,6 +552,25 @@ Transform:
   - {fileID: 1809754996}
   m_Father: {fileID: 218468444}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &136095028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136095026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 587c3c98fc394244297cf1765a192dfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLocked: 1
+  targetSceneName: BasementScene
+  sceneFader: {fileID: 9121395947248950146}
+  sequenceText: {fileID: 2312052753772196972}
+  lockedMessage: "\uBB38\uC774 \uC7A0\uACA8\uC788\uB2E4. \uD0A4\uD328\uB4DC\uB85C
+    \uC5F4 \uC218 \uC788\uC744 \uAC83 \uAC19\uB2E4."
+  transitionMessage: "\uBB38\uC744 \uC5F4\uACE0 \uB4E4\uC5B4\uAC04\uB2E4..."
 --- !u!1 &157434357
 GameObject:
   m_ObjectHideFlags: 0
@@ -1813,7 +1833,7 @@ GameObject:
   - component: {fileID: 515651094}
   - component: {fileID: 515651093}
   - component: {fileID: 515651092}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3515,6 +3535,114 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8355556599292919163, guid: 7f52658d43a36594f914547ecd2f2576, type: 3}
   m_PrefabInstance: {fileID: 1992850050}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1192115607
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1192115608}
+  - component: {fileID: 1192115611}
+  - component: {fileID: 1192115610}
+  - component: {fileID: 1192115609}
+  m_Layer: 0
+  m_Name: BasementTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1192115608
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192115607}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 16.868, y: -3.327, z: -17.704}
+  m_LocalScale: {x: 2, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1473405857}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1192115609
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192115607}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1192115610
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192115607}
+  m_Enabled: 0
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1192115611
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192115607}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1192648896
 GameObject:
   m_ObjectHideFlags: 0
@@ -4386,6 +4514,7 @@ Transform:
   - {fileID: 1800842506}
   - {fileID: 905753845}
   - {fileID: 803317309}
+  - {fileID: 1192115608}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1491094617
@@ -4886,7 +5015,7 @@ GameObject:
   - component: {fileID: 1809754999}
   - component: {fileID: 1809754998}
   - component: {fileID: 1809754997}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_Frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8452,7 +8581,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -8474,7 +8603,7 @@ MonoBehaviour:
   bttnspeed: 0.1
   moveDist: 0.0025
   buttonPressedTime: 0.1
-  keypad1: {fileID: 0}
+  unifiedKeypad: {fileID: 4789849434317702653}
 --- !u!1 &1486911423875085955
 GameObject:
   m_ObjectHideFlags: 0
@@ -8488,7 +8617,7 @@ GameObject:
   - component: {fileID: 5655752452817281772}
   - component: {fileID: 1486911423875085952}
   - component: {fileID: 1486911423875085953}
-  m_Layer: 8
+  m_Layer: 15
   m_Name: bttn3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8622,7 +8751,7 @@ GameObject:
   - component: {fileID: 2615678727430936823}
   - component: {fileID: 3729080033407962315}
   - component: {fileID: 3729080033407962312}
-  m_Layer: 8
+  m_Layer: 15
   m_Name: bttnEnter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9283,7 +9412,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -9305,7 +9434,7 @@ MonoBehaviour:
   bttnspeed: 0.1
   moveDist: 0.0025
   buttonPressedTime: 0.1
-  keypad1: {fileID: 0}
+  unifiedKeypad: {fileID: 4789849434317702653}
 --- !u!1 &2358779448989012465
 GameObject:
   m_ObjectHideFlags: 0
@@ -10038,7 +10167,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -10060,7 +10189,7 @@ MonoBehaviour:
   bttnspeed: 0.1
   moveDist: 0.0025
   buttonPressedTime: 0.1
-  keypad1: {fileID: 0}
+  unifiedKeypad: {fileID: 4789849434317702653}
 --- !u!23 &2808079416278765888
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -10694,7 +10823,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -10716,7 +10845,7 @@ MonoBehaviour:
   bttnspeed: 0.1
   moveDist: 0.0025
   buttonPressedTime: 0.1
-  keypad1: {fileID: 0}
+  unifiedKeypad: {fileID: 4789849434317702653}
 --- !u!1 &3619868855533265215
 GameObject:
   m_ObjectHideFlags: 0
@@ -10730,7 +10859,7 @@ GameObject:
   - component: {fileID: 9133358941168162928}
   - component: {fileID: 3619868855533265212}
   - component: {fileID: 3619868855533265213}
-  m_Layer: 8
+  m_Layer: 15
   m_Name: bttn6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11077,7 +11206,7 @@ MonoBehaviour:
   bttnspeed: 0.1
   moveDist: 0.0025
   buttonPressedTime: 0.1
-  keypad1: {fileID: 0}
+  unifiedKeypad: {fileID: 4789849434317702653}
 --- !u!4 &3729080033407962314
 Transform:
   m_ObjectHideFlags: 0
@@ -11108,7 +11237,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -11391,7 +11520,7 @@ MonoBehaviour:
   bttnspeed: 0.1
   moveDist: 0.0025
   buttonPressedTime: 0.1
-  keypad1: {fileID: 0}
+  unifiedKeypad: {fileID: 4789849434317702653}
 --- !u!4 &4107594818403303420
 Transform:
   m_ObjectHideFlags: 0
@@ -11422,7 +11551,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -11484,7 +11613,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -11506,7 +11635,7 @@ MonoBehaviour:
   bttnspeed: 0.1
   moveDist: 0.0025
   buttonPressedTime: 0.1
-  keypad1: {fileID: 0}
+  unifiedKeypad: {fileID: 4789849434317702653}
 --- !u!33 &4141720680934164179
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -11627,7 +11756,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -11649,7 +11778,7 @@ MonoBehaviour:
   bttnspeed: 0.1
   moveDist: 0.0025
   buttonPressedTime: 0.1
-  keypad1: {fileID: 0}
+  unifiedKeypad: {fileID: 4789849434317702653}
 --- !u!1 &4200952919498133699
 GameObject:
   m_ObjectHideFlags: 0
@@ -11663,7 +11792,7 @@ GameObject:
   - component: {fileID: 7378571288519287903}
   - component: {fileID: 4200952919498133696}
   - component: {fileID: 4200952919498133697}
-  m_Layer: 8
+  m_Layer: 15
   m_Name: bttn4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11691,7 +11820,7 @@ GameObject:
   - component: {fileID: 8752204029579181279}
   - component: {fileID: 4235504452454786261}
   - component: {fileID: 4235504452454786266}
-  m_Layer: 8
+  m_Layer: 15
   m_Name: bttn1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11713,7 +11842,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -11735,7 +11864,7 @@ MonoBehaviour:
   bttnspeed: 0.1
   moveDist: 0.0025
   buttonPressedTime: 0.1
-  keypad1: {fileID: 0}
+  unifiedKeypad: {fileID: 4789849434317702653}
 --- !u!114 &4238148058716728048
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11752,7 +11881,7 @@ MonoBehaviour:
   bttnspeed: 0.1
   moveDist: 0.0025
   buttonPressedTime: 0.1
-  keypad1: {fileID: 0}
+  unifiedKeypad: {fileID: 4789849434317702653}
 --- !u!4 &4238148058716728050
 Transform:
   m_ObjectHideFlags: 0
@@ -11783,7 +11912,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -11866,7 +11995,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -11888,7 +12017,7 @@ MonoBehaviour:
   bttnspeed: 0.1
   moveDist: 0.0025
   buttonPressedTime: 0.1
-  keypad1: {fileID: 0}
+  unifiedKeypad: {fileID: 4789849434317702653}
 --- !u!224 &4287239774726547849
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12301,7 +12430,7 @@ GameObject:
   - component: {fileID: 4055622642862255484}
   - component: {fileID: 4107594818403303421}
   - component: {fileID: 4107594818403303298}
-  m_Layer: 8
+  m_Layer: 15
   m_Name: bttn0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12431,7 +12560,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4789849433520925022}
-  m_Layer: 8
+  m_Layer: 15
   m_Name: Buttons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12475,7 +12604,7 @@ GameObject:
   - component: {fileID: 4789849434032873607}
   - component: {fileID: 4789849434032873606}
   - component: {fileID: 4789849434032873601}
-  m_Layer: 8
+  m_Layer: 15
   m_Name: DisplayText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12723,15 +12852,15 @@ GameObject:
   m_Component:
   - component: {fileID: 4789849434317702648}
   - component: {fileID: 4789849434317702649}
-  - component: {fileID: 4789849434317702651}
-  m_Layer: 8
+  - component: {fileID: 4789849434317702653}
+  m_Layer: 15
   m_Name: Keypad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &4789849434317702651
+--- !u!114 &4789849434317702653
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -12740,14 +12869,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 4789849434317702650}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2af809cf4243b1e488b6f73dd841c5dd, type: 3}
+  m_Script: {fileID: 11500000, guid: ca8c52110b121904683dd2c09015d641, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetSceneName: BasementScene
-  doorPivot: {fileID: 515651091}
-  openedAngle: -90
-  openSpeed: 90
+  correctCode: 2444
+  maxLength: 4
+  targetDoorLock: {fileID: 136095028}
+  displayText: {fileID: 4789849434032873601}
+  panelRenderer: {fileID: 45681600506728548}
+  emissionProperty: _EmissionColor
+  normalColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  deniedColor: {r: 1, g: 0, b: 0, a: 1}
+  grantedColor: {r: 0, g: 1, b: 0, a: 1}
   sequenceText: {fileID: 2312052753772196972}
+  errorDisplayTime: 1.5
 --- !u!223 &4789849435030344322
 Canvas:
   m_ObjectHideFlags: 0
@@ -12805,7 +12940,7 @@ GameObject:
   - component: {fileID: 4789849435030344447}
   - component: {fileID: 4789849435030344322}
   - component: {fileID: 4789849435030344445}
-  m_Layer: 8
+  m_Layer: 15
   m_Name: DisplayCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12905,7 +13040,7 @@ GameObject:
   - component: {fileID: 2414166679823695249}
   - component: {fileID: 45681600506728548}
   - component: {fileID: 2414166679823695254}
-  m_Layer: 8
+  m_Layer: 15
   m_Name: panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13857,7 +13992,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5040178703591617713}
-  m_Layer: 8
+  m_Layer: 15
   m_Name: KeypadVisuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14688,7 +14823,7 @@ GameObject:
   - component: {fileID: 4257201768806898340}
   - component: {fileID: 4257201768806898341}
   - component: {fileID: 4257201768806898346}
-  m_Layer: 8
+  m_Layer: 15
   m_Name: bttn5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15184,7 +15319,7 @@ GameObject:
   - component: {fileID: 2614856437421092752}
   - component: {fileID: 4238148058716728051}
   - component: {fileID: 4238148058716728048}
-  m_Layer: 8
+  m_Layer: 15
   m_Name: bttn9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16845,7 +16980,7 @@ GameObject:
   - component: {fileID: 2337111942853397229}
   - component: {fileID: 2347535990887174726}
   - component: {fileID: 2347535990887174727}
-  m_Layer: 8
+  m_Layer: 15
   m_Name: bttn2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17374,7 +17509,7 @@ GameObject:
   - component: {fileID: 5309238229874904097}
   - component: {fileID: 4141720680934164176}
   - component: {fileID: 4141720680934164177}
-  m_Layer: 8
+  m_Layer: 15
   m_Name: bttn7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17394,7 +17529,7 @@ GameObject:
   - component: {fileID: 2756309536469925460}
   - component: {fileID: 2756309536469925461}
   - component: {fileID: 2756309536469925466}
-  m_Layer: 8
+  m_Layer: 15
   m_Name: bttn8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17496,6 +17631,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2173105014912353909}
     m_Modifications:
+    - target: {fileID: 104109969787923345, guid: 33d414caeb2c586468575c02250ca966, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1286480246289974622, guid: 33d414caeb2c586468575c02250ca966, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -17582,7 +17721,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7000418367110034453, guid: 33d414caeb2c586468575c02250ca966, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

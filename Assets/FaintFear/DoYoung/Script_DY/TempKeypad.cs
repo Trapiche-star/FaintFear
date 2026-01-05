@@ -13,6 +13,7 @@ namespace FaintFear
 
         [Header("Scene")]
         [SerializeField] private string targetSceneName;            // 이동할 씬 이름
+        public SceneFader sceneFader;
 
         [Header("Door")]
         [SerializeField] private Transform doorPivot;               // 회전할 문 피벗
@@ -100,12 +101,8 @@ namespace FaintFear
         {
             if (string.IsNullOrEmpty(targetSceneName)) return;
             // 만약 [씬 이름이 비어 있다면] [이동하지 않는다]
-
-            if (SceneLoadManager.Instance == null) return;
-            // 만약 [씬 로드 매니저가 없다면] [요청을 중단한다]
-
-            SceneLoadManager.Instance.RequestMoveToScene(targetSceneName);
-            // 씬 이동을 매니저에 위임한다
+            sceneFader.FadeTo(targetSceneName);
+            //씬 이동
         }
 
         #endregion
