@@ -13,7 +13,7 @@ namespace FaintFear
     /// 플레이어 이동 및 시점 조작 처리
     /// </summary>
 
-        // 이 컴포넌트가 있으면 CharacterController를 자동으로 추가함
+    // 이 컴포넌트가 있으면 CharacterController를 자동으로 추가함
     [RequireComponent(typeof(CharacterController))]
     public class PlayerMove : MonoBehaviour
     {
@@ -69,6 +69,8 @@ namespace FaintFear
 
         private void OnEnable()
         {
+            if (inputActions == null) return;
+
             var playerMap = inputActions.Player;
             playerMap.Enable();
 
@@ -87,10 +89,10 @@ namespace FaintFear
             playerMap.Sprint.performed += OnSprint;
         }
 
-
-
         private void OnDisable()
         {
+            if (inputActions == null) return;
+
             var playerMap = inputActions.Player;
 
             playerMap.Move.performed -= OnMove;
@@ -105,6 +107,19 @@ namespace FaintFear
             playerMap.Push.canceled -= OnPushCanceled;
 
             playerMap.Sprint.performed -= OnSprint;
+
+            playerMap.Disable();
+        }
+
+        // ✅ 추가: InputAction 완전히 정리
+        private void OnDestroy()
+        {
+            if (inputActions != null)
+            {
+                inputActions.Player.Disable();
+                inputActions.Dispose();
+                inputActions = null;
+            }
         }
 
         private void Start()
@@ -118,8 +133,6 @@ namespace FaintFear
         {
             // + 시점은 항상 처리
             Look();
-
-
         }
 
         private void FixedUpdate()
@@ -184,7 +197,6 @@ namespace FaintFear
         public void SetLookLock(bool locked)
         {
             lookLocked = locked;
-
         }
 
         public void OnMove(InputAction.CallbackContext context)

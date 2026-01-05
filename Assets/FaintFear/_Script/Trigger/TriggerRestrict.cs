@@ -32,6 +32,14 @@ namespace FaintFear
 
 
         #region Unity Event Method
+        private void Awake()
+        {
+            if (GameManager.TutorialCompleted)
+            {
+                Destroy(gameObject);
+                return;
+            }
+        }
 
         private void Start()
         {

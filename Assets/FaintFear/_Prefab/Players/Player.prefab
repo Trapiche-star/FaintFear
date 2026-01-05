@@ -200,7 +200,6 @@ GameObject:
   - component: {fileID: 3204796653685657680}
   - component: {fileID: 5979652706202902293}
   - component: {fileID: 592723124030721549}
-  - component: {fileID: 8613019285101603701}
   - component: {fileID: 3628334409125768203}
   - component: {fileID: 1563633127144959883}
   - component: {fileID: 3420523123062599497}
@@ -221,8 +220,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.8, z: -12}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8650879924654022536}
   - {fileID: 5256735611268176327}
@@ -308,25 +307,6 @@ MonoBehaviour:
   crossHair: {fileID: 4798505586484529201}
   playerCrossHair: {fileID: 1981718588793620915}
   actionUI: {fileID: 6644771746777386345}
---- !u!114 &8613019285101603701
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 236520129318838511}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e51cc59b2860092489dc3a3688fa580c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxMentalPower: 100
-  currentMentalPower: 0
-  isMentalSystemActive: 0
-  maxBattery: 100
-  currentBattery: 0
-  isBatteryActive: 0
-  batteryCount: 0
 --- !u!114 &3628334409125768203
 MonoBehaviour:
   m_ObjectHideFlags: 0

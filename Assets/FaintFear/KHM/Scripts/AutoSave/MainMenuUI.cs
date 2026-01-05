@@ -60,7 +60,12 @@ namespace FaintFear
             if (optionsPanel != null)
                 optionsPanel.SetActive(true);
         }
-
+        //옵션 창 끄기
+        public void CloseOptions()
+        {
+            mainMenuPanel.SetActive(true);
+            optionsPanel.SetActive(false);
+        }
         // 종료
         public void OnQuit()
         {

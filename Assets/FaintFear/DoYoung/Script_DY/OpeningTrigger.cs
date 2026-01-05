@@ -107,7 +107,6 @@ namespace FaintFear
                 sequenceText.ShowMessage(itemDialogue, dialogueHoldTime);
             }
 
-            yield return new WaitForSeconds(1.0f);
             // 조작 복구
             if (playerMove != null)
             {
