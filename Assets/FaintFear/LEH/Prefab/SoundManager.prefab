@@ -44,215 +44,215 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41fe8a72a0bb35948a282445d7d357ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sounds:
+  bgms:
   - name: BGM_Calm
     clip: {fileID: 8300000, guid: c6fd14da06ea88044a943a278d97e682, type: 3}
     volume: 0.7
     pitch: 1
-    loop: 1
-    playOnAwake: 1
+    loop: 0
+    playOnAwake: 0
     source: {fileID: 0}
   - name: BGM_Tense
     clip: {fileID: 8300000, guid: 702e74a9509d920478d042019d5979f1, type: 3}
     volume: 0.7
     pitch: 1
-    loop: 1
+    loop: 0
     playOnAwake: 0
     source: {fileID: 0}
   - name: BGM_Final
     clip: {fileID: 8300000, guid: 74ae372ef71c0634da3d2f41b555d785, type: 3}
     volume: 0.7
     pitch: 1
-    loop: 1
+    loop: 0
     playOnAwake: 0
     source: {fileID: 0}
   - name: BGM_Chase
     clip: {fileID: 8300000, guid: 9e94ad480dc69fc47b9a6fa36419d6cf, type: 3}
     volume: 0.7
     pitch: 1
-    loop: 1
+    loop: 0
     playOnAwake: 0
     source: {fileID: 0}
   - name: BGM_ChaseEnd
     clip: {fileID: 8300000, guid: a3f6ad566ecfd6249a6ab7bd71f3c346, type: 3}
     volume: 0.7
     pitch: 1
-    loop: 1
+    loop: 0
     playOnAwake: 0
     source: {fileID: 0}
-  - name: BGM_LowSanity
+  - name: 'BGM_LowSanity '
     clip: {fileID: 8300000, guid: dae57d4fad0382f4691e5ae3954c1bfc, type: 3}
     volume: 0.7
     pitch: 1
-    loop: 1
+    loop: 0
     playOnAwake: 0
     source: {fileID: 0}
   - name: BGM_MainMenu
     clip: {fileID: 8300000, guid: 198b0b7775013a3469be6ea5926ce118, type: 3}
     volume: 0.7
     pitch: 1
-    loop: 1
+    loop: 0
     playOnAwake: 0
     source: {fileID: 0}
+  sfxs:
   - name: SFX_DoorClose
     clip: {fileID: 8300000, guid: 31f01f693e4454542941134d476762a2, type: 3}
-    volume: 0.7
+    volume: 0.8
     pitch: 1
     loop: 0
     playOnAwake: 0
     source: {fileID: 0}
   - name: SFX_DoorLocked
     clip: {fileID: 8300000, guid: 1d64915d23f1199439727bf5f6f50083, type: 3}
-    volume: 0.7
+    volume: 0.8
     pitch: 1
     loop: 0
     playOnAwake: 0
     source: {fileID: 0}
   - name: SFX_DoorOpen
     clip: {fileID: 8300000, guid: d141abcf53ff5cf4f80dfe400fcc735a, type: 3}
-    volume: 0.7
+    volume: 0.8
     pitch: 1
     loop: 0
     playOnAwake: 0
     source: {fileID: 0}
   - name: SFX_Flashlight
     clip: {fileID: 8300000, guid: 5e55657c839674847940066d705141c4, type: 3}
-    volume: 0.7
-    pitch: 1
+    volume: 0
+    pitch: 0
     loop: 0
     playOnAwake: 0
     source: {fileID: 0}
   - name: SFX_GetKey
     clip: {fileID: 8300000, guid: a318cb7dfa669b44b8a2e40b4f53aead, type: 3}
-    volume: 0.7
+    volume: 0.8
     pitch: 1
     loop: 0
     playOnAwake: 0
     source: {fileID: 0}
   - name: SFX_Jumpscare01
     clip: {fileID: 8300000, guid: 0b5c351c355aecd4ea1acad559faf4a9, type: 3}
-    volume: 0.7
+    volume: 0.8
     pitch: 1
     loop: 0
     playOnAwake: 0
     source: {fileID: 0}
   - name: SFX_LightOff
     clip: {fileID: 8300000, guid: f087331fb240bf146ad0ecc67c2612bd, type: 3}
-    volume: 0.7
+    volume: 0.8
     pitch: 1
     loop: 0
     playOnAwake: 0
     source: {fileID: 0}
   - name: SFX_Whisper
     clip: {fileID: 8300000, guid: 779cbd38fbd10ee4ea4e9cb9aabf3e25, type: 3}
-    volume: 0.7
+    volume: 0.8
     pitch: 1
     loop: 0
     playOnAwake: 0
     source: {fileID: 0}
   - name: SFX_Panting
     clip: {fileID: 8300000, guid: ba131416a15af604880f49a1e84f5863, type: 3}
-    volume: 0.7
+    volume: 0.8
     pitch: 1
     loop: 0
     playOnAwake: 0
     source: {fileID: 0}
   - name: SFX_Hurt
     clip: {fileID: 8300000, guid: 852cef7980a6e9545b131b63f129f6c0, type: 3}
-    volume: 0.7
+    volume: 0.8
     pitch: 1
     loop: 0
     playOnAwake: 0
     source: {fileID: 0}
   - name: SFX_EnemyN_01
     clip: {fileID: 8300000, guid: 5fc6b568e116dc547b2160bf0151c387, type: 3}
-    volume: 0.7
+    volume: 0.8
     pitch: 1
     loop: 0
     playOnAwake: 0
     source: {fileID: 0}
   - name: SFX_EnemyN_02
     clip: {fileID: 8300000, guid: 48ed6293a1d8e194ebec8e7096077ee9, type: 3}
-    volume: 0.7
+    volume: 0.8
     pitch: 1
     loop: 0
     playOnAwake: 0
     source: {fileID: 0}
   - name: SFX_EnemyStart
     clip: {fileID: 8300000, guid: 2b9a2d53180a0054c8d76a9455782ca9, type: 3}
-    volume: 0.7
+    volume: 0.8
     pitch: 1
     loop: 0
     playOnAwake: 0
     source: {fileID: 0}
   - name: SFX_EnemyA_01
     clip: {fileID: 8300000, guid: f620bac1cb350f94eb322c1f5510f5d6, type: 3}
-    volume: 0.7
+    volume: 0.8
     pitch: 1
     loop: 0
     playOnAwake: 0
     source: {fileID: 0}
   - name: SFX_EnemyA_02
     clip: {fileID: 8300000, guid: 3e68b151ce168e1439b14c9461847d0f, type: 3}
-    volume: 0.7
+    volume: 0.8
     pitch: 1
     loop: 0
     playOnAwake: 0
     source: {fileID: 0}
   - name: SFX_LightOn
     clip: {fileID: 8300000, guid: 0178f1df6bfba51478f461eef6d84e5b, type: 3}
-    volume: 0.7
+    volume: 0.8
     pitch: 1
     loop: 0
     playOnAwake: 0
     source: {fileID: 0}
-  - name: SFX_Elevator
+  - name: 'SFX_Elevator '
     clip: {fileID: 8300000, guid: 6bf6270cf2d5e8a48a48a41fe1fcc4e8, type: 3}
-    volume: 0.7
+    volume: 0.8
     pitch: 1
     loop: 0
     playOnAwake: 0
     source: {fileID: 0}
   - name: SFX_CutChain
     clip: {fileID: 8300000, guid: a5840184dafa88d44be162cece1a8eac, type: 3}
-    volume: 0.7
+    volume: 0.8
     pitch: 1
     loop: 0
     playOnAwake: 0
     source: {fileID: 0}
-  - name: ' SFX_Pickup '
+  - name: SFX_Pickup
     clip: {fileID: 8300000, guid: e7eee63bdc03c1644b69b2d2fe06e404, type: 3}
-    volume: 0.7
+    volume: 0.8
     pitch: 1
     loop: 0
     playOnAwake: 0
     source: {fileID: 0}
   - name: SFX_ButtonDown
     clip: {fileID: 8300000, guid: 404d65cda24ff6d46a15a4fa3388ce1f, type: 3}
-    volume: 0.7
+    volume: 0.8
     pitch: 1
     loop: 0
     playOnAwake: 0
     source: {fileID: 0}
   - name: SFX_Drag
     clip: {fileID: 8300000, guid: f340adc5cdada52439abf24f643b75c7, type: 3}
-    volume: 0.7
+    volume: 0.8
     pitch: 1
     loop: 0
     playOnAwake: 0
     source: {fileID: 0}
   - name: SFX_ExitOpen
     clip: {fileID: 8300000, guid: cb8826a7dffe0154a9fcf74c693f8a80, type: 3}
-    volume: 0.7
+    volume: 0.8
     pitch: 1
     loop: 0
     playOnAwake: 0
     source: {fileID: 0}
   - name: SFX_Paper
     clip: {fileID: 8300000, guid: 44bd48c959594ef45991fcf8e7d9ea84, type: 3}
-    volume: 0.7
+    volume: 0.8
     pitch: 1
     loop: 0
     playOnAwake: 0
     source: {fileID: 0}
-  currentBGM: 

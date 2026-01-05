@@ -10,6 +10,10 @@ namespace FaintFear
         bool isMoving = false;
         bool isOpen = false;
 
+        [Header("Sound IDs (SoundManager 기준)")]
+        [SerializeField] private string openSFX = "SFX_DoorOpen";
+        [SerializeField] private string closeSFX = "SFX_DoorClose";
+
         [Header("Events")]
         public UnityEvent onDoorOpen;
         public UnityEvent onDoorClose;
@@ -25,11 +29,19 @@ namespace FaintFear
 
             if (!isOpen)
             {
+                // 문 열림 사운드
+                if (!string.IsNullOrEmpty(openSFX))
+                    SoundManager.Instance.PlaySFX(openSFX);
+
                 StartCoroutine(MoveDoorRoutine(-90f));
                 onDoorOpen?.Invoke();
             }
             else
             {
+                // 문 닫힘 사운드
+                if (!string.IsNullOrEmpty(closeSFX))
+                    SoundManager.Instance.PlaySFX(closeSFX);
+
                 StartCoroutine(MoveDoorRoutine(0f));
                 onDoorClose?.Invoke();
             }

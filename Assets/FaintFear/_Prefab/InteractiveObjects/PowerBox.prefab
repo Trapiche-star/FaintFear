@@ -209,6 +209,7 @@ MonoBehaviour:
   requiredLeverIndex: 2
   insertedLever: {fileID: 1453001251208005101}
   powerBox: {fileID: 2382360199136297033}
+  endingManager: {fileID: 6282331366364620485}
 --- !u!114 &4297770123116849188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,6 +223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotController: {fileID: 3280956140375947198}
+  powerBox: {fileID: 2382360199136297033}
   sequenceText: {fileID: 0}
   actionText: "\uC791\uB3D9"
   needLeverMessage: "\uC791\uB3D9\uD558\uB824\uBA74 \uC2A4\uC704\uCE58\uAC00 \uD544\uC694\uD558\uB2E4"
@@ -398,6 +400,7 @@ MonoBehaviour:
   requiredLeverIndex: 0
   insertedLever: {fileID: 6775444135515391217}
   powerBox: {fileID: 2382360199136297033}
+  endingManager: {fileID: 6282331366364620485}
 --- !u!114 &658821699270514253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -411,6 +414,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotController: {fileID: 5152769283133757400}
+  powerBox: {fileID: 2382360199136297033}
   sequenceText: {fileID: 0}
   actionText: "\uC791\uB3D9"
   needLeverMessage: "\uC791\uB3D9\uD558\uB824\uBA74 \uC2A4\uC704\uCE58\uAC00 \uD544\uC694\uD558\uB2E4"
@@ -1106,6 +1110,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6974078422071324890}
   - component: {fileID: 2382360199136297033}
+  - component: {fileID: 6282331366364620485}
+  - component: {fileID: 2006564765921621909}
   m_Layer: 0
   m_Name: PowerBox
   m_TagString: Untagged
@@ -1156,6 +1162,31 @@ MonoBehaviour:
   - {fileID: 7712149614102816739}
   - {fileID: 4297770123116849188}
   - {fileID: 2448952029264354434}
+  sequenceText: {fileID: 0}
+--- !u!114 &6282331366364620485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4397787529218517683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b646477f55417b34e9a476176f74e462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2006564765921621909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4397787529218517683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fec096920fc855748b4d1b195fef7799, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4668951198858434788
 GameObject:
   m_ObjectHideFlags: 0
@@ -1422,6 +1453,7 @@ MonoBehaviour:
   requiredLeverIndex: 3
   insertedLever: {fileID: 4887780547554451852}
   powerBox: {fileID: 2382360199136297033}
+  endingManager: {fileID: 6282331366364620485}
 --- !u!114 &2448952029264354434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1435,6 +1467,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotController: {fileID: 275902780105739135}
+  powerBox: {fileID: 2382360199136297033}
   sequenceText: {fileID: 0}
   actionText: "\uC791\uB3D9"
   needLeverMessage: "\uC791\uB3D9\uD558\uB824\uBA74 \uC2A4\uC704\uCE58\uAC00 \uD544\uC694\uD558\uB2E4"
@@ -1595,6 +1628,7 @@ MonoBehaviour:
   requiredLeverIndex: 1
   insertedLever: {fileID: 4924561361700298944}
   powerBox: {fileID: 2382360199136297033}
+  endingManager: {fileID: 6282331366364620485}
 --- !u!114 &7712149614102816739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1608,6 +1642,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotController: {fileID: 3912924787915874709}
+  powerBox: {fileID: 2382360199136297033}
   sequenceText: {fileID: 0}
   actionText: "\uC791\uB3D9"
   needLeverMessage: "\uC791\uB3D9\uD558\uB824\uBA74 \uC2A4\uC704\uCE58\uAC00 \uD544\uC694\uD558\uB2E4"
