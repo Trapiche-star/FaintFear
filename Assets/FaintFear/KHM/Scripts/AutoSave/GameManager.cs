@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using System.Reflection;
 
 namespace FaintFear
 {
@@ -11,6 +12,7 @@ namespace FaintFear
         [SerializeField] private string loadToScene = "Level01";
         private Transform newGameSpawnPoint;
         public static bool TutorialCompleted;
+        private SceneFader sceneFader;
 
         private enum GameStartMode
         {
@@ -56,7 +58,7 @@ namespace FaintFear
             TutorialCompleted = false;
             currentStartMode = GameStartMode.NewGame;
 
-            SceneManager.LoadScene(loadToScene);
+            SceneManager.LoadScene("Intro");
         }
 
         public void ContinueGame()
@@ -95,12 +97,12 @@ namespace FaintFear
             var data = SaveSystem.LoadPreview();
             TutorialCompleted = data != null && data.tutorialCompleted;
 
-            newGameSpawnPoint = GameObject.Find("StartSpawnPoint")?.transform;
+            /*newGameSpawnPoint = GameObject.Find("StartSpawnPoint")?.transform;
             if (newGameSpawnPoint == null)
             {
                 Debug.LogError("StartSpawnPoint not found!");
                 return;
-            }
+            }*/
 
             EnterGameplayState();
 
@@ -147,7 +149,7 @@ namespace FaintFear
 
         private IEnumerator LoadGameWithFade()
         {
-            HUDManager hudManager = FindFirstObjectByType<HUDManager>();
+            sceneFader = GameObject.FindFirstObjectByType<SceneFader>();
 
             GameObject player = GameObject.FindWithTag("Player");
             PlayerMove move = player?.GetComponent<PlayerMove>();
@@ -162,8 +164,8 @@ namespace FaintFear
 
             LoadPlayerWithCharacterController();
 
-            if (hudManager != null)
-                hudManager.FadeFromBlack();
+            if (sceneFader != null)
+                sceneFader.FadeStart();
 
             yield return new WaitForSeconds(1.5f);
 
@@ -230,12 +232,12 @@ namespace FaintFear
             if (move != null) move.enabled = false;
             if (cc != null) cc.enabled = false;
 
-            Vector3 pos = newGameSpawnPoint.position;
-            pos.y += 0.5f;
+            //Vector3 pos = newGameSpawnPoint.position;
+            //pos.y += 0.5f;
 
-            player.transform.SetPositionAndRotation(pos, newGameSpawnPoint.rotation);
+            //player.transform.SetPositionAndRotation(pos, newGameSpawnPoint.rotation);
 
-            yield return new WaitForEndOfFrame();
+            //yield return new WaitForEndOfFrame();
 
             if (cc != null)
             {

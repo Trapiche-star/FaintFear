@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/FaintFear/_MainScenes/BasementScene.unity
     guid: 256bd1a48c0afc24b8b13ee161228ba1
   - enabled: 1
+    path: Assets/FaintFear/_MainScenes/Intro.unity
+    guid: aea0b252ff17e8140abffabf16b330bc
+  - enabled: 1
     path: Assets/FaintFear/KHM/Scene/Level01 hm.unity
     guid: 183336fe17c29c542b14b85c172176d4
   m_configObjects:

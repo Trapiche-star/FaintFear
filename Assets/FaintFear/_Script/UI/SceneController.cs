@@ -1,42 +1,65 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
-using FaintFear;
 
-public class SceneController : MonoBehaviour
+namespace FaintFear
 {
-    public SceneFader sceneFader;
-    public SimpleBGMPlayer bgmPlayer;
-    public UISlideShowFade slideShow;
-
-    public string nextSceneName;
-
-    private void Start()
+    public class SceneController : MonoBehaviour
     {
-        // 인트로 시작 시 화면 페이드 아웃
-        sceneFader.FadeOutToZero(() =>
+        public SceneFader sceneFader;
+        public SimpleBGMPlayer bgmPlayer;
+        public UISlideShowFade slideShow;
+        public string nextSceneName;
+
+        private void Start()
         {
-            // 슬라이드 쇼 종료
+            // 인트로 시작 시 화면 페이드 아웃 (밝아짐)
+            sceneFader.FadeStart(0f);
+
+            // 슬라이드 쇼 종료 이벤트 등록
             slideShow.onSlideShowFinished += OnSlideShowFinished;
-        });
-    }
+        }
 
-    private void OnSlideShowFinished()
-    {
-        // 화면 페이드 인
-        sceneFader.FadeInToOne(() =>
+        private void OnSlideShowFinished()
         {
-            // 음악 페이드 아웃
-            bgmPlayer.StopBGM();
+            // BGM 페이드 아웃 시작 (백그라운드에서 실행)
+            if (bgmPlayer != null)
+            {
+                bgmPlayer.StopBGM();
+            }
 
-            // 음악 페이드 종료 후 씬 전환
-            StartCoroutine(LoadNextSceneAfterBGM());
-        });
-    }
+            // 화면 페이드 아웃 후 바로 씬 전환
+            StartCoroutine(FadeOutAndLoadScene());
+        }
 
-    private IEnumerator LoadNextSceneAfterBGM()
-    {
-        yield return new WaitForSeconds(bgmPlayer.fadeOutTime);
-        SceneManager.LoadScene(nextSceneName);
+        private IEnumerator FadeOutAndLoadScene()
+        {
+            // 화면 페이드 아웃 (어두워짐)
+            float fadeTime = 1f;
+            float t = 0f;
+
+            while (t < 1f)
+            {
+                t += Time.deltaTime / fadeTime;
+                float a = sceneFader.curve.Evaluate(t);
+                sceneFader.img.color = new Color(0f, 0f, 0f, a);
+                yield return null;
+            }
+
+            // 페이드 완료 후 바로 씬 전환 (BGM 대기 없음)
+            if (!string.IsNullOrEmpty(nextSceneName))
+            {
+                SceneManager.LoadScene(nextSceneName);
+            }
+        }
+
+        private void OnDestroy()
+        {
+            // 이벤트 해제
+            if (slideShow != null)
+            {
+                slideShow.onSlideShowFinished -= OnSlideShowFinished;
+            }
+        }
     }
 }
