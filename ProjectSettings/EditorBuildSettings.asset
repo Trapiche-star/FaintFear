@@ -29,6 +29,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/FaintFear/_MainScenes/EndingB.unity
     guid: 317384977a2fbf646a8eef34a8da4b5a
+  - enabled: 1
+    path: Assets/FaintFear/_MainScenes/EndingC.unity
+    guid: 311b511a8837aa24185fc334843e225e
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
