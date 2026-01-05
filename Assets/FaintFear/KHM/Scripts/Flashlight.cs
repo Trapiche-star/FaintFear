@@ -7,47 +7,27 @@ namespace FaintFear
     /// </summary>
     public class Flashlight : MonoBehaviour
     {
-        #region Variabels
-        public Light spotLight;              // 손전등
-        private bool isOn = false;            // 현재 상태
+        [Header("Light")]
+        public Light spotLight;
 
-        [SerializeField]
-        private float batteryDrainRate = 10f; // 1초에 감소할 배터리량
+        [Header("Battery")]
+        [SerializeField] private float batteryDrainRate = 10f; // 1초당 배터리 소모량
 
-        private PlayerInputAction inputActions;
+        [Header("Sound IDs (SoundManager 기준)")]
+        [SerializeField] private string turnOnSFX = "SFX_Flashlight_On";
+        [SerializeField] private string turnOffSFX = "SFX_Flashlight_Off";
+        [SerializeField] private string batteryEmptySFX = "SFX_Flashlight_Empty";
 
+        private bool isOn = false;
 
-        #endregion
-
-        #region Property
         public bool IsOn => isOn;
-        #endregion
-
-        #region Unity Event Method
-        private void Awake()
-        {
-            inputActions = new PlayerInputAction();
-
-            // Flashlight Action이 눌렸을 때
-            //inputActions.Player.Flashlight.performed += ctx => ToggleLight();
-        }
 
         private void Start()
         {
-            //초기화
             isOn = false;
             spotLight.enabled = false;
+
             PlayerStatus.Instance.isBatteryActive = true;
-        }
-
-        private void OnEnable()
-        {
-            //inputActions.Enable();
-        }
-
-        private void OnDisable()
-        {
-            //inputActions.Disable();
         }
 
         private void Update()
@@ -57,48 +37,78 @@ namespace FaintFear
                 DrainBattery();
             }
         }
-        #endregion
 
-        #region Custom Method
+        #region Public Method
         public void ToggleLight()
         {
             // 배터리도 없고, 충전된 것도 없으면 사용 불가
             if (PlayerStatus.Instance.batteryCount <= 0 &&
                 PlayerStatus.Instance.currentBattery <= 0f)
             {
-                spotLight.enabled = false;
-                isOn = false;
+                TurnOff(true);
                 return;
             }
-            //손전등 토글
-            isOn = !isOn;
-            spotLight.enabled = isOn;
+
+            if (isOn)
+            {
+                TurnOff(false);
+            }
+            else
+            {
+                TurnOn();
+            }
+        }
+        #endregion
+
+        #region Private Method
+        void TurnOn()
+        {
+            isOn = true;
+            spotLight.enabled = true;
+
+            if (!string.IsNullOrEmpty(turnOnSFX))
+                SoundManager.Instance.PlaySFX(turnOnSFX);
         }
 
-        //손전등 배터리 소모
-        void DrainBattery() 
+        void TurnOff(bool isBatteryEmpty)
         {
-            if (PlayerStatus.Instance.isBatteryActive == false)
+            isOn = false;
+            spotLight.enabled = false;
+
+            if (isBatteryEmpty)
+            {
+                if (!string.IsNullOrEmpty(batteryEmptySFX))
+                    SoundManager.Instance.PlaySFX(batteryEmptySFX);
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(turnOffSFX))
+                    SoundManager.Instance.PlaySFX(turnOffSFX);
+            }
+        }
+
+        // 손전등 배터리 소모
+        void DrainBattery()
+        {
+            if (!PlayerStatus.Instance.isBatteryActive)
                 return;
-           
+
             PlayerStatus.Instance.currentBattery -= batteryDrainRate * Time.deltaTime;
+
             if (PlayerStatus.Instance.currentBattery <= 0f)
             {
                 PlayerStatus.Instance.currentBattery = 0f;
 
                 if (PlayerStatus.Instance.UseBattery())
                 {
-                    // 충전만 됨
+                    // 배터리 교체 성공 → 그대로 유지
                 }
                 else
                 {
-                    isOn = false;
-                    spotLight.enabled = false;
+                    TurnOff(true);
                 }
             }
         }
         #endregion
     }
 }
-
-
