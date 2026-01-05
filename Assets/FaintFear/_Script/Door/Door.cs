@@ -25,11 +25,17 @@ namespace FaintFear
 
             if (!isOpen)
             {
+                //문 열림 사운드
+                SoundManager.Instance.PlaySFX("SFX_DoorOpen");
+
                 StartCoroutine(MoveDoorRoutine(-90f));
                 onDoorOpen?.Invoke();
             }
             else
             {
+                //문 닫힘 사운드
+                SoundManager.Instance.PlaySFX("SFX_DoorClose");
+
                 StartCoroutine(MoveDoorRoutine(0f));
                 onDoorClose?.Invoke();
             }

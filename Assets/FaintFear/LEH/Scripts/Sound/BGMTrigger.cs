@@ -4,40 +4,63 @@ namespace FaintFear
 {
     public class BGMTrigger : MonoBehaviour
     {
-        [Header("재생할 BGM 목록")]
-        public string[] bgmNames;
-
-        [Header("옵션")]
-        public bool playRandom = false;
-        public bool preventDuplicate = true;
-
-        private string lastPlayed;
-
-        //이벤트에 연결
-        public void PlayBGM()
+        public enum TriggerType
         {
-            if (SoundManager.Instance == null || bgmNames.Length == 0)
-                return;
-
-            string bgm;
-
-            if (playRandom)
-                bgm = bgmNames[Random.Range(0, bgmNames.Length)];
-            else
-                bgm = bgmNames[0];
-
-            if (preventDuplicate && bgm == lastPlayed)
-                return;
-
-            lastPlayed = bgm;
-            SoundManager.Instance.PlayBGM(bgm);
+            OnEnter,
+            OnExit,
+            OnEnable,
+            OnDisable,
+            Manual
         }
 
-        public void StopBGM()
+        [Header("Trigger")]
+        public TriggerType triggerType = TriggerType.OnEnter;
+        public string bgmName;
+        public bool stopCurrentBGM;
+        public bool oneTime = true;
+
+        private bool triggered;
+
+        private void OnEnable()
         {
+            if (triggerType == TriggerType.OnEnable)
+                Play();
+        }
+
+        private void OnDisable()
+        {
+            if (triggerType == TriggerType.OnDisable)
+                Play();
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (triggerType != TriggerType.OnEnter) return;
+            if (!other.CompareTag("Player")) return;
+
+            Play();
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (triggerType != TriggerType.OnExit) return;
+            if (!other.CompareTag("Player")) return;
+
+            Play();
+        }
+
+        public void Play()
+        {
+            if (oneTime && triggered) return;
+            triggered = true;
+
             if (SoundManager.Instance == null) return;
-            SoundManager.Instance.StopBGM();
-            lastPlayed = null;
+
+            if (stopCurrentBGM)
+                SoundManager.Instance.StopBGM();
+
+            if (!string.IsNullOrEmpty(bgmName))
+                SoundManager.Instance.PlayBGM(bgmName);
         }
     }
 }

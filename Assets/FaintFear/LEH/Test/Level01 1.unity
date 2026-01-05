@@ -618,6 +618,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &89366484 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2283930818852888608, guid: b57554e67d80a564aa3f900996d0b894, type: 3}
+  m_PrefabInstance: {fileID: 2114305055}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &119384720
 GameObject:
   m_ObjectHideFlags: 0
@@ -5334,6 +5339,7 @@ MonoBehaviour:
   movePosition: {fileID: 0}
   moveSpeed: 3
   sequenceText: {fileID: 0}
+  flashlightObject: {fileID: 0}
   chargeSpeed: 0.5
   drainSpeed: 1
   gaugeUI: {fileID: 0}
@@ -5980,6 +5986,7 @@ MonoBehaviour:
   - "\uD3D0\uBCD1\uC6D0\uC744 \uC21C\uCC30\uD558\uB2E4 \uCE68\uC785\uC790\uB4E4\uC744
     \uCAD3\uC544 \uB4E4\uC5B4\uC654\uB294\uB370\u2026"
   - "\uBC30\uD130\uB9AC\uAC00 \uAEBC\uC838\uBC84\uB838\uAD70."
+  playerMove: {fileID: 0}
 --- !u!4 &1635383540
 Transform:
   m_ObjectHideFlags: 0
@@ -8028,6 +8035,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6763567061093982758, guid: b57554e67d80a564aa3f900996d0b894, type: 3}
+      propertyPath: movePosition
+      value: 
+      objectReference: {fileID: 89366484}
     - target: {fileID: 7683404492861216788, guid: b57554e67d80a564aa3f900996d0b894, type: 3}
       propertyPath: m_Name
       value: PushItem
@@ -9246,10 +9257,6 @@ PrefabInstance:
     - target: {fileID: 5048336352988005997, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
       propertyPath: m_Name
       value: SoundManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: sounds.Array.data[0].playOnAwake
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12082,9 +12089,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcf5dcfbbc96e794b9c6b6689d8ec1ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movePosition: {fileID: 0}
+  movePosition: {fileID: 89366484}
   moveSpeed: 3
   sequenceText: {fileID: 0}
+  flashlightObject: {fileID: 0}
   chargeSpeed: 0.5
   drainSpeed: 1
   gaugeUI: {fileID: 0}
@@ -13299,8 +13307,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7fb81cebc513614daef1f732f9d9b53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerGaugePlayer: {fileID: 0}
-  gaugeUI: {fileID: 955759298}
 --- !u!114 &7684836878560161773
 MonoBehaviour:
   m_ObjectHideFlags: 0
