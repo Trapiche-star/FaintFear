@@ -86,7 +86,14 @@ namespace FaintFear
         //옵션
         public void OnOptions()
         {
+            pauseUI.SetActive(false);
             optionsPanel.SetActive(true);
+        }
+        //옵션 창 끄기
+        public void CloseOptions()
+        {
+            pauseUI.SetActive(true);
+            optionsPanel.SetActive(false);
         }
 
         //게임 종료
