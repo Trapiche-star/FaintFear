@@ -15,8 +15,7 @@ namespace FaintFear
         [SerializeField] private SequenceTextManager textManager; // 텍스트 출력과 시퀀스를 담당
         private PlayerMove playerMove;                             // 플레이어 이동 제어
 
-        [Header("No Dagger")]
-        private int noDaggerCount = 0;   // 대거 없음 전용 카운트
+        [Header("No Dagger")]        
         [SerializeField] private string noDagger_First;           // 첫 조사
         [SerializeField] private string noDagger_Second;          // 두 번째 조사
 
