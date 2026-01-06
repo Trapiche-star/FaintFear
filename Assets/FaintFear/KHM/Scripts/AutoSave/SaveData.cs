@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
@@ -24,4 +25,16 @@ public class SaveData
 
     // ⭐ 조명 영구 꺼짐 상태
     public bool lightsPermaOff;
+
+    // ⭐ 월드 오브젝트 상태
+    public List<string> destroyedObjects = new List<string>();
+
+    public List<MovedObjectData> movedObjects = new List<MovedObjectData>();
+}
+
+[Serializable]
+public class MovedObjectData
+{
+    public string id;
+    public Vector3 position;
 }

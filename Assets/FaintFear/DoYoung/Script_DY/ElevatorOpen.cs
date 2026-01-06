@@ -20,6 +20,10 @@ namespace FaintFear
         [SerializeField] private string fail_Second;              // 전력 미공급 문구 2
         [SerializeField] private float lineHoldTime = 2.5f;       // 문구 유지 시간
 
+        [Header("Scene Settings")]
+        [SerializeField] private string targetSceneName = "BasementScene";
+        [SerializeField] private string spawnPointName = "FromBasement";
+
         [Header("Action Text")]
         [SerializeField] private string actionText = "사용하기";  // ActionUI 문구
 
@@ -78,7 +82,15 @@ namespace FaintFear
         // 엘리베이터를 실행한다
         private void ExecuteElevator()
         {
-            // 여기서 씬 이동 / 연출 / 애니메이션을 처리하면 된다
+            if (SceneLoadManager.Instance != null)
+            {
+                SceneLoadManager.Instance.LoadScene(targetSceneName, spawnPointName);
+            }
+            else
+            {
+                Debug.LogError("[SceneTransitionDoor] SceneLoadManager not found!");
+            }
+
             Debug.Log("엘리베이터 실행");
         }
 

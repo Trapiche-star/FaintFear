@@ -46,19 +46,17 @@ namespace FaintFear
         public void LoadScene(string sceneName, string spawnPointName = "")
         {
             if (IsSceneTransitioning)
-            {
                 return;
-            }
 
             IsSceneTransitioning = true;
 
-            // ⭐ 씬 로드 전에 미리 GameManager에 알림!
+            // ⭐ 씬 이동 직전 저장
+            SaveSystem.SaveGame(checkpointId: "", tutorialCompleted: false);
+
             if (!string.IsNullOrEmpty(spawnPointName) && GameManager.Instance != null)
             {
                 GameManager.Instance.SetSceneTransitionMode(spawnPointName);
             }
-
-            nextSpawnPointName = spawnPointName;
 
             StartCoroutine(LoadSceneRoutine(sceneName));
         }

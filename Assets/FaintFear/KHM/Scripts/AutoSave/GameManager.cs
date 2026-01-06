@@ -134,11 +134,13 @@ namespace FaintFear
                 case GameStartMode.RestartFromCheckpoint:
                     Debug.Log("[GameManager] Loading player from save");
                     LoadPlayerFromSave();
+                    SaveSystem.ApplyWorldObjectLoad();
                     break;
 
                 case GameStartMode.SceneTransition:
                     Debug.Log($"[GameManager] SceneTransition mode - spawning at: {spawnToUse}");
                     SpawnPlayerAtSpawnPoint(spawnToUse);
+                    SaveSystem.ApplyWorldObjectLoad();
                     break;
             }
         }

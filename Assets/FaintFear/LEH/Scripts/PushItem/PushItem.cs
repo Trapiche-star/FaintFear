@@ -3,14 +3,17 @@ using System.Collections;
 
 namespace FaintFear
 {
-    public class PushItem : Interactive, IActionProvider
+    public class PushItem : Interactive, IActionProvider, ISaveableWorldObject
     {
+        [Header("Save")]
+        [SerializeField] private string uniqueId;
+
         [Header("Move Settings")]
         [SerializeField] private Transform movePosition;
         [SerializeField] private float moveSpeed = 2f;
         [SerializeField] private SequenceTextManager sequenceText;
 
-        [Header("Sound IDs (SoundManager 기준)")]
+        [Header("Sound IDs")]
         [SerializeField] private string startPushSFX = "SFX_Push_Start";
         [SerializeField] private string completePushSFX = "SFX_Push_Complete";
 
@@ -26,6 +29,34 @@ namespace FaintFear
         public PushGaugeUI gaugeUI;
 
         private bool isInRange = false;
+
+        // ===================== Save Interface =====================
+        public string GetID() => uniqueId;
+
+        public void Save(ref SaveData data)
+        {
+            if (!isCleared) return;
+
+            // 중복 제거
+            data.movedObjects.RemoveAll(x => x.id == uniqueId);
+
+            data.movedObjects.Add(new MovedObjectData
+            {
+                id = uniqueId,
+                position = transform.position
+            });
+        }
+        public void Load(SaveData data)
+        {
+            var saved = data.movedObjects.Find(x => x.id == uniqueId);
+            if (saved == null) return;
+
+            transform.position = saved.position;
+            isCleared = true;
+            DisablePushing();
+        }
+
+        // ===================== Unity =====================
 
         void Start()
         {
@@ -43,28 +74,19 @@ namespace FaintFear
             {
                 currentPushProgress += chargeSpeed * Time.deltaTime;
                 currentPushProgress = Mathf.Clamp01(currentPushProgress);
-
                 gaugeUI?.UpdateGauge(currentPushProgress);
 
                 if (currentPushProgress >= 1f)
-                {
                     CompletePush();
-                }
             }
-            else
+            else if (currentPushProgress > 0f)
             {
-                if (currentPushProgress > 0f)
-                {
-                    currentPushProgress -= drainSpeed * Time.deltaTime;
-                    currentPushProgress = Mathf.Max(0f, currentPushProgress);
+                currentPushProgress -= drainSpeed * Time.deltaTime;
+                currentPushProgress = Mathf.Max(0f, currentPushProgress);
+                gaugeUI?.UpdateGauge(currentPushProgress);
 
-                    gaugeUI?.UpdateGauge(currentPushProgress);
-
-                    if (currentPushProgress <= 0f)
-                    {
-                        gaugeUI?.HideGauge();
-                    }
-                }
+                if (currentPushProgress <= 0f)
+                    gaugeUI?.HideGauge();
             }
         }
 
@@ -84,9 +106,7 @@ namespace FaintFear
             {
                 GameObject player = GameObject.FindWithTag("Player");
                 if (player != null)
-                {
                     playerMove = player.GetComponent<PlayerMove>();
-                }
             }
 
             if (playerMove == null)
@@ -101,16 +121,12 @@ namespace FaintFear
 
         public void DisablePushing()
         {
-            if (!isInRange) return;
-
             isInRange = false;
             isPushing = false;
             currentPushProgress = 0f;
 
             if (playerMove != null)
-            {
                 playerMove.OnPushEvent -= OnPushInput;
-            }
 
             gaugeUI?.HideGauge();
             sequenceText.Hide();
@@ -126,11 +142,7 @@ namespace FaintFear
             {
                 gaugeUI?.ShowGauge();
                 sequenceText.Hide();
-
-                if (!string.IsNullOrEmpty(startPushSFX))
-                {
-                    SoundManager.Instance.PlaySFX(startPushSFX);
-                }
+                SoundManager.Instance?.PlaySFX(startPushSFX);
             }
         }
 
@@ -138,20 +150,8 @@ namespace FaintFear
         {
             isPushing = false;
             isCleared = true;
-            isInRange = false;
-
-            if (playerMove != null)
-            {
-                playerMove.OnPushEvent -= OnPushInput;
-            }
-
-            gaugeUI?.HideGauge();
-
-            if (!string.IsNullOrEmpty(completePushSFX))
-            {
-                SoundManager.Instance.PlaySFX(completePushSFX);
-            }
-
+            DisablePushing();
+            SoundManager.Instance?.PlaySFX(completePushSFX);
             StartCoroutine(MoveToPosition());
         }
 
@@ -168,7 +168,6 @@ namespace FaintFear
                     targetPos,
                     moveSpeed * Time.deltaTime
                 );
-
                 newPos.y = originalY;
                 transform.position = newPos;
                 yield return null;
@@ -179,18 +178,14 @@ namespace FaintFear
 
         public string GetActionText()
         {
-            if (isCleared || isPushing)
-                return "";
-
+            if (isCleared || isPushing) return "";
             return "[V] 꾹 눌러서 상자 치우기";
         }
 
         void OnDestroy()
         {
             if (playerMove != null)
-            {
                 playerMove.OnPushEvent -= OnPushInput;
-            }
         }
     }
 }

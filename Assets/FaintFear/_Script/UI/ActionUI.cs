@@ -25,7 +25,7 @@ namespace FaintFear
         public void ShowAction(string text)
         {
             // "문 열기 [E]" 형태로 텍스트 설정
-            actionText.text = $"{text} [E]";
+            actionText.text = text;
 
             // 텍스트 오브젝트 활성화
             actionText.gameObject.SetActive(true);
