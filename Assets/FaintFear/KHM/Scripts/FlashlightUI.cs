@@ -3,35 +3,29 @@ using UnityEngine.UI;
 
 namespace FaintFear
 {
-    /// <summary>
-    /// 손전등UI를 관리하는 클래스
-    /// </summary>
     public class FlashlightUI : MonoBehaviour
     {
-        #region Variables
         private Flashlight flashlight;
-        public CanvasGroup flashlightUI;
-        public GameObject isOn;     //손전등 on/off
-        public Image batteryGauge;  //배터리 게이지
-        public Image[] batteryIcons;    //소지 중인 배터리 갯수 
-        #endregion
 
-        #region Unity Event Method
-        private void Awake()
-        {
-            //참조
-            flashlight = FindFirstObjectByType<Flashlight>();
-        }
+        public CanvasGroup flashlightUI;
+        public GameObject isOn;
+        public Image batteryGauge;
+        public Image[] batteryIcons;
+
         private void Update()
         {
-            //배터리 갯수
+            // 🔒 Player 아직 없으면 대기
+            if (PlayerStatus.Instance == null || flashlight == null)
+                return;
+
+            // 배터리 갯수
             BatteryCountUI();
 
-            //배터리 게이지
+            // 배터리 게이지
             batteryGauge.fillAmount =
-            PlayerStatus.Instance.BatteryNormalized;
+                PlayerStatus.Instance.BatteryNormalized;
 
-            //손전등 on/off
+            // 손전등 on/off
             if (flashlight.IsOn)
             {
                 isOn.SetActive(true);
@@ -43,9 +37,7 @@ namespace FaintFear
                 flashlightUI.alpha = 0.3f;
             }
         }
-        #endregion
 
-        #region Custom Method
         void BatteryCountUI()
         {
             int count = PlayerStatus.Instance.batteryCount;
@@ -55,6 +47,11 @@ namespace FaintFear
                 batteryIcons[i].gameObject.SetActive(i < count);
             }
         }
-        #endregion
+
+        // ⭐ GameManager에서 호출
+        public void BindPlayer(GameObject player)
+        {
+            flashlight = player.GetComponentInChildren<Flashlight>();
+        }
     }
 }

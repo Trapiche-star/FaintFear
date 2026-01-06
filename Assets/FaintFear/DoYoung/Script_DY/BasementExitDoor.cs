@@ -184,7 +184,7 @@ namespace FaintFear
             if (SceneLoadManager.Instance == null) return;
             // 만약 [씬 로드 매니저가 없다면] [요청을 중단한다]
 
-            SceneLoadManager.Instance.RequestMoveToScene(targetSceneName);
+            SceneLoadManager.Instance.LoadScene(targetSceneName);
             // 씬 이동을 매니저에 위임한다
         }
 

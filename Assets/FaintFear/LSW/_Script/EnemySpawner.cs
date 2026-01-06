@@ -7,7 +7,7 @@ public class EnemySpawner : MonoBehaviour
     private List<Transform> spawnerPositions = new List<Transform>();
 
     [SerializeField] private GameObject enemyPrefab; // 생성할 적 프리팹
-    [SerializeField] private float spawnInterval = 30.0f;
+    [SerializeField] private float spawnInterval = 60.0f;
 
     private void Awake()
     {

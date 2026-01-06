@@ -1,23 +1,27 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using System.Collections;
 
 namespace FaintFear
 {
+    /// <summary>
+    /// 인트로/슬라이드쇼 씬 컨트롤러
+    /// </summary>
     public class SceneController : MonoBehaviour
     {
-        public SceneFader sceneFader;
+        [Header("Components")]
         public SimpleBGMPlayer bgmPlayer;
         public UISlideShowFade slideShow;
-        public string nextSceneName;
+
+        [Header("Scene Settings")]
+        public string nextSceneName = "Level01";
+        public string spawnPointName = ""; // 필요시 스폰 포인트 지정
 
         private void Start()
         {
-            // 인트로 시작 시 화면 페이드 아웃 (밝아짐)
-            sceneFader.FadeStart(0f);
-
             // 슬라이드 쇼 종료 이벤트 등록
-            slideShow.onSlideShowFinished += OnSlideShowFinished;
+            if (slideShow != null)
+            {
+                slideShow.onSlideShowFinished += OnSlideShowFinished;
+            }
         }
 
         private void OnSlideShowFinished()
@@ -28,28 +32,23 @@ namespace FaintFear
                 bgmPlayer.StopBGM();
             }
 
-            // 화면 페이드 아웃 후 바로 씬 전환
-            StartCoroutine(FadeOutAndLoadScene());
-        }
-
-        private IEnumerator FadeOutAndLoadScene()
-        {
-            // 화면 페이드 아웃 (어두워짐)
-            float fadeTime = 1f;
-            float t = 0f;
-
-            while (t < 1f)
+            // SceneLoadManager로 씬 전환
+            if (SceneLoadManager.Instance != null)
             {
-                t += Time.deltaTime / fadeTime;
-                float a = sceneFader.curve.Evaluate(t);
-                sceneFader.img.color = new Color(0f, 0f, 0f, a);
-                yield return null;
+                if (string.IsNullOrEmpty(spawnPointName))
+                {
+                    SceneLoadManager.Instance.LoadScene(nextSceneName);
+                }
+                else
+                {
+                    SceneLoadManager.Instance.LoadScene(nextSceneName, spawnPointName);
+                }
             }
-
-            // 페이드 완료 후 바로 씬 전환 (BGM 대기 없음)
-            if (!string.IsNullOrEmpty(nextSceneName))
+            else
             {
-                SceneManager.LoadScene(nextSceneName);
+                Debug.LogError("[SceneController] SceneLoadManager not found!");
+                // 폴백: 일반 씬 전환
+                UnityEngine.SceneManagement.SceneManager.LoadScene(nextSceneName);
             }
         }
 

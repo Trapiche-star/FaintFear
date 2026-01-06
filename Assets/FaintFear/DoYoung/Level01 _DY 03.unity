@@ -2608,6 +2608,10 @@ PrefabInstance:
         \uB05D\uB0A0 \uAC83 \uAC19\uB2E4."
       objectReference: {fileID: 0}
     - target: {fileID: 6932697989968405514, guid: e7d63a591dc39144ca9177e676fa41d9, type: 3}
+      propertyPath: cEndingSceneName
+      value: EndingC
+      objectReference: {fileID: 0}
+    - target: {fileID: 6932697989968405514, guid: e7d63a591dc39144ca9177e676fa41d9, type: 3}
       propertyPath: cEndingLines.Array.size
       value: 1
       objectReference: {fileID: 0}

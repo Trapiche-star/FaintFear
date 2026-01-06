@@ -1,3 +1,4 @@
+using NavKeypad;
 using UnityEngine;
 
 namespace FaintFear
@@ -21,7 +22,6 @@ namespace FaintFear
         private IActionProvider currentAction;
 
         private PushItem previousPushItem;
-        // ⭐ 현재 PushItem을 밀고 있는지 추적
         private PushItem currentPushingItem;
 
         private bool isOnRay = false;
@@ -47,7 +47,6 @@ namespace FaintFear
             if (playerMove != null)
             {
                 playerMove.OnInteractEvent += Interact;
-                // ⭐ Push 이벤트 구독 (UI 숨김용)
                 playerMove.OnPushEvent += OnPushStateChanged;
             }
         }
@@ -84,26 +83,58 @@ namespace FaintFear
             }
 
             ShootRay();
+
+            // ⭐ 마우스 왼쪽 클릭으로 키패드 버튼 누르기
+            if (Input.GetMouseButtonDown(0))
+            {
+                CheckKeypadButton();
+            }
         }
 
         #endregion
 
         #region Custom Method
 
-        // ⭐ V키 입력 상태 변경 시 호출
         private void OnPushStateChanged(bool isPushing)
         {
             if (isPushing)
             {
-                // ⭐ V키 누르는 순간 crossHair와 actionUI 숨김
                 crossHair?.SetActive(false);
                 actionUI?.HideAction();
                 currentPushingItem = previousPushItem;
             }
             else
             {
-                // ⭐ V키 뗐을 때 UI 복구 (게이지가 0이 아니면 유지)
                 currentPushingItem = null;
+            }
+        }
+
+        /// <summary>
+        /// ⭐ 키패드 버튼 클릭 체크
+        /// </summary>
+        private void CheckKeypadButton()
+        {
+            if (cameraRoot == null) return;
+
+            Ray ray = new Ray(cameraRoot.position, cameraRoot.forward);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, rayDistance, targetLayer))
+            {
+                // KeypadButton 컴포넌트 체크
+                KeypadButton keypadButton = hit.collider.GetComponent<KeypadButton>();
+                if (keypadButton != null)
+                {
+                    keypadButton.PressButton();
+                    return;
+                }
+
+                // 부모에서도 찾아보기
+                keypadButton = hit.collider.GetComponentInParent<KeypadButton>();
+                if (keypadButton != null)
+                {
+                    keypadButton.PressButton();
+                }
             }
         }
 
@@ -142,7 +173,6 @@ namespace FaintFear
                 PushItem pushItem = target.GetComponentInParent<PushItem>();
                 if (pushItem != null)
                 {
-                    // ⭐ 이미 움직인 오브젝트는 무시
                     if (pushItem.GetComponent<PushItem>() != null &&
                         pushItem.GetActionText() == "")
                     {
@@ -170,7 +200,6 @@ namespace FaintFear
                         previousPushItem = pushItem;
                     }
 
-                    // ⭐ V키를 누르고 있지 않을 때만 UI 표시
                     if (currentPushingItem == null)
                     {
                         crossHair?.SetActive(true);
@@ -194,7 +223,6 @@ namespace FaintFear
                     currentAction = action;
                     string actionText = action.GetActionText();
 
-                    // ⭐ V키 누르는 중이 아닐 때만 텍스트 표시
                     if (currentPushingItem == null && !string.IsNullOrEmpty(actionText))
                     {
                         actionUI?.ShowAction(actionText);

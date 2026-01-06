@@ -54,6 +54,9 @@ namespace FaintFear
 
         //움직임만 막기
         public bool canMove = true;
+
+        // 입력값이 있는지 확인하는 프로퍼티 (Vector2.zero가 아니면 true)
+        public bool IsMovingInput => currentMoveInput != Vector2.zero;
         #endregion
 
         #region Unity Event Method

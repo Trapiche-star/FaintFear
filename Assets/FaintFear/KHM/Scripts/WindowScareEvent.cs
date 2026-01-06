@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.Cinemachine;
 using UnityEngine;
 
 namespace FaintFear
@@ -7,19 +6,14 @@ namespace FaintFear
     /// <summary>
     /// 배터리 획득 후 창문 연출, 시선 고정, 귀신 이벤트를 처리하는 시퀀스 이벤트
     /// </summary>
-    public class WindowScareEvent : MonoBehaviour
+    public class WindowScareEvent : TutorialEventBase
     {
         #region Variables
 
-        private PlayerMove playerMove;                    // 플레이어 이동 제어 컴포넌트
-        private Flashlight flashlight;                    // 손전등 제어 컴포넌트
-
         [SerializeField] private LightZone01 lightZone;   // 라이트 존 제어기
         [SerializeField] private TriggerRestrict triggerRestrict; // 이동 제한 트리거
-        [SerializeField] private CinemachineCamera vcam;  // 시네머신 가상 카메라
 
         [Header("카메라 연출")]
-        [SerializeField] private Transform cameraPosition;    // 회전시킬 카메라 기준
         [SerializeField] private Transform windowLookPoint;   // 창문 시선 타겟
         [SerializeField] private float rotateSpeed = 5f;      // 시선 회전 속도
 
@@ -48,38 +42,32 @@ namespace FaintFear
 
             if (tutorialDone || GameManager.TutorialCompleted)
             {
-                Debug.Log("[WindowScareEvent] Tutorial already done - destroying");
                 Destroy(gameObject);
+                return;
             }
-
-            var player = GameObject.FindWithTag("Player");
-            if (player != null)
-            {
-                cameraPosition = player.transform.Find("CameraPosition");
-                flashlight = player.GetComponentInChildren<Flashlight>(true);
-                playerMove = player.GetComponent<PlayerMove>();
-            }
-
-            if (cameraPosition == null)
-                Debug.LogError("[WindowScareEvent] Player camera not found");
         }
 
         private void Update()
         {
-            if (IsTutorialCompleted())
-                return;
+            if (!CanPlay()) return;
+            if (PlayerStatus.Instance.currentBattery <= 0f) return;
 
-            if (!eventTriggered && PlayerStatus.Instance.currentBattery > 0f)
-            {
-                eventTriggered = true;
-                StartCoroutine(SequencePlay());
-            }
+            Play(SequencePlay());
         }
+
 
         #endregion
 
 
         #region Custom Method
+        protected override bool IsTutorialCompleted()
+        {
+            if (GameManager.TutorialCompleted) return true;
+
+            var data = SaveSystem.LoadPreview();
+            return data != null && data.tutorialCompleted;
+        }
+
 
         // 창문 공포 연출 전체 흐름을 처리하는 메인 시퀀스
         private IEnumerator SequencePlay()
@@ -96,9 +84,8 @@ namespace FaintFear
             if (GameManager.TutorialCompleted)
                 yield break;
 
-            // 플레이어 이동 및 카메라 잠금
+            // 플레이어 이동 잠금
             playerMove.canMove = false;
-            vcam.enabled = false;
 
             // 조명 끄기
             lightZone.SetLightsActive(false);
@@ -134,7 +121,6 @@ namespace FaintFear
             // 플레이어 조작 복구
             playerMove.enabled = true;
             playerMove.canMove = true;
-            vcam.enabled = true;
 
             // 이동 제한 해제
             triggerRestrict.SetRestriction(false);
@@ -167,23 +153,22 @@ namespace FaintFear
             if (cameraPosition == null || windowLookPoint == null)
                 yield break;
 
-            Quaternion startRot = cameraPosition.rotation;
-
-            Vector3 dir = (windowLookPoint.position - cameraPosition.position).normalized;
-            Quaternion targetRot = Quaternion.LookRotation(dir);
+            Quaternion start = cameraPosition.rotation;
+            Quaternion target = Quaternion.LookRotation(
+                (windowLookPoint.position - cameraPosition.position).normalized
+            );
 
             float t = 0f;
-
             while (t < 1f)
             {
-                t += Time.deltaTime * rotateSpeed;          // 시간 기반 보간
-                cameraPosition.rotation = Quaternion.Slerp(startRot, targetRot, t);
+                if (cameraPosition == null)
+                    yield break;
+
+                t += Time.deltaTime * rotateSpeed;
+                cameraPosition.rotation = Quaternion.Slerp(start, target, t);
                 yield return null;
             }
-
-            cameraPosition.rotation = targetRot;            // 최종 각도 고정
         }
-
         // 귀신을 목표 지점까지 이동시킨 후 제거한다
         private IEnumerator MoveGhost()
         {
@@ -201,12 +186,6 @@ namespace FaintFear
 
             // 귀신 오브젝트를 제거한다
             Destroy(ghost);
-        }
-
-        private bool IsTutorialCompleted()
-        {
-            var data = SaveSystem.LoadPreview();
-            return data != null && data.tutorialCompleted;
         }
         #endregion
     }
