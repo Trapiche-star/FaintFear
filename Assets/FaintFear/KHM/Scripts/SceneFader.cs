@@ -7,13 +7,17 @@ namespace FaintFear
 {
     /// <summary>
     /// 씬 페이드인, 페이드 아웃 기능
-    /// 페이드 아웃 후 씬 이동
+    /// 페이드 아웃 후 씬 이동 + 스폰 위치 설정
     /// </summary>
     public class SceneFader : MonoBehaviour
     {
         #region Variables
         public Image img;
         public AnimationCurve curve;
+
+        // ⭐ 씬 전환 시 사용할 스폰 정보 저장
+        public static Vector3? targetSpawnPosition = null;
+        public static Quaternion? targetSpawnRotation = null;
         #endregion
 
         #region Unity Event Method
@@ -32,55 +36,53 @@ namespace FaintFear
         }
 
         //페이드인: 1초동안 이미지 a: 1 -> 0
-        //페이드 시작전 매개변수로 받은 딜레이 시간 주기
         IEnumerator FadeIn(float delayTime)
         {
-            //delayTime 체크
             if (delayTime >= 0f)
             {
                 yield return new WaitForSeconds(delayTime);
             }
-
             float t = 1f;
-
             while (t > 0f)
             {
                 t -= Time.deltaTime;
                 float a = curve.Evaluate(t);
                 img.color = new Color(0f, 0f, 0f, a);
-
                 yield return 0;
             }
         }
 
-        //페이드 아웃 이후 매개변수로 받은 씬이름으로 씬 이동
+        // ⭐ 기존 메서드 (스폰 위치 없음)
         public void FadeTo(string sceneName)
         {
             StartCoroutine(FadeOut(sceneName));
         }
 
-        //페이드 아웃 이후 매개변수로 받은 씬 빌드번호으로 씬 이동
-        public void FadeTo(int buildIndex)
+        //Transform으로 스폰 위치 지정
+        public void FadeTo(string sceneName, Transform spawnPoint)
         {
-            StartCoroutine(FadeOut(buildIndex));
+            if (spawnPoint != null)
+            {
+                targetSpawnPosition = spawnPoint.position;
+                targetSpawnRotation = spawnPoint.rotation;
+            }
+            StartCoroutine(FadeOut(sceneName));
         }
 
         //페이드 아웃 : 1초동안 이미지 a: 0 -> 1
         IEnumerator FadeOut(string sceneName)
         {
             float t = 0f;
-
             while (t < 1f)
             {
                 t += Time.deltaTime;
                 float a = curve.Evaluate(t);
                 img.color = new Color(0f, 0f, 0f, a);
-
                 yield return 0;
             }
 
             //페이드 아웃 완료 후 다음씬으로 이동
-            if(sceneName != string.Empty)
+            if (sceneName != string.Empty)
             {
                 SceneManager.LoadScene(sceneName);
             }
@@ -89,13 +91,11 @@ namespace FaintFear
         IEnumerator FadeOut(int buildIndex)
         {
             float t = 0f;
-
             while (t < 1f)
             {
                 t += Time.deltaTime;
                 float a = curve.Evaluate(t);
                 img.color = new Color(0f, 0f, 0f, a);
-
                 yield return 0;
             }
 
@@ -103,6 +103,50 @@ namespace FaintFear
             if (buildIndex >= 0)
             {
                 SceneManager.LoadScene(buildIndex);
+            }
+        }
+
+        /// <summary>
+        /// ⭐ 씬 로드 후 플레이어를 스폰 위치로 이동
+        /// GameManager나 씬 시작 스크립트에서 호출
+        /// </summary>
+        public static void ApplySpawnPosition()
+        {
+            GameObject player = GameObject.FindWithTag("Player");
+            if (player == null)
+            {
+                Debug.LogWarning("[SceneFader] Player not found!");
+                return;
+            }
+
+            // ⭐ 방법 1: 저장된 Position/Rotation 사용
+            if (targetSpawnPosition.HasValue)
+            {
+                CharacterController cc = player.GetComponent<CharacterController>();
+
+                if (cc != null)
+                {
+                    cc.enabled = false;
+                }
+
+                player.transform.position = targetSpawnPosition.Value;
+
+                if (targetSpawnRotation.HasValue)
+                {
+                    player.transform.rotation = targetSpawnRotation.Value;
+                }
+
+                if (cc != null)
+                {
+                    cc.enabled = true;
+                }
+
+                // 사용 후 초기화
+                targetSpawnPosition = null;
+                targetSpawnRotation = null;
+
+                Debug.Log("[SceneFader] Player spawned at custom position");
+                return;
             }
         }
         #endregion
