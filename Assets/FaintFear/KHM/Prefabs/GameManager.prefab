@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3649614678696241451}
   - component: {fileID: 9144330089368710740}
+  - component: {fileID: 6545161181782794338}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -44,10 +45,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ba32e6df5b824f47b9a0003e66ec26a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameplayScene: BasementScene
   playerPrefab: {fileID: 236520129318838511, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
-  newGameSpawnPoint: {fileID: 0}
+  newGameSpawnPointName: StartSpawnPoint
   gameplayScenes:
   - BasementScene
   - Level01
   - Level02
+--- !u!114 &6545161181782794338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6423179492070409946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e14116920ed3a842befeb72403dbaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

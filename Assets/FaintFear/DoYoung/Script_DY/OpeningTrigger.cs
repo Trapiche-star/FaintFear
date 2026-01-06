@@ -50,8 +50,6 @@ namespace FaintFear
             // 카메라 연출
             yield return LookAtTarget();
 
-            yield return new WaitForSeconds(1.5f);
-
             // 텍스트 출력
             if (sequenceText != null)
                 sequenceText.ShowMessage(itemDialogue, 2.5f);

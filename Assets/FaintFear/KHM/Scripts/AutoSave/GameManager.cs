@@ -213,6 +213,8 @@ namespace FaintFear
                 cc.enabled = true;
                 cc.Move(Vector3.zero);
             }
+            var flashInteraction = player.GetComponent<PlayerFlashLightInteraction>();
+            flashInteraction?.BindFlashlight(player);
         }
 
         // =========================
