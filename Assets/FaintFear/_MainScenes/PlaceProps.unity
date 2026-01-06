@@ -3436,10 +3436,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 636cb40ddb0526842b228645e6341e3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1807902829}
   playerRadius: 0.3
   pushBackOffset: 0.2
   sequenceText: {fileID: 1466940450}
+  dialogueLine: "\uB108\uBB34 \uC5B4\uB450\uC6CC\uC11C \uC190\uC804\uB4F1 \uC5C6\uC774\uB294
+    \uB354 \uC774\uC0C1 \uB098\uC544\uAC08 \uC218 \uC5C6\uB2E4."
 --- !u!1 &804914822
 GameObject:
   m_ObjectHideFlags: 0
@@ -3758,17 +3759,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
---- !u!114 &855782232 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 991481533044275061, guid: 5037ea26f60156344b0c9d66eb12e8da, type: 3}
-  m_PrefabInstance: {fileID: 855782231}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c5c4c967ae44814baeb2c403e51565d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &880653047
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4108,8 +4098,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lightZone: {fileID: 803317310}
   triggerRestrict: {fileID: 803317311}
-  vcam: {fileID: 438918824}
-  cameraPosition: {fileID: 0}
   windowLookPoint: {fileID: 62703778}
   rotateSpeed: 5
   ghost: {fileID: 1824717617}
@@ -7619,13 +7607,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ac6469c828d2534e8e801ff0d9059c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hudManager: {fileID: 547749791}
-  sequenceText: {fileID: 0}
-  dialogueHoldTime: 2.5
-  openingDialogueLines:
-  - "\uD3D0\uBCD1\uC6D0\uC744 \uC21C\uCC30\uD558\uB2E4 \uCE68\uC785\uC790\uB4E4\uC744
-    \uCAD3\uC544 \uB4E4\uC5B4\uC654\uB294\uB370\u2026"
-  - "\uBC30\uD130\uB9AC\uAC00 \uAEBC\uC838\uBC84\uB838\uAD70."
 --- !u!4 &1635383540
 Transform:
   m_ObjectHideFlags: 0
@@ -8279,11 +8260,6 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 5099307694970354947, guid: 54f457b7b64fc174aadd1e923afb1c74, type: 3}
   m_PrefabInstance: {fileID: 688463669262474905}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1807902829 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7176194923065873942, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
-  m_PrefabInstance: {fileID: 7684836878560161770}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1811782546
 PrefabInstance:
@@ -20576,17 +20552,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 236520129318838511, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
   m_PrefabInstance: {fileID: 7684836878560161770}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7684836878560161772 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8162890610884242762, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
-  m_PrefabInstance: {fileID: 7684836878560161770}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7684836878560161771}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33dfd00a402e93f488742c6b1e637fab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7684836878560161773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20599,8 +20564,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7fb81cebc513614daef1f732f9d9b53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerGaugePlayer: {fileID: 7684836878560161772}
-  gaugeUI: {fileID: 855782232}
 --- !u!23 &7694767198692797023
 MeshRenderer:
   m_ObjectHideFlags: 0
