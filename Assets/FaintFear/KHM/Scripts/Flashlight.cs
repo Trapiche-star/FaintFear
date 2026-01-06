@@ -14,9 +14,16 @@ namespace FaintFear
         [SerializeField] private float batteryDrainRate = 10f; // 1초당 배터리 소모량
 
         [Header("Sound IDs (SoundManager 기준)")]
+
+        //+
+        [Header("Optional: Toggle Sound")]
+        [SerializeField] private string toggleSFX = "SFX_Flashlight"; // 켜기/끄기 공용
+        //
         [SerializeField] private string turnOnSFX = "SFX_Flashlight_On";
         [SerializeField] private string turnOffSFX = "SFX_Flashlight_Off";
         [SerializeField] private string batteryEmptySFX = "SFX_Flashlight_Empty";
+
+        
 
         private bool isOn = false;
 
@@ -57,6 +64,11 @@ namespace FaintFear
             {
                 TurnOn();
             }
+
+            //+ 켜기/끄기 시 동일 사운드 재생
+            if (!string.IsNullOrEmpty(toggleSFX))
+                SoundManager.Instance.PlaySFX(toggleSFX);
+            //
         }
         #endregion
 

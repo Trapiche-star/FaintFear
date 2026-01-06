@@ -80,6 +80,9 @@ namespace FaintFear
         private bool isBlocked = false;
         private float currentBlockedTimer;
 
+        // + Enemy 전용 사운드 제어 스크립트 참조
+        private EnemyAudio enemyAudio;
+
         private void Awake()
         {
             controller = GetComponent<CharacterController>();
@@ -87,6 +90,8 @@ namespace FaintFear
             detectTrigger.isTrigger = true;
             startPos = transform.position;
             ani = GetComponent<Animator>();
+            // + SoundManager를 직접 만지지 않고 EnemyAudio를 통해 사운드 제어
+            enemyAudio = GetComponent<EnemyAudio>();
         }
 
         private void Start()
@@ -290,7 +295,12 @@ namespace FaintFear
                 lastAttackTime = Time.time;
                 // Animator에 "Attack" Trigger 파라미터가 있어야 함
                 ani.SetTrigger("Attack");
+
+                enemyAudio?.OnAttack();
+                // + 적이 공격 애니메이션을 시작하는 순간 호출
+                // + 공격 효과음(SFX_EnemyA_01 / SFX_EnemyA_02 중 랜덤) 재생
             }
+
         }
 
         // --- 기능 메서드 ---
@@ -350,6 +360,11 @@ namespace FaintFear
                 {
                     Debug.Log("11");
                     damageable.TakeDamage(damage);
+
+                    enemyAudio?.OnHitPlayer();
+                    // + 적의 공격이 실제로 플레이어에게 명중했을 때 호출
+                    // + 플레이어 피격음 재생 (SFX_Hurt)
+                    // + 공격 애니메이션 시작음(OnAttack)과 역할 분리
                 }
             }
         }
@@ -453,6 +468,20 @@ namespace FaintFear
 
         private void ChangeState(EnemyState newState)
         {
+            if (currentState != EnemyState.Chase && newState == EnemyState.Chase)
+            {
+                enemyAudio?.OnChaseStart();
+                // + 배회 / 수색 상태에서 → 추적으로 처음 진입하는 순간
+                // + 추적 시작 효과음(SFX_EnemyStart) + 추적 BGM(BGM_Chase) 재생
+            }
+
+            if (currentState == EnemyState.Chase && newState == EnemyState.SearchLastPos)
+            {
+                enemyAudio?.OnChaseEnd();
+                // + 추적 중 플레이어를 놓쳐 수색 상태로 전환될 때
+                // + 추적 종료 BGM(BGM_ChaseEnd) 재생
+            }
+
             currentState = newState;
 
             // 상태 변경 시 대기 관련 플래그 초기화
