@@ -5,12 +5,36 @@ namespace FaintFear
     /// <summary>
     /// 엘리베이터 전력 상태 매니저
     /// 빨간 스위치 활성화 여부를 저장하고 엘리베이터 오픈 가능 상태를 관리한다
+    /// 전역 싱글톤으로 유지되어 씬 이동과 무관하게 상태를 보존한다
     /// </summary>
     public class ElevatorManager : MonoBehaviour
     {
         #region Variables
 
-        private bool isPowerSupplied = false; // 엘리베이터 전력 공급 여부
+        public static ElevatorManager Instance { get; private set; }
+        // 전역 접근용 싱글톤 인스턴스
+
+        private bool isPowerSupplied = false;
+        // 엘리베이터 전력 공급 여부
+
+        #endregion
+
+
+        #region Unity Event Method
+
+        private void Awake()
+        {
+            if (Instance != null)
+            {
+                Destroy(gameObject);
+                return;
+                // 만약 [이미 인스턴스가 존재한다면] [중복 객체를 제거한다]
+            }
+
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+            // 씬 이동 시에도 이 객체를 유지한다
+        }
 
         #endregion
 
