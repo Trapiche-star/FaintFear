@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1689085104297651599}
+  - component: {fileID: 1223387374435195309}
   m_Layer: 6
   m_Name: BatteryC
   m_TagString: Untagged
@@ -32,6 +33,19 @@ Transform:
   - {fileID: 5946581280131581297}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1223387374435195309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2514064300818425012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 997ceef848678ec418a0cd58240b76b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uniqueId: 
 --- !u!1001 &6128336240925631130
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -10,31 +10,29 @@ namespace FaintFear
     {
         #region Variables
 
-        [SerializeField] private LightZone01 lightZone;   // 라이트 존 제어기
-        [SerializeField] private TriggerRestrict triggerRestrict; // 이동 제한 트리거
+        [SerializeField] private LightZone01 lightZone;
+        [SerializeField] private TriggerRestrict triggerRestrict;
 
         [Header("카메라 연출")]
-        [SerializeField] private Transform windowLookPoint;   // 창문 시선 타겟
-        [SerializeField] private float rotateSpeed = 5f;      // 시선 회전 속도
+        [SerializeField] private Transform windowLookPoint;
+        [SerializeField] private float rotateSpeed = 5f;
 
         [Header("귀신 연출")]
-        [SerializeField] private GameObject ghost;            // 귀신 오브젝트
-        [SerializeField] private Transform moveTarget;        // 귀신 이동 목표 지점
-        [SerializeField] private float ghostSpeed = 10f;      // 귀신 이동 속도
+        [SerializeField] private GameObject ghost;
+        [SerializeField] private Transform moveTarget;
+        [SerializeField] private float ghostSpeed = 10f;
 
         [Header("텍스트")]
-        [SerializeField] private SequenceTextManager sequenceText; // 시퀀스 텍스트 매니저
+        [SerializeField] private SequenceTextManager sequenceText;
 
         private readonly string dialogueLine01 = "[F]를 눌러서 손전등을 켜고 끌 수 있다.";
         private readonly string dialogueLine02 = "어둠에 노출될 때마다 비정상적인 공포심이 몰려든다...";
         private readonly string dialogueLine03 = "빛에서 멀어지지 않는게 좋겠다.";
 
-        private bool eventTriggered = false;               // 이벤트 1회 실행 보장
-
         #endregion
 
-
         #region Unity Event Method
+
         private void Start()
         {
             var data = SaveSystem.LoadPreview();
@@ -55,11 +53,10 @@ namespace FaintFear
             Play(SequencePlay());
         }
 
-
         #endregion
 
-
         #region Custom Method
+
         protected override bool IsTutorialCompleted()
         {
             if (GameManager.TutorialCompleted) return true;
@@ -67,7 +64,6 @@ namespace FaintFear
             var data = SaveSystem.LoadPreview();
             return data != null && data.tutorialCompleted;
         }
-
 
         // 창문 공포 연출 전체 흐름을 처리하는 메인 시퀀스
         private IEnumerator SequencePlay()
@@ -121,23 +117,18 @@ namespace FaintFear
             // 귀신 이동
             yield return StartCoroutine(MoveGhost());
 
-            //+ 첫 점프스케어 이후 BGM_Tense 재생 (10초)
-            if (SoundManager.Instance != null)
-            {
-                SoundManager.Instance.PlayBGM("BGM_Tense"); //+ 재생
-                yield return new WaitForSeconds(10f);        //+ 10초 대기
-                SoundManager.Instance.StopBGM();            //+ 정지
-            }
-
-            // 잠깐 여유
-            yield return new WaitForSeconds(0.5f);
-
             // 플레이어 조작 복구
             playerMove.enabled = true;
             playerMove.canMove = true;
 
             // 이동 제한 해제
             triggerRestrict.SetRestriction(false);
+
+            // ⭐ BGM 10초 병렬 재생
+            if (SoundManager.Instance != null)
+            {
+                StartCoroutine(PlayBGMTemporary("BGM_Tense", 10f));
+            }
 
             // 설명 대사
             sequenceText.ShowMessage(dialogueLine02, 2.5f);
@@ -148,10 +139,11 @@ namespace FaintFear
 
             // 정신력 시스템 활성화
             PlayerStatus.Instance.isMentalSystemActive = true;
+
             // 세이브 포인트 저장
             SaveSystem.SaveGame("TutorialEnd", tutorialCompleted: true);
 
-            // ⭐ GameManager의 static 변수도 즉시 업데이트
+            // GameManager static 변수 즉시 업데이트
             GameManager.TutorialCompleted = true;
 
             Debug.Log("[WindowScareEvent] Tutorial completed and saved");
@@ -183,6 +175,7 @@ namespace FaintFear
                 yield return null;
             }
         }
+
         // 귀신을 목표 지점까지 이동시킨 후 제거한다
         private IEnumerator MoveGhost()
         {
@@ -198,9 +191,18 @@ namespace FaintFear
                 yield return null;
             }
 
-            // 귀신 오브젝트를 제거한다
+            // 귀신 오브젝트 제거
             Destroy(ghost);
         }
+
+        // ⭐ BGM 10초 병렬 재생 코루틴
+        private IEnumerator PlayBGMTemporary(string bgmName, float duration)
+        {
+            SoundManager.Instance.PlayBGM(bgmName);
+            yield return new WaitForSeconds(duration);
+            SoundManager.Instance.StopBGM();
+        }
+
         #endregion
     }
 }

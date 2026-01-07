@@ -125,7 +125,7 @@ MonoBehaviour:
   bttnspeed: 0.1
   moveDist: 0.0025
   buttonPressedTime: 0.1
-  keypad: {fileID: 2303921294396319334}
+  unifiedKeypad: {fileID: 0}
 --- !u!1 &1384933730976451990
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,7 +285,7 @@ MonoBehaviour:
   bttnspeed: 0.1
   moveDist: 0.0025
   buttonPressedTime: 0.1
-  keypad: {fileID: 2303921294396319334}
+  unifiedKeypad: {fileID: 0}
 --- !u!1 &2225887874147284791
 GameObject:
   m_ObjectHideFlags: 0
@@ -944,7 +944,7 @@ MonoBehaviour:
   bttnspeed: 0.1
   moveDist: 0.0025
   buttonPressedTime: 0.1
-  keypad: {fileID: 2303921294396319334}
+  unifiedKeypad: {fileID: 0}
 --- !u!1 &2793745523060149540
 GameObject:
   m_ObjectHideFlags: 0
@@ -1070,7 +1070,7 @@ MonoBehaviour:
   bttnspeed: 0.1
   moveDist: 0.0025
   buttonPressedTime: 0.1
-  keypad: {fileID: 2303921294396319334}
+  unifiedKeypad: {fileID: 0}
 --- !u!1 &2906794897754377706
 GameObject:
   m_ObjectHideFlags: 0
@@ -1196,7 +1196,7 @@ MonoBehaviour:
   bttnspeed: 0.1
   moveDist: 0.0025
   buttonPressedTime: 0.1
-  keypad: {fileID: 2303921294396319334}
+  unifiedKeypad: {fileID: 0}
 --- !u!1 &4495529537794917855
 GameObject:
   m_ObjectHideFlags: 0
@@ -1322,7 +1322,7 @@ MonoBehaviour:
   bttnspeed: 0.1
   moveDist: 0.0025
   buttonPressedTime: 0.1
-  keypad: {fileID: 2303921294396319334}
+  unifiedKeypad: {fileID: 0}
 --- !u!1 &5212895675490974449
 GameObject:
   m_ObjectHideFlags: 0
@@ -1448,7 +1448,7 @@ MonoBehaviour:
   bttnspeed: 0.1
   moveDist: 0.0025
   buttonPressedTime: 0.1
-  keypad: {fileID: 2303921294396319334}
+  unifiedKeypad: {fileID: 0}
 --- !u!1 &5270135792841577758
 GameObject:
   m_ObjectHideFlags: 0
@@ -1574,7 +1574,7 @@ MonoBehaviour:
   bttnspeed: 0.1
   moveDist: 0.0025
   buttonPressedTime: 0.1
-  keypad: {fileID: 2303921294396319334}
+  unifiedKeypad: {fileID: 0}
 --- !u!1 &7441725873264822089
 GameObject:
   m_ObjectHideFlags: 0
@@ -1700,7 +1700,7 @@ MonoBehaviour:
   bttnspeed: 0.1
   moveDist: 0.0025
   buttonPressedTime: 0.1
-  keypad: {fileID: 2303921294396319334}
+  unifiedKeypad: {fileID: 0}
 --- !u!1 &7479655408705745758
 GameObject:
   m_ObjectHideFlags: 0
@@ -1826,7 +1826,7 @@ MonoBehaviour:
   bttnspeed: 0.1
   moveDist: 0.0025
   buttonPressedTime: 0.1
-  keypad: {fileID: 2303921294396319334}
+  unifiedKeypad: {fileID: 0}
 --- !u!1 &8051733617637900962
 GameObject:
   m_ObjectHideFlags: 0
@@ -1952,4 +1952,4 @@ MonoBehaviour:
   bttnspeed: 0.1
   moveDist: 0.0025
   buttonPressedTime: 0.1
-  keypad: {fileID: 2303921294396319334}
+  unifiedKeypad: {fileID: 0}

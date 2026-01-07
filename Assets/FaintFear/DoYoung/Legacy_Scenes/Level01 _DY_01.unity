@@ -369,17 +369,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf90c45b98e376e4d9807b0c579e6fb3, type: 3}
---- !u!114 &438918824 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5669124564287646063, guid: cf90c45b98e376e4d9807b0c579e6fb3, type: 3}
-  m_PrefabInstance: {fileID: 438918823}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &541232318
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -619,6 +608,7 @@ MonoBehaviour:
   activeRange: 8
   inactiveRange: 0
   triggerLightDistance: 10
+  borderTolerance: 0.3
 --- !u!114 &803317311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -631,9 +621,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 636cb40ddb0526842b228645e6341e3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  playerRadius: 0.3
   pushBackOffset: 0.2
   sequenceText: {fileID: 3622327845740412568}
+  dialogueLine: "\uB108\uBB34 \uC5B4\uB450\uC6CC\uC11C \uC190\uC804\uB4F1 \uC5C6\uC774\uB294
+    \uB354 \uC774\uC0C1 \uB098\uC544\uAC08 \uC218 \uC5C6\uB2E4."
 --- !u!1 &804914822
 GameObject:
   m_ObjectHideFlags: 0
@@ -825,13 +817,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lightZone: {fileID: 803317310}
   triggerRestrict: {fileID: 803317311}
-  vcam: {fileID: 438918824}
-  playerCamera: {fileID: 8817918804143317994}
   windowLookPoint: {fileID: 62703778}
   rotateSpeed: 5
   ghost: {fileID: 1824717617}
-  ghostSpeed: 10
   moveTarget: {fileID: 740514489}
+  ghostSpeed: 10
   sequenceText: {fileID: 3622327845740412568}
 --- !u!1 &1194818692
 GameObject:
@@ -888,10 +878,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0db226948e449c45b1276a935162a53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactionEnabled: 1
   isLocked: 1
+  useKeypadLock: 0
   requiredKey: 1
-  sequenceTextManager: {fileID: 3622327845740412568}
-  messageDuration: 2
+  sequenceText: {fileID: 0}
+  lockedSequence: 
+  unlockedSequence: 
+  keypadSequence: 
+  cannotUseKeySequence: 
 --- !u!1 &1257131654 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6651127945994960785, guid: deafd461784c5bf40bd020ba7dada2bf, type: 3}
@@ -945,10 +940,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a226c85f76dceab41a2e57d6e1e5dac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueId: 
   keyType: 1
   messageText: "\uC774\uAC78\uB85C \uC800\uCABD \uBB38\uC744 \uC5F4 \uC218 \uC788\uC744\uC9C0\uB3C4
     \uBAA8\uB978\uB2E4."
-  messageDuration: 2
   sequenceTextManager: {fileID: 3622327845740412568}
 --- !u!1001 &1367687768
 PrefabInstance:
@@ -1090,6 +1085,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 997ceef848678ec418a0cd58240b76b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueId: 
 --- !u!65 &1528933198
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1345,10 +1341,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0db226948e449c45b1276a935162a53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactionEnabled: 1
   isLocked: 0
+  useKeypadLock: 0
   requiredKey: 0
-  sequenceTextManager: {fileID: 3622327845740412568}
-  messageDuration: 2
+  sequenceText: {fileID: 0}
+  lockedSequence: 
+  unlockedSequence: 
+  keypadSequence: 
+  cannotUseKeySequence: 
 --- !u!1001 &1941148673
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2068,14 +2069,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a709d30efbfac408030a9f72eba85e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hudManager: {fileID: 0}
+  sequenceText: {fileID: 0}
   lookTarget: {fileID: 1528933196}
-  vcam: {fileID: 438918824}
-  playerCamera: {fileID: 8817918804143317994}
   lookRotateDuration: 1
-  dialogueHoldTime: 2
-  itemDialogueLines:
-  - "\uB0B4 \uC190\uC804\uB4F1\uACFC \uD638\uD658\uB418\uB294 \uBC30\uD130\uB9AC\uAC00
+  itemDialogue: "\uB0B4 \uC190\uC804\uB4F1\uACFC \uD638\uD658\uB418\uB294 \uBC30\uD130\uB9AC\uAC00
     \uC788\uB2E4."
 --- !u!1001 &6837488261142070011
 PrefabInstance:

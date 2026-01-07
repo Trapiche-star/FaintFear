@@ -92,7 +92,7 @@ namespace FaintFear
         {
             if (input == correctCode)
             {
-                // ⭐ 정답 - DoorLock 해제
+                // ✅ 정답 처리
                 isUnlocked = true;
 
                 if (displayText != null)
@@ -100,10 +100,23 @@ namespace FaintFear
 
                 SetPanelColor(grantedColor);
 
-                // ⭐ DoorLock 해제
                 if (targetDoorLock != null)
                 {
+                    // 1️⃣ 문 해제
                     targetDoorLock.Unlock();
+
+                    // 2️⃣ 런타임 상태 기록 (문 상태)
+                    string doorID = targetDoorLock.GetInstanceID().ToString();
+                    RuntimeStateManager.RecordDoorState(doorID, isOpen: true, isLocked: false);
+
+                    // 3️⃣ 바로 체크포인트 저장
+                    SaveSystem.SaveGame(
+                        checkpointId: "auto_checkpoint_" + System.DateTime.Now.ToString("yyyyMMdd_HHmmss"),
+                        tutorialCompleted: GameManager.TutorialCompleted,
+                        saveWorldObjects: true
+                    );
+
+                    Debug.Log($"[UnifiedKeypad] 비밀번호 성공, 문 해제 및 자동저장 완료: {doorID}");
                 }
             }
             else
