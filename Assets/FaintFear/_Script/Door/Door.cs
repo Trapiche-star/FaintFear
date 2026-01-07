@@ -4,11 +4,14 @@ using System.Collections;
 
 namespace FaintFear
 {
-    public class Door : Interactive, IActionProvider
+    public class Door : Interactive, IActionProvider, ISaveableWorldObject
     {
         Transform hinge;
         bool isMoving = false;
         bool isOpen = false;
+
+        [Header("Save")]
+        [SerializeField] private string uniqueId; // 문 고유 ID
 
         [Header("Sound IDs (SoundManager 기준)")]
         [SerializeField] private string openSFX = "SFX_DoorOpen";
@@ -29,30 +32,28 @@ namespace FaintFear
 
             if (!isOpen)
             {
-                // 문 열림 사운드
                 if (!string.IsNullOrEmpty(openSFX))
                     SoundManager.Instance.PlaySFX(openSFX);
-
                 StartCoroutine(MoveDoorRoutine(-90f));
                 onDoorOpen?.Invoke();
             }
             else
             {
-                // 문 닫힘 사운드
                 if (!string.IsNullOrEmpty(closeSFX))
                     SoundManager.Instance.PlaySFX(closeSFX);
-
                 StartCoroutine(MoveDoorRoutine(0f));
                 onDoorClose?.Invoke();
             }
 
             isOpen = !isOpen;
+
+            // ⭐ 런타임 상태 기록
+            RuntimeStateManager.RecordDoorState(uniqueId, isOpen, false);
         }
 
         IEnumerator MoveDoorRoutine(float targetAngle)
         {
             isMoving = true;
-
             float duration = 1f;
             float t = 0f;
 
@@ -72,7 +73,38 @@ namespace FaintFear
 
         public string GetActionText()
         {
-            return isOpen ? "닫기" : "열기";
+            return isOpen ? "[E] 문 닫기" : "[E] 문 열기";
+        }
+
+        // ⭐ ISaveableWorldObject 구현
+        public string GetID() => uniqueId;
+
+        public void Save(ref SaveData data)
+        {
+            var doorState = data.doorStates.Find(d => d.id == uniqueId);
+            if (doorState == null)
+            {
+                doorState = new DoorStateData { id = uniqueId };
+                data.doorStates.Add(doorState);
+            }
+
+            doorState.isOpen = isOpen;
+            doorState.isLocked = false; // 일반 문은 잠금 없음
+        }
+
+        public void Load(SaveData data)
+        {
+            var doorState = data.doorStates.Find(d => d.id == uniqueId);
+            if (doorState != null)
+            {
+                isOpen = doorState.isOpen;
+
+                // 문 회전 즉시 적용
+                if (hinge != null)
+                {
+                    hinge.localRotation = Quaternion.Euler(0, isOpen ? -90f : 0f, 0);
+                }
+            }
         }
     }
 }

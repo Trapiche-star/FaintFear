@@ -3,23 +3,26 @@ using System.Collections;
 
 namespace FaintFear
 {
-    public class DoubleDoor : Interactive, IActionProvider
+    public class DoubleDoor : Interactive, IActionProvider, ISaveableWorldObject
     {
         #region Variables
+
         Transform leftDoor;
         Transform rightDoor;
-
         bool isMoving = false;
         bool isOpen = false;
+
+        [Header("Save")]
+        [SerializeField] private string uniqueId;
 
         [Header("Door Settings")]
         [SerializeField] float openAngle = 90f;
         [SerializeField] float duration = 1.0f;
+
         #endregion
 
         private void Awake()
         {
-            // 자식 0 = 왼쪽, 자식 1 = 오른쪽
             leftDoor = transform.GetChild(0);
             rightDoor = transform.GetChild(1);
         }
@@ -30,27 +33,26 @@ namespace FaintFear
 
             if (!isOpen)
             {
-                // 열기
                 StartCoroutine(MoveDoorsRoutine(-openAngle, openAngle));
             }
             else
             {
-                // 닫기
                 StartCoroutine(MoveDoorsRoutine(0f, 0f));
             }
 
             isOpen = !isOpen;
+
+            // ⭐ 런타임 상태 기록
+            RuntimeStateManager.RecordDoorState(uniqueId, isOpen, false);
         }
 
         IEnumerator MoveDoorsRoutine(float leftTargetY, float rightTargetY)
         {
             isMoving = true;
-
             float elapsed = 0f;
 
             Quaternion leftStart = leftDoor.localRotation;
             Quaternion rightStart = rightDoor.localRotation;
-
             Quaternion leftTarget = Quaternion.Euler(0, leftTargetY, 0);
             Quaternion rightTarget = Quaternion.Euler(0, rightTargetY, 0);
 
@@ -67,15 +69,52 @@ namespace FaintFear
 
             leftDoor.localRotation = leftTarget;
             rightDoor.localRotation = rightTarget;
-
             isMoving = false;
         }
 
-        // Action UI에 표시될 문구 제공
         public string GetActionText()
         {
-            return isOpen ? "닫기" : "열기";
+            return isOpen ? "[E] 문 닫기" : "[E] 문 열기";
+        }
+
+        // ⭐ ISaveableWorldObject 구현
+        public string GetID() => uniqueId;
+
+        public void Save(ref SaveData data)
+        {
+            var doorState = data.doorStates.Find(d => d.id == uniqueId);
+            if (doorState == null)
+            {
+                doorState = new DoorStateData { id = uniqueId };
+                data.doorStates.Add(doorState);
+            }
+
+            doorState.isOpen = isOpen;
+            doorState.isLocked = false;
+        }
+
+        public void Load(SaveData data)
+        {
+            var doorState = data.doorStates.Find(d => d.id == uniqueId);
+            if (doorState != null)
+            {
+                isOpen = doorState.isOpen;
+
+                // 문 회전 즉시 적용
+                if (leftDoor != null && rightDoor != null)
+                {
+                    if (isOpen)
+                    {
+                        leftDoor.localRotation = Quaternion.Euler(0, -openAngle, 0);
+                        rightDoor.localRotation = Quaternion.Euler(0, openAngle, 0);
+                    }
+                    else
+                    {
+                        leftDoor.localRotation = Quaternion.Euler(0, 0, 0);
+                        rightDoor.localRotation = Quaternion.Euler(0, 0, 0);
+                    }
+                }
+            }
         }
     }
 }
-

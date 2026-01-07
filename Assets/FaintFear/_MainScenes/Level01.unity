@@ -580,6 +580,7 @@ MonoBehaviour:
   lockedMessage: "\uBB38\uC774 \uC7A0\uACA8\uC788\uB2E4. \uD0A4\uD328\uB4DC\uB85C
     \uC5F4 \uC218 \uC788\uC744 \uAC83 \uAC19\uB2E4."
   transitionMessage: "\uBB38\uC744 \uC5F4\uACE0 \uB4E4\uC5B4\uAC04\uB2E4..."
+  doorID: Level01_BasementDoorLock_01
 --- !u!1 &157434357
 GameObject:
   m_ObjectHideFlags: 0
@@ -710,6 +711,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 679368595}
     m_Modifications:
+    - target: {fileID: 626715924031884601, guid: 208c22be195dd3340b4921fcab08f2f7, type: 3}
+      propertyPath: uniqueId
+      value: Level01_Door_08
+      objectReference: {fileID: 0}
     - target: {fileID: 3146392262424174836, guid: 208c22be195dd3340b4921fcab08f2f7, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.502
@@ -776,6 +781,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 425271084}
     m_Modifications:
+    - target: {fileID: 626715924031884601, guid: 208c22be195dd3340b4921fcab08f2f7, type: 3}
+      propertyPath: uniqueId
+      value: Level01_Door_05
+      objectReference: {fileID: 0}
     - target: {fileID: 3146392262424174836, guid: 208c22be195dd3340b4921fcab08f2f7, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.5031712
@@ -1324,6 +1333,10 @@ PrefabInstance:
       value: Document01
       objectReference: {fileID: 0}
     - target: {fileID: 8072504086039504652, guid: 4b05a736cd6cb704ca14b326ee2c5362, type: 3}
+      propertyPath: uniqueId
+      value: Level01_Document_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 8072504086039504652, guid: 4b05a736cd6cb704ca14b326ee2c5362, type: 3}
       propertyPath: DocumentUI
       value: 
       objectReference: {fileID: 944925543}
@@ -1467,18 +1480,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 416935429}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0db226948e449c45b1276a935162a53, type: 3}
+  m_Script: {fileID: 11500000, guid: 808e8436a63c00445856913d04a8fa57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionEnabled: 1
-  isLocked: 0
-  useKeypadLock: 0
-  requiredKey: 0
-  sequenceText: {fileID: 0}
-  lockedSequence: 
-  unlockedSequence: 
-  keypadSequence: 
-  cannotUseKeySequence: 
+  uniqueId: Level01_Door_04
+  openSFX: SFX_DoorOpen
+  closeSFX: SFX_DoorClose
+  onDoorOpen:
+    m_PersistentCalls:
+      m_Calls: []
+  onDoorClose:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &422073898
 GameObject:
   m_ObjectHideFlags: 0
@@ -1704,6 +1717,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 2005724224}
     m_Modifications:
     - target: {fileID: 3873006382109193484, guid: 1a2fc99bbff8c8047a6de68d3e209a16, type: 3}
+      propertyPath: uniqueId
+      value: Level01_Cut_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 3873006382109193484, guid: 1a2fc99bbff8c8047a6de68d3e209a16, type: 3}
       propertyPath: sequenceText
       value: 
       objectReference: {fileID: 2312052753772196972}
@@ -1751,11 +1768,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: LockedDoor
       objectReference: {fileID: 0}
+    - target: {fileID: 6932021985643600080, guid: 1a2fc99bbff8c8047a6de68d3e209a16, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7117206178608710238, guid: 1a2fc99bbff8c8047a6de68d3e209a16, type: 3}
+      propertyPath: uniqueId
+      value: Level01_DoorLock_03
+      objectReference: {fileID: 0}
     - target: {fileID: 7117206178608710238, guid: 1a2fc99bbff8c8047a6de68d3e209a16, type: 3}
       propertyPath: sequenceText
       value: 
       objectReference: {fileID: 2312052753772196972}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3873006382109193484, guid: 1a2fc99bbff8c8047a6de68d3e209a16, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1816,6 +1842,10 @@ PrefabInstance:
     - target: {fileID: 7841288822147156284, guid: 4b05a736cd6cb704ca14b326ee2c5362, type: 3}
       propertyPath: m_Name
       value: Document04
+      objectReference: {fileID: 0}
+    - target: {fileID: 8072504086039504652, guid: 4b05a736cd6cb704ca14b326ee2c5362, type: 3}
+      propertyPath: uniqueId
+      value: Level01_Document_03
       objectReference: {fileID: 0}
     - target: {fileID: 8072504086039504652, guid: 4b05a736cd6cb704ca14b326ee2c5362, type: 3}
       propertyPath: DocumentUI
@@ -2320,6 +2350,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 679368595}
     m_Modifications:
+    - target: {fileID: 626715924031884601, guid: 208c22be195dd3340b4921fcab08f2f7, type: 3}
+      propertyPath: uniqueId
+      value: Level01_Door_10
+      objectReference: {fileID: 0}
     - target: {fileID: 3146392262424174836, guid: 208c22be195dd3340b4921fcab08f2f7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.918
@@ -2736,6 +2770,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 425271084}
     m_Modifications:
+    - target: {fileID: 626715924031884601, guid: 208c22be195dd3340b4921fcab08f2f7, type: 3}
+      propertyPath: uniqueId
+      value: Level01_Door_06
+      objectReference: {fileID: 0}
     - target: {fileID: 3146392262424174836, guid: 208c22be195dd3340b4921fcab08f2f7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.211
@@ -2866,6 +2904,7 @@ MonoBehaviour:
   activeRange: 8
   inactiveRange: 0
   triggerLightDistance: 10
+  borderTolerance: 0.3
 --- !u!114 &803317311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2873,7 +2912,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 803317307}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 636cb40ddb0526842b228645e6341e3e, type: 3}
   m_Name: 
@@ -3530,6 +3569,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 954759066}
   m_Mesh: {fileID: 4300000, guid: 0f304a07c938e6c4babe95098ea5b71c, type: 3}
+--- !u!4 &968287828 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8299116376204284708, guid: 3e93321d69d757d4197caad566bc1068, type: 3}
+  m_PrefabInstance: {fileID: 2013067570}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1002105799
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3538,6 +3582,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 425271084}
     m_Modifications:
+    - target: {fileID: 626715924031884601, guid: 208c22be195dd3340b4921fcab08f2f7, type: 3}
+      propertyPath: uniqueId
+      value: Level01_Door_07
+      objectReference: {fileID: 0}
     - target: {fileID: 3146392262424174836, guid: 208c22be195dd3340b4921fcab08f2f7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.921
@@ -3776,6 +3824,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1a7828fb9829c3248992ec4e6758a737, type: 3}
+--- !u!4 &1154123284 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8299116376204284708, guid: 3e93321d69d757d4197caad566bc1068, type: 3}
+  m_PrefabInstance: {fileID: 408496990}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1161755514 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8355556599292919163, guid: 7f52658d43a36594f914547ecd2f2576, type: 3}
@@ -4019,15 +4072,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0db226948e449c45b1276a935162a53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionEnabled: 1
   isLocked: 1
-  useKeypadLock: 0
-  requiredKey: 2
+  isOpen: 0
+  uniqueId: Level01_DoorLock_01
   sequenceText: {fileID: 2312052753772196972}
-  lockedSequence: 
-  unlockedSequence: 
-  keypadSequence: 
-  cannotUseKeySequence: 
+  requiredKey: 2
+  hinge: {fileID: 1154123284}
 --- !u!1 &1257131654 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6651127945994960785, guid: deafd461784c5bf40bd020ba7dada2bf, type: 3}
@@ -4862,6 +4912,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 679368595}
     m_Modifications:
+    - target: {fileID: 626715924031884601, guid: 208c22be195dd3340b4921fcab08f2f7, type: 3}
+      propertyPath: uniqueId
+      value: Level01_Door_09
+      objectReference: {fileID: 0}
     - target: {fileID: 3146392262424174836, guid: 208c22be195dd3340b4921fcab08f2f7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.208
@@ -5047,18 +5101,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1577283715}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0db226948e449c45b1276a935162a53, type: 3}
+  m_Script: {fileID: 11500000, guid: 808e8436a63c00445856913d04a8fa57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionEnabled: 1
-  isLocked: 0
-  useKeypadLock: 0
-  requiredKey: 0
-  sequenceText: {fileID: 0}
-  lockedSequence: 
-  unlockedSequence: 
-  keypadSequence: 
-  cannotUseKeySequence: 
+  uniqueId: Level01_Door_02
+  openSFX: SFX_DoorOpen
+  closeSFX: SFX_DoorClose
+  onDoorOpen:
+    m_PersistentCalls:
+      m_Calls: []
+  onDoorClose:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1627325662
 GameObject:
   m_ObjectHideFlags: 0
@@ -5226,18 +5280,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1719362302}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0db226948e449c45b1276a935162a53, type: 3}
+  m_Script: {fileID: 11500000, guid: 808e8436a63c00445856913d04a8fa57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionEnabled: 1
-  isLocked: 0
-  useKeypadLock: 0
-  requiredKey: 0
-  sequenceText: {fileID: 2312052753772196972}
-  lockedSequence: 
-  unlockedSequence: 
-  keypadSequence: 
-  cannotUseKeySequence: 
+  uniqueId: Level01_Door_01
+  openSFX: SFX_DoorOpen
+  closeSFX: SFX_DoorClose
+  onDoorOpen:
+    m_PersistentCalls:
+      m_Calls: []
+  onDoorClose:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1792851626
 GameObject:
   m_ObjectHideFlags: 0
@@ -5893,15 +5947,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0db226948e449c45b1276a935162a53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionEnabled: 1
   isLocked: 1
-  useKeypadLock: 0
-  requiredKey: 0
+  isOpen: 0
+  uniqueId: 
   sequenceText: {fileID: 0}
-  lockedSequence: 
-  unlockedSequence: 
-  keypadSequence: 
-  cannotUseKeySequence: 
+  requiredKey: 0
+  hinge: {fileID: 0}
 --- !u!1001 &1868654761
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6116,15 +6167,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0db226948e449c45b1276a935162a53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionEnabled: 1
   isLocked: 1
-  useKeypadLock: 0
-  requiredKey: 4
+  isOpen: 0
+  uniqueId: Level01_DoorLock_02
   sequenceText: {fileID: 2312052753772196972}
-  lockedSequence: 
-  unlockedSequence: 
-  keypadSequence: 
-  cannotUseKeySequence: 
+  requiredKey: 4
+  hinge: {fileID: 968287828}
 --- !u!1001 &1941148673
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6230,7 +6278,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1954465210}
-  - component: {fileID: 1954465209}
+  - component: {fileID: 1954465211}
   m_Layer: 7
   m_Name: ToiletsDoor_WomanA
   m_TagString: Untagged
@@ -6238,27 +6286,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!114 &1954465209
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1954465208}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0db226948e449c45b1276a935162a53, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactionEnabled: 1
-  isLocked: 0
-  useKeypadLock: 0
-  requiredKey: 0
-  sequenceText: {fileID: 0}
-  lockedSequence: 
-  unlockedSequence: 
-  keypadSequence: 
-  cannotUseKeySequence: 
 --- !u!4 &1954465210
 Transform:
   m_ObjectHideFlags: 0
@@ -6276,6 +6303,27 @@ Transform:
   - {fileID: 587244789}
   m_Father: {fileID: 2005724224}
   m_LocalEulerAnglesHint: {x: 0, y: -180.00002, z: 0}
+--- !u!114 &1954465211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1954465208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 808e8436a63c00445856913d04a8fa57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uniqueId: Level01_Door_03
+  openSFX: SFX_DoorOpen
+  closeSFX: SFX_DoorClose
+  onDoorOpen:
+    m_PersistentCalls:
+      m_Calls: []
+  onDoorClose:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1967560516 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6470916777743966155, guid: 93df9a80e84a2f7449400bd4b1a7588e, type: 3}
@@ -6591,6 +6639,10 @@ PrefabInstance:
     - target: {fileID: 7841288822147156284, guid: 4b05a736cd6cb704ca14b326ee2c5362, type: 3}
       propertyPath: m_Name
       value: Document02
+      objectReference: {fileID: 0}
+    - target: {fileID: 8072504086039504652, guid: 4b05a736cd6cb704ca14b326ee2c5362, type: 3}
+      propertyPath: uniqueId
+      value: Level01_Document_02
       objectReference: {fileID: 0}
     - target: {fileID: 8072504086039504652, guid: 4b05a736cd6cb704ca14b326ee2c5362, type: 3}
       propertyPath: DocumentUI
@@ -8746,15 +8798,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0db226948e449c45b1276a935162a53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionEnabled: 1
   isLocked: 1
-  useKeypadLock: 0
-  requiredKey: 0
+  isOpen: 0
+  uniqueId: 
   sequenceText: {fileID: 0}
-  lockedSequence: 
-  unlockedSequence: 
-  keypadSequence: 
-  cannotUseKeySequence: 
+  requiredKey: 0
+  hinge: {fileID: 0}
 --- !u!23 &98719072659514314
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -27014,15 +27063,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0db226948e449c45b1276a935162a53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionEnabled: 1
   isLocked: 1
-  useKeypadLock: 0
-  requiredKey: 0
+  isOpen: 0
+  uniqueId: 
   sequenceText: {fileID: 0}
-  lockedSequence: 
-  unlockedSequence: 
-  keypadSequence: 
-  cannotUseKeySequence: 
+  requiredKey: 0
+  hinge: {fileID: 0}
 --- !u!4 &1084707159721797301
 Transform:
   m_ObjectHideFlags: 0
@@ -28900,6 +28946,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec3f3a822541501488d4b119ec496df0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueId: 
   openAngle: 90
   duration: 1
 --- !u!64 &1197192169868901992
@@ -46523,6 +46570,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec3f3a822541501488d4b119ec496df0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueId: Level01_DoubleDoor_01
   openAngle: 90
   duration: 1
 --- !u!33 &2192956123628259022
@@ -75937,15 +75985,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0db226948e449c45b1276a935162a53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionEnabled: 1
   isLocked: 1
-  useKeypadLock: 0
-  requiredKey: 0
+  isOpen: 0
+  uniqueId: 
   sequenceText: {fileID: 0}
-  lockedSequence: 
-  unlockedSequence: 
-  keypadSequence: 
-  cannotUseKeySequence: 
+  requiredKey: 0
+  hinge: {fileID: 0}
 --- !u!23 &3847841080809700916
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -126290,16 +126335,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eefcb77c05e1ae64db1edc9ccd398430, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLocked: 1
+  isOpen: 0
+  uniqueId: Level01_DoubleDoorLock_01
+  sequenceText: {fileID: 2312052753772196972}
   leftHinge: {fileID: 1692313888091214937}
   rightHinge: {fileID: 1618785060650774179}
   leftOpenAngle: -90
   rightOpenAngle: 90
-  isLocked: 1
   requiredKey: 7
-  sequenceText: {fileID: 2312052753772196972}
-  lockedSequence: 
-  unlockedSequence: 
-  cannotUseKeySequence: 
 --- !u!1 &6500554518531786373
 GameObject:
   m_ObjectHideFlags: 0
@@ -170022,15 +170066,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0db226948e449c45b1276a935162a53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionEnabled: 1
   isLocked: 1
-  useKeypadLock: 0
-  requiredKey: 0
+  isOpen: 0
+  uniqueId: 
   sequenceText: {fileID: 0}
-  lockedSequence: 
-  unlockedSequence: 
-  keypadSequence: 
-  cannotUseKeySequence: 
+  requiredKey: 0
+  hinge: {fileID: 0}
 --- !u!108 &8967876004156894936
 Light:
   m_ObjectHideFlags: 0

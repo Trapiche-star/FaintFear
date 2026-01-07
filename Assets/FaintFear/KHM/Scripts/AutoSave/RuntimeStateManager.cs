@@ -14,6 +14,8 @@ namespace FaintFear
         // ⭐ 런타임 중에만 유지되는 임시 상태
         private static HashSet<string> runtimeDestroyedObjects = new HashSet<string>();
         private static Dictionary<string, Vector3> runtimeMovedObjects = new Dictionary<string, Vector3>();
+        private static Dictionary<string, DoorStateData> runtimeDoorStates = new Dictionary<string, DoorStateData>();
+        private static HashSet<string> runtimeReadDocuments = new HashSet<string>();
 
         private void Awake()
         {
@@ -52,6 +54,38 @@ namespace FaintFear
             runtimeMovedObjects[id] = position;
         }
 
+        // ⭐ 문 상태 기록
+        public static void RecordDoorState(string id, bool isOpen, bool isLocked)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                Debug.LogWarning("[RuntimeState] ID가 null인 문은 기록할 수 없습니다");
+                return;
+            }
+
+            if (!runtimeDoorStates.ContainsKey(id))
+            {
+                runtimeDoorStates[id] = new DoorStateData { id = id };
+            }
+
+            runtimeDoorStates[id].isOpen = isOpen;
+            runtimeDoorStates[id].isLocked = isLocked;
+            Debug.Log($"[RuntimeState] 문 상태 기록: {id} (Open: {isOpen}, Locked: {isLocked})");
+        }
+
+        // ⭐ 문서 읽음 기록
+        public static void RecordDocumentRead(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                Debug.LogWarning("[RuntimeState] ID가 null인 문서는 기록할 수 없습니다");
+                return;
+            }
+
+            runtimeReadDocuments.Add(id);
+            Debug.Log($"[RuntimeState] 문서 읽음 기록: {id}");
+        }
+
         // ===================== 런타임 상태 적용 (씬 로드 시) =====================
 
         public static void ApplyRuntimeState()
@@ -67,7 +101,7 @@ namespace FaintFear
                 {
                     string id = saveable.GetID();
 
-                    // ⭐ null 체크 추가!
+                    // null 체크
                     if (string.IsNullOrEmpty(id))
                     {
                         Debug.LogWarning($"[RuntimeState] ID가 없는 오브젝트 발견: {behaviour.gameObject.name}");
@@ -86,10 +120,29 @@ namespace FaintFear
                     {
                         behaviour.transform.position = runtimeMovedObjects[id];
                     }
+
+                    // ⭐ 런타임 문 상태 적용
+                    if (runtimeDoorStates.ContainsKey(id))
+                    {
+                        var doorState = runtimeDoorStates[id];
+                        SaveData tempData = new SaveData();
+                        tempData.doorStates.Add(doorState);
+                        saveable.Load(tempData);
+                        Debug.Log($"[RuntimeState] 문 상태 적용: {id}");
+                    }
+
+                    // ⭐ 런타임 문서 읽음 상태 적용
+                    if (runtimeReadDocuments.Contains(id))
+                    {
+                        SaveData tempData = new SaveData();
+                        tempData.readDocuments.Add(id);
+                        saveable.Load(tempData);
+                        Debug.Log($"[RuntimeState] 문서 읽음 상태 적용: {id}");
+                    }
                 }
             }
 
-            Debug.Log($"[RuntimeState] 런타임 상태 적용 완료 - 비활성화된 오브젝트: {runtimeDestroyedObjects.Count}개");
+            Debug.Log($"[RuntimeState] 런타임 상태 적용 완료 - 비활성화: {runtimeDestroyedObjects.Count}, 문: {runtimeDoorStates.Count}, 문서: {runtimeReadDocuments.Count}");
         }
 
         // ===================== 체크포인트 저장 시 런타임 → SaveData =====================
@@ -122,6 +175,35 @@ namespace FaintFear
                 }
             }
 
+            // ⭐ 문 상태 병합
+            foreach (var kvp in runtimeDoorStates)
+            {
+                var existing = data.doorStates.Find(d => d.id == kvp.Key);
+                if (existing != null)
+                {
+                    existing.isOpen = kvp.Value.isOpen;
+                    existing.isLocked = kvp.Value.isLocked;
+                }
+                else
+                {
+                    data.doorStates.Add(new DoorStateData
+                    {
+                        id = kvp.Key,
+                        isOpen = kvp.Value.isOpen,
+                        isLocked = kvp.Value.isLocked
+                    });
+                }
+            }
+
+            // ⭐ 문서 읽음 상태 병합
+            foreach (var id in runtimeReadDocuments)
+            {
+                if (!data.readDocuments.Contains(id))
+                {
+                    data.readDocuments.Add(id);
+                }
+            }
+
             Debug.Log($"[RuntimeState] 런타임 상태 → SaveData 병합 완료");
         }
 
@@ -131,6 +213,8 @@ namespace FaintFear
         {
             runtimeDestroyedObjects.Clear();
             runtimeMovedObjects.Clear();
+            runtimeDoorStates.Clear();
+            runtimeReadDocuments.Clear();
             Debug.Log("[RuntimeState] 런타임 상태 초기화");
         }
     }
