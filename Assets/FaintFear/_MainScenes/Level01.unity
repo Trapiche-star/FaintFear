@@ -3882,6 +3882,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerStatus
       objectReference: {fileID: 0}
+    - target: {fileID: 2572261292992704842, guid: 1a7828fb9829c3248992ec4e6758a737, type: 3}
+      propertyPath: maxMentalPower
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 6003779619086297941, guid: 1a7828fb9829c3248992ec4e6758a737, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.6549701
