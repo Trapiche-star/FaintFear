@@ -40,7 +40,8 @@ namespace FaintFear
                 s.source.clip = s.clip;
                 s.source.volume = s.volume;
                 s.source.pitch = s.pitch;
-                s.source.loop = false;
+                
+                s.source.loop = true; //+ 반복 재생 가능하게
 
                 bgmDict[s.name] = s;
             }

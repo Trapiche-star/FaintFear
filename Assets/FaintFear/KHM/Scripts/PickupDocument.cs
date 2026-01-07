@@ -15,7 +15,7 @@ namespace FaintFear
 
         private PlayerMove playerMove;
 
-        // 퍼즐 대상 문서(4,5,6)에만 붙어 있는 컴포넌트
+        // 퍼즐 대상 문서에만 붙어 있는 컴포넌트 (ID 기반)
         private DocumentPuzzleItem puzzleItem;
 
         [Header("UI")]
@@ -70,12 +70,11 @@ namespace FaintFear
             // 시스템을 일시 정지한다
         }
 
-        
+
         // 문서 닫기 (버튼에서 호출)        
         public void CloseDocument()
         {
-            //임시 디버그용
-            Debug.Log("[PickupDocument] CloseDocument: " + gameObject.name); 
+            Debug.Log("[PickupDocument] CloseDocument: " + gameObject.name);
 
             if (documentUI != null)
                 documentUI.SetActive(false);
@@ -91,7 +90,7 @@ namespace FaintFear
 
             if (puzzleItem != null)
                 puzzleItem.MarkAsRead();
-            // 만약 [퍼즐 대상 문서라면] [퍼즐 진행을 보고한다]
+            // 만약 [퍼즐 대상 문서라면] [ID 기반으로 퍼즐 진행을 보고한다]
 
             if (Current == this)
                 Current = null;
@@ -109,6 +108,7 @@ namespace FaintFear
             return "문서";
             // ActionUI에서 자동으로 [E]가 붙어 표시된다
         }
+
         #endregion        
     }
 }

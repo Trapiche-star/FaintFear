@@ -45,6 +45,10 @@ namespace FaintFear
         #region Property
         //정신력 상태
         public MentalState CurrentMentalState { get; private set; }
+
+        //+ MentalEffectController 호환용
+        public float CurrentSanity => mental; //+
+
         //세이프 존
         public bool IsInSafeZone
         {
@@ -135,6 +139,9 @@ namespace FaintFear
         {
             mental -= damage;
             mental = Mathf.Clamp(mental, 0f, PlayerStatus.Instance.maxMentalPower);
+            //+ 피격음 재생
+            if (SoundManager.Instance != null)
+                SoundManager.Instance.PlaySFX("SFX_PlayerHit"); //+
             Debug.Log("데미지입음" + mental);
             PlayerStatus.Instance.SetHealth(mental);
             UpdateMentalState();

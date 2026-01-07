@@ -115,6 +115,14 @@ namespace FaintFear
             // 귀신 이동
             yield return StartCoroutine(MoveGhost());
 
+            //+ 첫 점프스케어 이후 BGM_Tense 재생 (10초)
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlayBGM("BGM_Tense"); //+ 재생
+                yield return new WaitForSeconds(10f);        //+ 10초 대기
+                SoundManager.Instance.StopBGM();            //+ 정지
+            }
+
             // 잠깐 여유
             yield return new WaitForSeconds(0.5f);
 
