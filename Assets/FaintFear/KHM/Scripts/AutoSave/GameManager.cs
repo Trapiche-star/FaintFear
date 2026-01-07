@@ -4,9 +4,6 @@ using System.Collections.Generic;
 
 namespace FaintFear
 {
-    /// <summary>
-    /// 게임 전체 상태 + 플레이어 생명주기 전담 관리자
-    /// </summary>
     public class GameManager : MonoBehaviour
     {
         public static GameManager Instance { get; private set; }
@@ -20,7 +17,6 @@ namespace FaintFear
 
         public static bool TutorialCompleted;
 
-        // ⭐ static으로 변경 - 씬 로드 시에도 유지됨!
         private static string sceneTransitionSpawnPoint = "";
         private static GameStartMode pendingStartMode = GameStartMode.NewGame;
 
@@ -36,7 +32,6 @@ namespace FaintFear
 
         public void SetSceneTransitionMode(string spawnPointName)
         {
-            // ⭐ static 변수에 저장
             pendingStartMode = GameStartMode.SceneTransition;
             sceneTransitionSpawnPoint = spawnPointName;
             Debug.Log($"[GameManager] SetSceneTransitionMode: {spawnPointName}, pendingMode: {pendingStartMode}");
@@ -59,15 +54,14 @@ namespace FaintFear
 
         private void Update()
         {
-            // ⭐ 치트키: G키로 즉시 저장
             if (Input.GetKeyDown(KeyCode.G))
             {
                 CheatSave();
             }
         }
+
         private void CheatSave()
         {
-            // 현재 게임플레이 씬에 있을 때만 작동
             if (!gameplayScenes.Contains(SceneManager.GetActiveScene().name))
             {
                 Debug.Log("[Cheat] 게임플레이 씬에서만 저장 가능합니다");
@@ -109,13 +103,38 @@ namespace FaintFear
         public void ContinueGame()
         {
             currentStartMode = GameStartMode.Continue;
-            SceneManager.LoadScene("Level01");
+
+            // ⭐ 저장된 씬 정보 불러오기
+            SaveData data = SaveSystem.LoadPreview();
+            string sceneToLoad = "Level01"; // 기본값
+
+            if (data != null && !string.IsNullOrEmpty(data.savedSceneName))
+            {
+                sceneToLoad = data.savedSceneName;
+                Debug.Log($"[GameManager] 저장된 씬으로 이동: {sceneToLoad}");
+            }
+            else
+            {
+                Debug.LogWarning("[GameManager] 저장된 씬 정보 없음 - 기본 씬으로 이동");
+            }
+
+            SceneManager.LoadScene(sceneToLoad);
         }
 
         public void RestartFromCheckpoint()
         {
             currentStartMode = GameStartMode.RestartFromCheckpoint;
-            SceneManager.LoadScene("Level01");
+
+            // ⭐ 저장된 씬 정보 불러오기
+            SaveData data = SaveSystem.LoadPreview();
+            string sceneToLoad = "Level01"; // 기본값
+
+            if (data != null && !string.IsNullOrEmpty(data.savedSceneName))
+            {
+                sceneToLoad = data.savedSceneName;
+            }
+
+            SceneManager.LoadScene(sceneToLoad);
         }
 
         // =========================
@@ -148,7 +167,7 @@ namespace FaintFear
             {
                 case GameStartMode.NewGame:
                     Debug.Log($"[GameManager] Spawning at NewGame spawn: {newGameSpawnPointName}");
-                    RuntimeStateManager.ClearRuntimeState(); // ⭐ 새 게임 시 런타임 상태 초기화
+                    RuntimeStateManager.ClearRuntimeState();
                     SpawnPlayerAtSpawnPoint(newGameSpawnPointName);
                     PlayerStatus.Instance?.ResetStatus();
                     break;
@@ -156,7 +175,7 @@ namespace FaintFear
                 case GameStartMode.Continue:
                 case GameStartMode.RestartFromCheckpoint:
                     Debug.Log("[GameManager] Loading player from save");
-                    RuntimeStateManager.ClearRuntimeState(); // ⭐ 이어하기 시 런타임 상태 초기화
+                    RuntimeStateManager.ClearRuntimeState();
                     LoadPlayerFromSave();
                     SaveSystem.ApplyWorldObjectLoad();
                     break;
@@ -164,11 +183,12 @@ namespace FaintFear
                 case GameStartMode.SceneTransition:
                     Debug.Log($"[GameManager] SceneTransition mode - spawning at: {spawnToUse}");
                     SpawnPlayerAtSpawnPoint(spawnToUse);
-                    SaveSystem.ApplyWorldObjectLoad(); // 저장된 상태 적용
-                    RuntimeStateManager.ApplyRuntimeState(); // ⭐ 런타임 상태 적용
+                    SaveSystem.ApplyWorldObjectLoad();
+                    RuntimeStateManager.ApplyRuntimeState();
                     break;
             }
         }
+
         // =========================
         // Player
         // =========================

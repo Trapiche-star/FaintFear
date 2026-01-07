@@ -27,6 +27,10 @@ namespace FaintFear
                 data.playerRotation = player.transform.rotation;
             }
 
+            // ⭐ 현재 씬 이름 저장
+            data.savedSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+            Debug.Log($"[SaveSystem] 현재 씬 저장: {data.savedSceneName}");
+
             // ===================== 진행 상태 =====================
             data.checkpointId = checkpointId;
             data.tutorialCompleted =
@@ -48,7 +52,6 @@ namespace FaintFear
                         saveable.Save(ref data);
                     }
                 }
-
                 // ⭐ 런타임 상태도 병합
                 RuntimeStateManager.MergeRuntimeStateToSaveData(ref data);
             }

@@ -17,6 +17,9 @@ public class SaveData
     // 체크포인트
     public string checkpointId;
 
+    // 저장된 씬 이름
+    public string savedSceneName = "Level01";
+
     // 시간 (선택)
     public string saveTime;
 
