@@ -44,7 +44,9 @@ public class SaveData
     public bool hasBoltCutter = false;
 
     public PowerBoxData powerBoxData = new PowerBoxData();
+    public ElevatorData elevatorData = new ElevatorData();
 }
+
 [Serializable]
 public class PowerBoxData
 {
@@ -53,7 +55,11 @@ public class PowerBoxData
     public bool isCompleted = false;
 }
 
-
+[Serializable]
+public class ElevatorData
+{
+    public bool isPowerSupplied = false;
+}
 [Serializable]
 public class MovedObjectData
 {
