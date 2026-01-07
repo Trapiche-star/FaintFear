@@ -7,6 +7,7 @@ namespace FaintFear
     {
         public static SoundManager Instance;
 
+        [Header("Sound Lists")]
         public Sound[] bgms;
         public Sound[] sfxs;
 
@@ -14,6 +15,7 @@ namespace FaintFear
         private Dictionary<string, Sound> sfxDict;
 
         private Sound currentBGM;
+        private Sound previousBGM;
 
         private void Awake()
         {
@@ -25,7 +27,6 @@ namespace FaintFear
 
             Instance = this;
             DontDestroyOnLoad(gameObject);
-
             Init();
         }
 
@@ -34,18 +35,20 @@ namespace FaintFear
             bgmDict = new Dictionary<string, Sound>();
             sfxDict = new Dictionary<string, Sound>();
 
+            // ================= BGM =================
             foreach (var s in bgms)
             {
                 s.source = gameObject.AddComponent<AudioSource>();
                 s.source.clip = s.clip;
                 s.source.volume = s.volume;
                 s.source.pitch = s.pitch;
-                
-                s.source.loop = true; //+ 반복 재생 가능하게
+                s.source.loop = true;
+                s.source.playOnAwake = false;
 
                 bgmDict[s.name] = s;
             }
 
+            // ================= SFX =================
             foreach (var s in sfxs)
             {
                 s.source = gameObject.AddComponent<AudioSource>();
@@ -53,18 +56,26 @@ namespace FaintFear
                 s.source.volume = s.volume;
                 s.source.pitch = s.pitch;
                 s.source.loop = false;
+                s.source.playOnAwake = false;
 
                 sfxDict[s.name] = s;
             }
         }
 
-        //BGM
-        public void PlayBGM(string name)
+        // ================= BGM =================
+        public void PlayBGM(string name, bool rememberPrevious = true)
         {
-            if (!bgmDict.ContainsKey(name)) return;
+            if (!bgmDict.ContainsKey(name))
+            {
+                Debug.LogWarning($"[SoundManager] BGM not found: {name}");
+                return;
+            }
 
             if (currentBGM != null && currentBGM.name == name)
                 return;
+
+            if (rememberPrevious)
+                previousBGM = currentBGM;
 
             if (currentBGM != null)
                 currentBGM.source.Stop();
@@ -73,20 +84,35 @@ namespace FaintFear
             currentBGM.source.Play();
         }
 
-        public void StopBGM()
+        public void ResumePreviousBGM()
         {
+            if (previousBGM == null)
+                return;
+
             if (currentBGM != null)
                 currentBGM.source.Stop();
 
-            currentBGM = null;
+            currentBGM = previousBGM;
+            previousBGM = null;
+            currentBGM.source.Play();
         }
 
-        //SFX
+        // ❌ 무음 방지
+        public void StopBGM()
+        {
+            Debug.LogWarning("[SoundManager] StopBGM 사용 금지");
+        }
+
+        // ================= SFX =================
         public void PlaySFX(string name)
         {
-            if (!sfxDict.ContainsKey(name)) return;
+            if (!sfxDict.ContainsKey(name))
+            {
+                Debug.LogWarning($"[SoundManager] SFX not found: {name}");
+                return;
+            }
+
             sfxDict[name].source.PlayOneShot(sfxDict[name].clip);
         }
     }
 }
-

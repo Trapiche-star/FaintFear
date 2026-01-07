@@ -49,7 +49,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: c6fd14da06ea88044a943a278d97e682, type: 3}
     volume: 0.7
     pitch: 1
-    loop: 0
+    loop: 1
     playOnAwake: 0
     source: {fileID: 0}
   - name: BGM_Tense
@@ -82,6 +82,34 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: 'BGM_LowSanity '
     clip: {fileID: 8300000, guid: dae57d4fad0382f4691e5ae3954c1bfc, type: 3}
+    volume: 0.7
+    pitch: 1
+    loop: 0
+    playOnAwake: 0
+    source: {fileID: 0}
+  - name: 'BGM_EndingB '
+    clip: {fileID: 8300000, guid: 8c26cb679963e7b40be93a5d8d20d6aa, type: 3}
+    volume: 0.7
+    pitch: 1
+    loop: 0
+    playOnAwake: 0
+    source: {fileID: 0}
+  - name: 'BGM_MainMenu '
+    clip: {fileID: 8300000, guid: 198b0b7775013a3469be6ea5926ce118, type: 3}
+    volume: 0.7
+    pitch: 1
+    loop: 0
+    playOnAwake: 0
+    source: {fileID: 0}
+  - name: BGM_EndingA
+    clip: {fileID: 8300000, guid: 8205270bef23c7a45bd395e3ff190258, type: 3}
+    volume: 0.7
+    pitch: 1
+    loop: 0
+    playOnAwake: 0
+    source: {fileID: 0}
+  - name: BGM_EndingC
+    clip: {fileID: 8300000, guid: f37513ffce2b990479c700f821db00b1, type: 3}
     volume: 0.7
     pitch: 1
     loop: 0

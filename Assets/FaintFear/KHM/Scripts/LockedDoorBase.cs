@@ -110,6 +110,17 @@ namespace FaintFear
             }
         }
 
+        public void ForceUnlockFromKeypad()
+        {
+            if (!isLocked) return;
+
+            isLocked = false;
+            ShowUnlockedMessage();
+
+            // 잠금 해제 상태 저장
+            RecordUnlockState();
+        }
+
         protected abstract void ApplyDoorRotation();
     }
 }

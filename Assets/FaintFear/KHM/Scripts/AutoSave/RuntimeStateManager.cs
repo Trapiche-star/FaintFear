@@ -17,7 +17,7 @@ namespace FaintFear
         private static Dictionary<string, DoorStateData> runtimeDoorStates = new Dictionary<string, DoorStateData>();
         private static HashSet<string> runtimeReadDocuments = new HashSet<string>();
         private static PowerBoxData runtimePowerBoxState = null;
-
+        private static ElevatorData runtimeElevatorState = null;
 
         private void Awake()
         {
@@ -32,6 +32,7 @@ namespace FaintFear
         }
 
         // ===================== 런타임 상태 기록 =====================
+        // PowerBox 상태 기록 메서드:
         public static void RecordPowerBoxState(string id, bool[] filledSlots, bool isPowerSupplied, bool isCompleted)
         {
             if (runtimePowerBoxState == null)
@@ -41,9 +42,19 @@ namespace FaintFear
             runtimePowerBoxState.isPowerSupplied = isPowerSupplied;
             runtimePowerBoxState.isCompleted = isCompleted;
 
-            Debug.Log($"[RuntimeState] PowerBox 상태 기록");
+            Debug.Log($"[RuntimeState] PowerBox 상태 기록 - Power: {isPowerSupplied}, Complete: {isCompleted}");
         }
 
+        // Elevator 상태 기록 메서드:
+        public static void RecordElevatorState(bool isPowerSupplied)
+        {
+            if (runtimeElevatorState == null)
+                runtimeElevatorState = new ElevatorData();
+
+            runtimeElevatorState.isPowerSupplied = isPowerSupplied;
+
+            Debug.Log($"[RuntimeState] Elevator 상태 기록 - Power: {isPowerSupplied}");
+        }
         public static void RecordDestroyedObject(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -128,11 +139,22 @@ namespace FaintFear
                         Debug.Log($"[RuntimeState] 런타임 상태 적용 - 비활성화: {id}");
                     }
 
+                    // PowerBox 상태 적용
                     if (runtimePowerBoxState != null && behaviour is PowerBoxController powerBox)
                     {
                         SaveData tempData = new SaveData();
                         tempData.powerBoxData = runtimePowerBoxState;
                         powerBox.Load(tempData);
+                        Debug.Log("[RuntimeState] PowerBox 상태 적용");
+                    }
+
+                    // Elevator 상태 적용
+                    if (runtimeElevatorState != null && behaviour is ElevatorManager elevator)
+                    {
+                        SaveData tempData = new SaveData();
+                        tempData.elevatorData = runtimeElevatorState;
+                        elevator.Load(tempData);
+                        Debug.Log("[RuntimeState] Elevator 상태 적용");
                     }
 
                     // 런타임에 이동된 오브젝트 처리
@@ -173,6 +195,12 @@ namespace FaintFear
             {
                 data.powerBoxData = runtimePowerBoxState;
             }
+
+            if (runtimeElevatorState != null)
+            {
+                data.elevatorData = runtimeElevatorState;
+            }
+
 
             // 기존 저장된 상태 + 런타임 상태 병합
             foreach (var id in runtimeDestroyedObjects)
@@ -237,6 +265,7 @@ namespace FaintFear
         public static void ClearRuntimeState()
         {
             runtimePowerBoxState = null;
+            runtimeElevatorState = null;
             runtimeDestroyedObjects.Clear();
             runtimeMovedObjects.Clear();
             runtimeDoorStates.Clear();

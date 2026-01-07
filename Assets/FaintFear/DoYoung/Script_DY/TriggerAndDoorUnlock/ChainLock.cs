@@ -19,6 +19,10 @@ public class ChainLock : LockedDoorBase, IActionProvider, ISaveableWorldObject
         {
             chainRoot.SetActive(false);
 
+            //+ 체인 절단 SFX 재생
+            if (SoundManager.Instance != null)
+                SoundManager.Instance.PlaySFX("SFX_CutChain");
+
             // ⭐ 체인 비활성화 상태 기록
             RuntimeStateManager.RecordDestroyedObject(ChainID);
             Debug.Log($"[ChainLock] 체인 제거: {ChainID}");
