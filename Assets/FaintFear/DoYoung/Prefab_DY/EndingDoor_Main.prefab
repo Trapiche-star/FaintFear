@@ -150,8 +150,12 @@ MonoBehaviour:
   endingATrigger: {fileID: 4482229660691134166}
   endingBTrigger: {fileID: 5971978855661507504}
   textManager: {fileID: 0}
-  actionText: "\uC815"
-  failMessages: []
+  fail_First: "\uBB38\uC774 \uC7A0\uACA8 \uC788\uB2E4."
+  fail_Second: "\uD798\uC73C\uB85C \uC5F4 \uC218 \uC788\uB294 \uAD6C\uC870\uB294
+    \uC544\uB2CC \uAC83 \uAC19\uB2E4."
+  fail_Third: "\uB2E4\uB978 \uBC29\uBC95\uC744 \uCC3E\uC544\uC57C \uD560 \uAC83 \uAC19\uB2E4."
+  lineHoldTime: 1
+  actionText: "\uC815\uBB38"
 --- !u!114 &4482229660691134166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,4 +181,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e823fa35d47ef44eaf3801710675575, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  endingSceneName: 
+  endingSceneName: EndingB

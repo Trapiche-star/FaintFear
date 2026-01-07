@@ -100,8 +100,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38e6f46661ba7ca49b170ee84cdc1894, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noDaggerText: "\uBB34\uC5B8\uAC00 \uB3C4\uAD6C\uAC00 \uD544\uC694\uD558\uB2E4"
-  useDaggerText: "\uB300\uAC70\uB97C \uC0AC\uC6A9\uD55C\uB2E4"
+  textManager: {fileID: 0}
+  noDagger_First: "\uC5EC\uAE34 \uD3D0\uBCD1\uC6D0\uC774 \uC544\uB2CC\uAC00\u2026
+    \uC65C \uC2DC\uCCB4\uAC00 \uADF8\uB300\uB85C \uB0A8\uC544 \uC788\uC9C0...?"
+  noDagger_Second: "\uBB34\uC5B8\uAC00 \uC798\uBABB\uB410\uB2E4"
+  dagger_First: "\uC2DC\uCCB4\uC758 \uD314\uC744 \uC6C0\uCF1C\uC950\uC5C8\uB2E4"
+  dagger_Second: "\uC774\uAC74\u2026 \uBBF8\uCE5C \uC9D3\uC774\uB2E4"
+  dagger_Acquire: "\uC798\uB9B0 \uD314\uC744 \uC5BB\uC5C8\uB2E4"
+  acquired_First: "\uC774\uBBF8 \uC190\uC5D0 \uC950\uACE0 \uC788\uB2E4\u2026"
+  acquired_Second: "\uB354 \uBCFC \uD544\uC694\uB294 \uC5C6\uB2E4\u2026"
+  dagger_Hold: .....................................
+  silentHoldTime: 3
+  textHoldTime: 1.5
 --- !u!65 &6263122416203952411
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -121,5 +131,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.009658827, y: 0.017054228, z: 0.0030142553}
-  m_Center: {x: 0.000009901822, y: -0.0001901332, z: -0.002353022}
+  m_Size: {x: 0.0096588265, y: 0.017054217, z: 0.003689423}
+  m_Center: {x: 0.000009901822, y: -0.00019013319, z: -0.00201544}
