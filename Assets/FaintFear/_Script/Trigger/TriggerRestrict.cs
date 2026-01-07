@@ -4,7 +4,7 @@ namespace FaintFear
 {
     /// <summary>
     /// 플레이어가 특정 영역 밖으로 나가지 못하게 제한하는 컴포넌트
-    /// 튜토리얼 이벤트에서 제어 가능하도록 설계됨
+    /// (플레이어는 런타임에 BindPlayer로 주입받는다)
     /// </summary>
     [RequireComponent(typeof(BoxCollider))]
     public class TriggerRestrict : MonoBehaviour
@@ -29,10 +29,12 @@ namespace FaintFear
         private bool restrictionActive = true;
         private bool warningShown = false;
 
+        // ⭐ 현재 Restrict가 플레이어를 밀고 있는지 상태
+        public bool IsRestricting { get; private set; } = false;
+
         #endregion
 
-
-        #region Unity Event Method
+        #region Unity
 
         private void Awake()
         {
@@ -46,11 +48,11 @@ namespace FaintFear
             if (player == null) return;
 
             Bounds bounds = GetWorldBounds();
-
             Vector3 playerPos = player.position;
 
             if (!bounds.Contains(playerPos))
             {
+                IsRestricting = true;
                 ShowWarningOnce();
 
                 Vector3 closestPoint = bounds.ClosestPoint(playerPos);
@@ -61,12 +63,12 @@ namespace FaintFear
             }
             else
             {
+                IsRestricting = false;
                 warningShown = false;
             }
         }
 
         #endregion
-
 
         #region Bind
 
@@ -78,46 +80,38 @@ namespace FaintFear
 
         #endregion
 
-
         #region Control
 
         public void SetRestriction(bool active)
         {
             restrictionActive = active;
-
             if (!active)
+            {
                 warningShown = false;
+                IsRestricting = false;
+            }
         }
 
         #endregion
-
 
         #region Helper
 
         private void ShowWarningOnce()
         {
             if (warningShown) return;
-
             if (sequenceText != null)
                 sequenceText.ShowMessage(dialogueLine);
-
             warningShown = true;
         }
 
         private Bounds GetWorldBounds()
         {
             Vector3 center = transform.TransformPoint(boxCollider.center);
-
-            Vector3 size = Vector3.Scale(
-                boxCollider.size,
-                transform.lossyScale
-            );
-
+            Vector3 size = Vector3.Scale(boxCollider.size, transform.lossyScale);
             return new Bounds(center, size);
         }
 
         #endregion
-
 
 #if UNITY_EDITOR
         private void OnDrawGizmosSelected()

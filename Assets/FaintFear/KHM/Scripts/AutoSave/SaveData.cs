@@ -28,8 +28,20 @@ public class SaveData
 
     // ⭐ 월드 오브젝트 상태
     public List<string> destroyedObjects = new List<string>();
-
     public List<MovedObjectData> movedObjects = new List<MovedObjectData>();
+
+    // ⭐ 문 상태 저장
+    public List<DoorStateData> doorStates = new List<DoorStateData>();
+
+    // ⭐ 문서 읽음 상태 저장
+    public List<string> readDocuments = new List<string>();
+
+    // ⭐ 열쇠 보유 상태 저장
+    public List<string> ownedKeys = new List<string>();
+
+    // ⭐ 퍼즐 인벤토리 상태
+    public bool[] ownedLevers = new bool[4];
+    public bool hasBoltCutter = false;
 }
 
 [Serializable]
@@ -37,4 +49,13 @@ public class MovedObjectData
 {
     public string id;
     public Vector3 position;
+}
+
+[Serializable]
+public class DoorStateData
+{
+    public string id;           // 문 고유 ID
+    public bool isOpen;         // 열림/닫힘 상태
+    public bool isLocked;       // 잠금 상태
+    public bool wasSaved;       // 이미 체크포인트로 저장됨 (중복 저장 방지)
 }

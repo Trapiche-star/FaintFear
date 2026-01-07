@@ -2,26 +2,39 @@ using UnityEngine;
 
 namespace FaintFear
 {
+    [RequireComponent(typeof(BoxCollider))]
     public class LightZone01 : MonoBehaviour
     {
         #region Variables
 
+        [Header("Light Objects")]
         [SerializeField] private GameObject allPointLights;
         [SerializeField] private GameObject allEmissiveObjects;
+
+        [Header("Light Settings")]
         [SerializeField] private float activeRange = 8f;
         [SerializeField] private float inactiveRange = 0f;
         [SerializeField] private float triggerLightDistance = 15f;
 
+        [Header("Overlap Settings")]
+        [SerializeField] private float borderTolerance = 0.3f; // ⭐ 여유 구간
+
         private Light[] lights;
         private Renderer[] emissiveRenderers;
+        private BoxCollider box;
+
         private bool lightsPermanentlyOff = false;
+        private bool isPlayerInside = false;
 
         #endregion
 
-        #region Unity Event Method
+        #region Unity
 
         private void Awake()
         {
+            box = GetComponent<BoxCollider>();
+            box.isTrigger = true;
+
             if (allPointLights != null)
                 lights = allPointLights.GetComponentsInChildren<Light>(true);
 
@@ -33,76 +46,62 @@ namespace FaintFear
 
         private void Start()
         {
-            if (lights == null && emissiveRenderers == null)
-                return;
-
-            // ⭐ 저장된 조명 상태 복원
             var data = SaveSystem.LoadPreview();
+
             if (data != null && data.lightsPermaOff)
             {
-                Debug.Log("[LightZone01] Loading saved state - lights permanently OFF");
                 lightsPermanentlyOff = true;
                 SetLightsActive(false);
+                enabled = false;
                 return;
             }
 
-            // ⭐ 튜토리얼 중에는 무조건 조명 켜기
-            bool tutorialCompleted = data != null && data.tutorialCompleted;
+            bool tutorialCompleted =
+                (data != null && data.tutorialCompleted) || GameManager.TutorialCompleted;
 
-            if (!tutorialCompleted && !GameManager.TutorialCompleted)
+            if (!tutorialCompleted)
             {
-                Debug.Log("[LightZone01] Tutorial not completed - lights ON by default");
-                SetLightsActive(true);
-                return;
-            }
-
-            // ⭐ 튜토리얼 완료 후 플레이어 위치 확인
-            bool playerInside = CheckPlayerInside();
-            SetLightsActive(playerInside);
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.CompareTag("Player"))
-            {
+                isPlayerInside = true;
                 SetLightsActive(true);
             }
         }
 
-        private void OnTriggerExit(Collider other)
+        private void Update()
         {
-            if (other.CompareTag("Player"))
-            {
-                SetLightsActive(false);
-            }
+            if (lightsPermanentlyOff) return;
+
+            // ⭐ Restrict 체크
+            TriggerRestrict restrict = FindObjectOfType<TriggerRestrict>();
+            if (restrict != null && restrict.IsRestricting) return;
+
+            bool insideNow = CheckPlayerInsideStable();
+
+            if (insideNow == isPlayerInside) return; // 상태 변화 없으면 무시
+
+            isPlayerInside = insideNow;
+            SetLightsActive(isPlayerInside);
         }
 
         #endregion
 
-        #region Custom Method
+        #region Core
 
-        private bool CheckPlayerInside()
+        // ⭐ 여유 구간(Hysteresis) 적용
+        private bool CheckPlayerInsideStable()
         {
-            BoxCollider box = GetComponent<BoxCollider>();
-            if (box == null)
-            {
-                Debug.LogWarning("[LightZone01] BoxCollider not found");
-                return false;
-            }
+            Vector3 center = transform.TransformPoint(box.center);
+            Vector3 halfSize = box.size * 0.5f - Vector3.one * borderTolerance;
 
-            Collider[] colliders = Physics.OverlapBox(
-                transform.position,
-                box.size / 2f,
+            Collider[] hits = Physics.OverlapBox(
+                center,
+                halfSize,
                 transform.rotation
             );
 
-            foreach (Collider col in colliders)
+            foreach (Collider col in hits)
             {
                 if (col.CompareTag("Player"))
-                {
-                    Debug.Log("[LightZone01] Player found inside trigger");
                     return true;
-                }
             }
 
             return false;
@@ -110,14 +109,9 @@ namespace FaintFear
 
         public void SetLightsActive(bool state)
         {
-            if (lightsPermanentlyOff && state)
-            {
-                Debug.Log("[LightZone01] Lights are permanently off, ignoring activation");
-                return;
-            }
+            if (lightsPermanentlyOff && state) return;
 
-            Vector3 triggerCenter = transform.position;
-            int lightsControlled = 0;
+            Vector3 center = transform.position;
 
             if (lights != null)
             {
@@ -125,70 +119,49 @@ namespace FaintFear
                 {
                     if (l == null) continue;
 
-                    float distance = Vector3.Distance(l.transform.position, triggerCenter);
+                    float dist = Vector3.Distance(l.transform.position, center);
+                    bool enable = state && dist <= triggerLightDistance;
 
-                    if (state && distance <= triggerLightDistance)
-                    {
-                        l.enabled = true;
-                        l.range = activeRange;
-                        lightsControlled++;
-                    }
-                    else
-                    {
-                        l.enabled = false;
-                        l.range = inactiveRange;
-                    }
+                    l.enabled = enable;
+                    l.range = enable ? activeRange : inactiveRange;
                 }
             }
 
-            SetEmissionState(state, triggerCenter);
-
-            Debug.Log($"[LightZone01] SetLightsActive({state}) - {lightsControlled}/{lights?.Length ?? 0} lights controlled");
+            SetEmissionState(state, center);
         }
 
         private void ForceDisableAllEmission()
         {
             if (emissiveRenderers == null) return;
 
-            foreach (Renderer rend in emissiveRenderers)
+            foreach (Renderer r in emissiveRenderers)
             {
-                if (rend == null) continue;
-
-                foreach (Material mat in rend.materials)
+                foreach (Material mat in r.materials)
                 {
-                    if (mat == null) continue;
-
                     mat.DisableKeyword("_EMISSION");
-                    mat.globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
                     mat.SetColor("_EmissionColor", Color.black);
                 }
             }
         }
 
-        private void SetEmissionState(bool state, Vector3 triggerCenter)
+        private void SetEmissionState(bool state, Vector3 center)
         {
             if (emissiveRenderers == null) return;
 
-            foreach (Renderer rend in emissiveRenderers)
+            foreach (Renderer r in emissiveRenderers)
             {
-                if (rend == null) continue;
+                float dist = Vector3.Distance(r.transform.position, center);
 
-                float distance = Vector3.Distance(rend.transform.position, triggerCenter);
-
-                foreach (Material mat in rend.materials)
+                foreach (Material mat in r.materials)
                 {
-                    if (mat == null) continue;
-
-                    if (state && distance <= triggerLightDistance)
+                    if (state && dist <= triggerLightDistance)
                     {
                         mat.EnableKeyword("_EMISSION");
-                        mat.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
                         mat.SetColor("_EmissionColor", Color.white * 1.5f);
                     }
                     else
                     {
                         mat.DisableKeyword("_EMISSION");
-                        mat.globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
                         mat.SetColor("_EmissionColor", Color.black);
                     }
                 }
@@ -197,7 +170,6 @@ namespace FaintFear
 
         public void SetPermanentlyOff()
         {
-            Debug.Log("[LightZone01] Setting lights permanently off");
             lightsPermanentlyOff = true;
             SetLightsActive(false);
         }

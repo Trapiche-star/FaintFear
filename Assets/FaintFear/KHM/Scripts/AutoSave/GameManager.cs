@@ -232,6 +232,10 @@ namespace FaintFear
             foreach (var t in tutorials)
                 t.BindPlayer(player);
 
+            var restricts = FindObjectsByType<TriggerRestrict>(FindObjectsSortMode.None);
+            foreach (var r in restricts)
+                r.BindPlayer(player);
+
             CharacterController cc = player.GetComponent<CharacterController>();
             if (cc != null)
             {
@@ -239,6 +243,7 @@ namespace FaintFear
                 cc.enabled = true;
                 cc.Move(Vector3.zero);
             }
+
             var flashInteraction = player.GetComponent<PlayerFlashLightInteraction>();
             flashInteraction?.BindFlashlight(player);
         }
