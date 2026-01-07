@@ -1,4 +1,4 @@
-/*using Unity.Cinemachine;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using System.Collections;
@@ -75,8 +75,25 @@ namespace FaintFear
 
         private void Awake()
         {
-            noise = vcam.GetComponent<CinemachineBasicMultiChannelPerlin>();
+            // + vcam이 Inspector에 안 연결됐으면 자동 탐색
+            if (vcam == null)
+            {
+                vcam = Object.FindFirstObjectByType<CinemachineCamera>();
+                if (vcam == null)
+                {
+                    Debug.LogError("[MentalEffectController] CinemachineCamera를 찾을 수 없음");
+                    return;
+                }
+            }
 
+            //+ Noise 안전하게 가져오기
+            noise = vcam.GetComponent<CinemachineBasicMultiChannelPerlin>();
+            if (noise == null)
+            {
+                Debug.LogWarning("[MentalEffectController] Noise 컴포넌트 없음");
+            }
+
+            // + VolumeSettings 안전 처리
             var volumeSettings = vcam.GetComponent<CinemachineVolumeSettings>();
             if (volumeSettings != null && volumeSettings.Profile != null)
             {
@@ -86,6 +103,11 @@ namespace FaintFear
                 volumeSettings.Profile.TryGet(out chromaticAberration);
                 volumeSettings.Profile.TryGet(out filmGrain);
             }
+            else
+            {
+                Debug.LogWarning("[MentalEffectController] Cinemachine VolumeSettings 또는 Profile 없음");
+            }
+
         }
 
         private void OnEnable()
@@ -268,4 +290,4 @@ namespace FaintFear
             enableWobble = setting.wobble;
         }
     }
-}*/
+}
