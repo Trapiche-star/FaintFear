@@ -2472,6 +2472,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 997ceef848678ec418a0cd58240b76b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueId: Basement_Battery_01
 --- !u!4 &1092618002 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1689085104297651599, guid: 93df9a80e84a2f7449400bd4b1a7588e, type: 3}
@@ -2673,6 +2674,10 @@ PrefabInstance:
       propertyPath: gaugeUI
       value: 
       objectReference: {fileID: 1973401342}
+    - target: {fileID: 7045671890677823370, guid: 1f6b1c79132997d4b8f309e41d12e347, type: 3}
+      propertyPath: uniqueId
+      value: Basement_PushItem_01
+      objectReference: {fileID: 0}
     - target: {fileID: 7045671890677823370, guid: 1f6b1c79132997d4b8f309e41d12e347, type: 3}
       propertyPath: sequenceText
       value: 
