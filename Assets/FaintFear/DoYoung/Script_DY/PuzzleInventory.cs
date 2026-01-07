@@ -79,6 +79,10 @@ namespace FaintFear
 
             // 해당 인덱스의 레버를 보유 상태로 변경한다
             ownedLevers[leverIndex] = true;
+
+            // + SFX_Pickup 재생
+            if (SoundManager.Instance != null)
+                SoundManager.Instance.PlaySFX("SFX_Pickup");
         }
 
         // 레버를 소비한다
@@ -104,6 +108,10 @@ namespace FaintFear
 
             // 볼트 커터를 영구 퍼즐 도구로 등록한다
             hasBoltCutter = true;
+
+            // + SFX_Pickup 재생
+            if (SoundManager.Instance != null)
+                SoundManager.Instance.PlaySFX("SFX_Pickup");
         }
 
         #endregion
