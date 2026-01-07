@@ -2866,6 +2866,7 @@ MonoBehaviour:
   activeRange: 8
   inactiveRange: 0
   triggerLightDistance: 10
+  borderTolerance: 0.3
 --- !u!114 &803317311
 MonoBehaviour:
   m_ObjectHideFlags: 0
