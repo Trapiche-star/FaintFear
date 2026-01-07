@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4281327250272946933}
-  - component: {fileID: 4954737986973686014}
+  - component: {fileID: 2570611900492871378}
   m_Layer: 0
   m_Name: BGMStarter
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4954737986973686014
+--- !u!114 &2570611900492871378
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,6 +41,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 4808502258256163478}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c959cf50cd1c9a469bd91cd75906f22, type: 3}
+  m_Script: {fileID: 11500000, guid: 5478f0231dcf5a04fbf0512e4f283ce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bgmName: 
+  rememberPrevious: 0

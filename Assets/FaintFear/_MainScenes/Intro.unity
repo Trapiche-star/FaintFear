@@ -389,74 +389,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SoundManager
       objectReference: {fileID: 0}
-    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: bgms.Array.size
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: bgms.Array.data[6].clip
-      value: 
-      objectReference: {fileID: 8300000, guid: 8c26cb679963e7b40be93a5d8d20d6aa, type: 3}
-    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: bgms.Array.data[6].name
-      value: 'BGM_EndingB '
-      objectReference: {fileID: 0}
-    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: bgms.Array.data[7].clip
-      value: 
-      objectReference: {fileID: 8300000, guid: 198b0b7775013a3469be6ea5926ce118, type: 3}
-    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: bgms.Array.data[7].name
-      value: 'BGM_MainMenu '
-      objectReference: {fileID: 0}
-    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: bgms.Array.data[8].clip
-      value: 
-      objectReference: {fileID: 8300000, guid: 8205270bef23c7a45bd395e3ff190258, type: 3}
-    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: bgms.Array.data[8].name
-      value: BGM_EndingA
-      objectReference: {fileID: 0}
-    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: bgms.Array.data[9].clip
-      value: 
-      objectReference: {fileID: 8300000, guid: f37513ffce2b990479c700f821db00b1, type: 3}
-    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: bgms.Array.data[9].name
-      value: BGM_EndingC
-      objectReference: {fileID: 0}
-    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: bgms.Array.data[6].pitch
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: bgms.Array.data[7].pitch
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: bgms.Array.data[8].pitch
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: bgms.Array.data[9].pitch
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: bgms.Array.data[6].volume
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: bgms.Array.data[7].volume
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: bgms.Array.data[8].volume
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: bgms.Array.data[9].volume
-      value: 0.7
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1438,6 +1370,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2570611900492871378, guid: 8b11bfc89479f194b899c2b5865438df, type: 3}
+      propertyPath: bgmName
+      value: BGM_Calm
+      objectReference: {fileID: 0}
     - target: {fileID: 4281327250272946933, guid: 8b11bfc89479f194b899c2b5865438df, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.59205717
