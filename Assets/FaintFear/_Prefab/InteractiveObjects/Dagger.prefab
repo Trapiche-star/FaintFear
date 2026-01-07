@@ -235,7 +235,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff51337bc3e1e1f4c80b830def7331bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionText: "\uB300\uAC70\uB97C \uC90D\uB294\uB2E4"
+  actionText: "\uC758\uC2DD\uC6A9 \uB2E8\uAC80"
 --- !u!1 &7777202914705984586
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,8 +343,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.9955679, y: 0.13085604, z: 0.26695606}
-  m_Center: {x: -0.002216011, y: -7.105336e-18, z: -0.0004999937}
+  m_Size: {x: 2.0812757, y: 0.5464122, z: 0.50369424}
+  m_Center: {x: -0.004158417, y: 0.00836016, z: 0.117869094}
 --- !u!114 &8787994633075847931
 MonoBehaviour:
   m_ObjectHideFlags: 0
