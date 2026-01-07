@@ -554,6 +554,7 @@ Transform:
   m_Children:
   - {fileID: 515651091}
   - {fileID: 1809754996}
+  - {fileID: 1616815028}
   m_Father: {fileID: 218468444}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &136095028
@@ -570,7 +571,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isLocked: 1
   isOpen: 0
-  uniqueId: 
+  uniqueId: Level01_BasementDoor_01
   sequenceText: {fileID: 2312052753772196972}
   targetSceneName: BasementScene
   spawnPointName: StartSpawnPoint
@@ -4101,6 +4102,67 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.13699017, y: 0.028925603, z: 0.14180836}
   m_Center: {x: 0.03552001, y: -0.009676221, z: 0.037441626}
+--- !u!1001 &1265080401
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 136095027}
+    m_Modifications:
+    - target: {fileID: 2507957437047139022, guid: f544446edb1715b4f95ca7c16726a579, type: 3}
+      propertyPath: uniqueId
+      value: Level01_Lever_03
+      objectReference: {fileID: 0}
+    - target: {fileID: 5098464546020958418, guid: f544446edb1715b4f95ca7c16726a579, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.143
+      objectReference: {fileID: 0}
+    - target: {fileID: 5098464546020958418, guid: f544446edb1715b4f95ca7c16726a579, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5098464546020958418, guid: f544446edb1715b4f95ca7c16726a579, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.679
+      objectReference: {fileID: 0}
+    - target: {fileID: 5098464546020958418, guid: f544446edb1715b4f95ca7c16726a579, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.70331895
+      objectReference: {fileID: 0}
+    - target: {fileID: 5098464546020958418, guid: f544446edb1715b4f95ca7c16726a579, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.70331895
+      objectReference: {fileID: 0}
+    - target: {fileID: 5098464546020958418, guid: f544446edb1715b4f95ca7c16726a579, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.073092476
+      objectReference: {fileID: 0}
+    - target: {fileID: 5098464546020958418, guid: f544446edb1715b4f95ca7c16726a579, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.073092476
+      objectReference: {fileID: 0}
+    - target: {fileID: 5098464546020958418, guid: f544446edb1715b4f95ca7c16726a579, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 5098464546020958418, guid: f544446edb1715b4f95ca7c16726a579, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5098464546020958418, guid: f544446edb1715b4f95ca7c16726a579, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 11.866
+      objectReference: {fileID: 0}
+    - target: {fileID: 5577769161022186536, guid: f544446edb1715b4f95ca7c16726a579, type: 3}
+      propertyPath: m_Name
+      value: SlotLever01 (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f544446edb1715b4f95ca7c16726a579, type: 3}
 --- !u!1 &1303353208
 GameObject:
   m_ObjectHideFlags: 0
@@ -5209,6 +5271,11 @@ MonoBehaviour:
   onDoorClose:
     m_PersistentCalls:
       m_Calls: []
+--- !u!4 &1616815028 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5098464546020958418, guid: f544446edb1715b4f95ca7c16726a579, type: 3}
+  m_PrefabInstance: {fileID: 1265080401}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1627325662
 GameObject:
   m_ObjectHideFlags: 0
@@ -92740,6 +92807,10 @@ PrefabInstance:
     - target: {fileID: 5048336352988005997, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
       propertyPath: m_Name
       value: SoundManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 5048336352988005997, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
