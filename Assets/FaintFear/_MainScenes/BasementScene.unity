@@ -133,7 +133,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5775727490165284755, guid: afb44739603341a49a34f240b02fcd32, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8013859755889548997, guid: afb44739603341a49a34f240b02fcd32, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5660,13 +5660,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isLocked: 0
+  isOpen: 0
+  uniqueId: 
+  sequenceText: {fileID: 186963925}
   targetSceneName: Level01
   spawnPointName: FromBasement
-  sequenceText: {fileID: 186963925}
-  lockedMessage: "\uBB38\uC774 \uC7A0\uACA8\uC788\uB2E4. \uD0A4\uD328\uB4DC\uB85C
-    \uC5F4 \uC218 \uC788\uC744 \uAC83 \uAC19\uB2E4."
   transitionMessage: "\uBB38\uC744 \uC5F4\uACE0 \uB4E4\uC5B4\uAC04\uB2E4..."
-  doorID: 
 --- !u!1 &1457244850
 GameObject:
   m_ObjectHideFlags: 0
