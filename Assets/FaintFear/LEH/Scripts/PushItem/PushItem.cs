@@ -150,19 +150,14 @@ namespace FaintFear
         {
             isPushing = false;
             isCleared = true;
-
-            //먼저 효과음 재생
-            Debug.Log("[PushItem] Complete Push SFX 재생 시도: " + completePushSFX);
-            SoundManager.Instance?.PlaySFX(completePushSFX);
-
-            //상태 종료
             DisablePushing();
 
-            //상자 이동 시작
-            StartCoroutine(MoveToPosition());
-          
-        }
+            // ⭐ 런타임 이동 상태 기록
+            RuntimeStateManager.RecordMovedObject(uniqueId, movePosition.position);
 
+            SoundManager.Instance?.PlaySFX(completePushSFX);
+            StartCoroutine(MoveToPosition());
+        }
         IEnumerator MoveToPosition()
         {
             float originalY = transform.position.y;
