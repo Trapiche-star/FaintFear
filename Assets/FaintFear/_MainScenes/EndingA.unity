@@ -366,7 +366,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d38f353c456540a4bad4ff6b9f7c04ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panelImage: {fileID: 1435113442}
 --- !u!4 &893278692
 Transform:
   m_ObjectHideFlags: 0
@@ -915,8 +914,8 @@ MonoBehaviour:
   m_text: "\uB2F9\uC2E0\uC740 \uD3D0\uBCD1\uC6D0 \uC778\uADFC\uC744 \uC21C\uCC30\uD558\uB294
     \uACBD\uBE44\uC6D0\uC774\uB2E4.\r\n"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 503647df19fbce84d952f88dc2d9ba2a, type: 2}
+  m_sharedMaterial: {fileID: -4837633322402602641, guid: 503647df19fbce84d952f88dc2d9ba2a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1330,10 +1329,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a93cb60e810bed4f8bc6d346c07c841, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneFader: {fileID: 893278691}
   bgmPlayer: {fileID: 2022621237}
   slideShow: {fileID: 175845365}
   nextSceneName: MainMenu
+  spawnPointName: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
