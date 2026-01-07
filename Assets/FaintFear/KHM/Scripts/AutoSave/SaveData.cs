@@ -42,7 +42,17 @@ public class SaveData
     // ⭐ 퍼즐 인벤토리 상태
     public bool[] ownedLevers = new bool[4];
     public bool hasBoltCutter = false;
+
+    public PowerBoxData powerBoxData = new PowerBoxData();
 }
+[Serializable]
+public class PowerBoxData
+{
+    public bool[] filledSlots = new bool[4];
+    public bool isPowerSupplied = false;
+    public bool isCompleted = false;
+}
+
 
 [Serializable]
 public class MovedObjectData

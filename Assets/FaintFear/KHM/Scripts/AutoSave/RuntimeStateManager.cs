@@ -16,6 +16,8 @@ namespace FaintFear
         private static Dictionary<string, Vector3> runtimeMovedObjects = new Dictionary<string, Vector3>();
         private static Dictionary<string, DoorStateData> runtimeDoorStates = new Dictionary<string, DoorStateData>();
         private static HashSet<string> runtimeReadDocuments = new HashSet<string>();
+        private static PowerBoxData runtimePowerBoxState = null;
+
 
         private void Awake()
         {
@@ -30,6 +32,17 @@ namespace FaintFear
         }
 
         // ===================== 런타임 상태 기록 =====================
+        public static void RecordPowerBoxState(string id, bool[] filledSlots, bool isPowerSupplied, bool isCompleted)
+        {
+            if (runtimePowerBoxState == null)
+                runtimePowerBoxState = new PowerBoxData();
+
+            runtimePowerBoxState.filledSlots = filledSlots;
+            runtimePowerBoxState.isPowerSupplied = isPowerSupplied;
+            runtimePowerBoxState.isCompleted = isCompleted;
+
+            Debug.Log($"[RuntimeState] PowerBox 상태 기록");
+        }
 
         public static void RecordDestroyedObject(string id)
         {
@@ -115,6 +128,13 @@ namespace FaintFear
                         Debug.Log($"[RuntimeState] 런타임 상태 적용 - 비활성화: {id}");
                     }
 
+                    if (runtimePowerBoxState != null && behaviour is PowerBoxController powerBox)
+                    {
+                        SaveData tempData = new SaveData();
+                        tempData.powerBoxData = runtimePowerBoxState;
+                        powerBox.Load(tempData);
+                    }
+
                     // 런타임에 이동된 오브젝트 처리
                     if (runtimeMovedObjects.ContainsKey(id))
                     {
@@ -149,6 +169,11 @@ namespace FaintFear
 
         public static void MergeRuntimeStateToSaveData(ref SaveData data)
         {
+            if (runtimePowerBoxState != null)
+            {
+                data.powerBoxData = runtimePowerBoxState;
+            }
+
             // 기존 저장된 상태 + 런타임 상태 병합
             foreach (var id in runtimeDestroyedObjects)
             {
@@ -211,6 +236,7 @@ namespace FaintFear
 
         public static void ClearRuntimeState()
         {
+            runtimePowerBoxState = null;
             runtimeDestroyedObjects.Clear();
             runtimeMovedObjects.Clear();
             runtimeDoorStates.Clear();
