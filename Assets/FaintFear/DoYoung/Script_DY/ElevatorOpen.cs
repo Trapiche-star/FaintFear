@@ -12,7 +12,6 @@ namespace FaintFear
         #region Variables
 
         [Header("Reference")]
-        [SerializeField] private ElevatorManager elevatorManager; // 엘리베이터 전력 매니저
         [SerializeField] private SequenceTextManager textManager; // 텍스트 출력 담당
 
         [Header("Fail Lines")]
@@ -41,10 +40,10 @@ namespace FaintFear
             if (isLocked)
                 return; // 만약 [시퀀스 출력 중이라면] [상호작용을 차단한다]
 
-            if (elevatorManager == null)
-                return; // 만약 [엘리베이터 매니저가 없다면] [처리하지 않는다]
+            if (ElevatorManager.Instance == null)
+                return; // 만약 [엘리베이터 매니저 인스턴스가 없다면] [처리하지 않는다]
 
-            if (!elevatorManager.IsElevatorAvailable())
+            if (!ElevatorManager.Instance.IsElevatorAvailable())
             {
                 HandleFailSequence();
                 return; // 만약 [전력이 공급되지 않았다면] [실패 시퀀스를 출력한다]
@@ -88,7 +87,7 @@ namespace FaintFear
             }
             else
             {
-                Debug.LogError("[SceneTransitionDoor] SceneLoadManager not found!");
+                Debug.LogError("[ElevatorOpen] SceneLoadManager not found!");
             }
 
             Debug.Log("엘리베이터 실행");
@@ -130,3 +129,4 @@ namespace FaintFear
         #endregion
     }
 }
+

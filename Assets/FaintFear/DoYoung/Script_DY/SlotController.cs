@@ -13,16 +13,15 @@ namespace FaintFear
         [SerializeField] private int requiredLeverIndex = 0;      // 이 슬롯이 요구하는 레버 인덱스
         [SerializeField] private GameObject insertedLever;        // 슬롯에 꽂혔을 때 표시될 레버 오브젝트
         [SerializeField] private PowerBoxController powerBox;     // 파워박스 퍼즐 관리자
-        [SerializeField] private ElevatorManager elevatorManager; // 엘리베이터 전력 매니저 (알림용)
 
-        private bool isFilled = false;                             // 슬롯이 이미 채워졌는지 여부
+        private bool isFilled = false;                            // 슬롯이 이미 채워졌는지 여부
 
         #endregion
 
 
         #region Property
 
-        public bool IsFilled => isFilled;                          // 슬롯 채워짐 상태 반환
+        public bool IsFilled => isFilled;                         // 슬롯 채워짐 상태 반환
         public int RequiredLeverIndex => requiredLeverIndex;      // 요구 레버 인덱스 반환
 
         #endregion
@@ -51,7 +50,6 @@ namespace FaintFear
             return true;
         }
 
-
         // 슬롯을 채웠을 때의 실제 처리
         private void FillSlot()
         {
@@ -69,9 +67,9 @@ namespace FaintFear
                 EndingManager.Instance.SetLeverActivated(requiredLeverIndex);
             // 만약 [엔딩 매니저 인스턴스가 존재한다면] [이 슬롯의 레버 활성 상태를 기록한다]
 
-            if (elevatorManager != null && requiredLeverIndex == 0)
-                elevatorManager.SupplyPower();
-            // 만약 [이 슬롯이 빨간 스위치라면] [엘리베이터 전력을 공급한다]
+            if (ElevatorManager.Instance != null && requiredLeverIndex == 0)
+                ElevatorManager.Instance.SupplyPower();
+            // 만약 [이 슬롯이 빨간 스위치라면] [전역 엘리베이터 매니저에 전력 공급을 전달한다]
 
             if (powerBox != null)
                 powerBox.CheckPuzzleComplete();
@@ -105,9 +103,9 @@ namespace FaintFear
                 EndingManager.Instance.SetLeverActivated(requiredLeverIndex);
             // 만약 [엔딩 매니저 인스턴스가 존재한다면] [현재 슬롯 인덱스를 활성으로 기록한다]
 
-            if (elevatorManager != null && requiredLeverIndex == 0)
-                elevatorManager.SupplyPower();
-            // 만약 [이 슬롯이 빨간 스위치라면] [엘리베이터 전력을 공급한다]
+            if (ElevatorManager.Instance != null && requiredLeverIndex == 0)
+                ElevatorManager.Instance.SupplyPower();
+            // 만약 [이 슬롯이 빨간 스위치라면] [전역 엘리베이터 매니저에 전력 공급을 전달한다]
 
             if (powerBox != null)
                 powerBox.CheckPuzzleComplete();
