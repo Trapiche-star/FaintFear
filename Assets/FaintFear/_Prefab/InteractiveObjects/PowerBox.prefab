@@ -402,7 +402,7 @@ MonoBehaviour:
   insertedLever: {fileID: 6775444135515391217}
   powerBox: {fileID: 2382360199136297033}
   endingManager: {fileID: 6282331366364620485}
-  elevatorManager: {fileID: 2006564765921621909}
+  elevatorManager: {fileID: 0}
 --- !u!114 &658821699270514253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1113,7 +1113,6 @@ GameObject:
   - component: {fileID: 6974078422071324890}
   - component: {fileID: 2382360199136297033}
   - component: {fileID: 6282331366364620485}
-  - component: {fileID: 2006564765921621909}
   m_Layer: 0
   m_Name: PowerBox
   m_TagString: Untagged
@@ -1175,18 +1174,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b646477f55417b34e9a476176f74e462, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2006564765921621909
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4397787529218517683}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fec096920fc855748b4d1b195fef7799, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4668951198858434788
@@ -1456,7 +1443,7 @@ MonoBehaviour:
   insertedLever: {fileID: 4887780547554451852}
   powerBox: {fileID: 2382360199136297033}
   endingManager: {fileID: 6282331366364620485}
-  elevatorManager: {fileID: 2006564765921621909}
+  elevatorManager: {fileID: 0}
 --- !u!114 &2448952029264354434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1632,7 +1619,7 @@ MonoBehaviour:
   insertedLever: {fileID: 4924561361700298944}
   powerBox: {fileID: 2382360199136297033}
   endingManager: {fileID: 6282331366364620485}
-  elevatorManager: {fileID: 2006564765921621909}
+  elevatorManager: {fileID: 0}
 --- !u!114 &7712149614102816739
 MonoBehaviour:
   m_ObjectHideFlags: 0

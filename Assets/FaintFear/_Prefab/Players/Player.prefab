@@ -303,7 +303,7 @@ MonoBehaviour:
   cameraRoot: {fileID: 8650879924654022536}
   targetLayer:
     serializedVersion: 2
-    m_Bits: 31168
+    m_Bits: 63936
   crossHair: {fileID: 4798505586484529201}
   playerCrossHair: {fileID: 1981718588793620915}
   actionUI: {fileID: 6644771746777386345}
@@ -338,7 +338,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealth: {fileID: 3628334409125768203}
-  vcam: {fileID: 0}
+  vcam: {fileID: 5669124564287646063, guid: cf90c45b98e376e4d9807b0c579e6fb3, type: 3}
   smoothSpeed: 3
   wobbleSpeed: 1.5
   wobbleAmount: 0.05
@@ -682,6 +682,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spotLight: {fileID: 5241323646376783730}
   batteryDrainRate: 0.5
+  turnOnSFX: SFX_Flashlight_On
+  turnOffSFX: SFX_Flashlight_Off
+  batteryEmptySFX: SFX_Flashlight_Empty
 --- !u!1 &1981718588793620915
 GameObject:
   m_ObjectHideFlags: 0
@@ -1336,6 +1339,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8650879924654022536}
     m_Modifications:
+    - target: {fileID: 2453829497068610572, guid: 1314fa248f727fd49a41f4096da5ff03, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 64503
+      objectReference: {fileID: 0}
     - target: {fileID: 5037577096591317297, guid: 1314fa248f727fd49a41f4096da5ff03, type: 3}
       propertyPath: m_Name
       value: MainCamera

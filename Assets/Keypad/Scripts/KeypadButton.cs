@@ -1,3 +1,4 @@
+using FaintFear;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,14 +13,14 @@ namespace NavKeypad
         [SerializeField] private float moveDist = 0.0025f;
         [SerializeField] private float buttonPressedTime = 0.1f;
         [Header("Component References")]
-        [SerializeField] private Keypad1 keypad1;
+        [SerializeField] private UnifiedKeypad unifiedKeypad;
 
 
         public void PressButton()
         {
             if (!moving)
             {
-                keypad1.AddInput(value);
+                unifiedKeypad.AddInput(value);
                 StartCoroutine(MoveSmooth());
             }
         }

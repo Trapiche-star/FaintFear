@@ -1,31 +1,50 @@
 using UnityEngine;
-using System.Collections;
 using UnityEngine.SceneManagement;
-using System.Reflection;
+using System.Collections.Generic;
 
 namespace FaintFear
 {
+    /// <summary>
+    /// 게임 전체 상태 + 플레이어 생명주기 전담 관리자
+    /// </summary>
     public class GameManager : MonoBehaviour
     {
-        public static GameManager Instance;
+        public static GameManager Instance { get; private set; }
 
-        [SerializeField] private string loadToScene = "Level01";
-        private Transform newGameSpawnPoint;
+        [Header("Player")]
+        [SerializeField] private GameObject playerPrefab;
+        [SerializeField] private string newGameSpawnPointName = "NewGameSpawn";
+
+        [Header("Gameplay Scenes")]
+        [SerializeField] private List<string> gameplayScenes;
+
         public static bool TutorialCompleted;
-        private SceneFader sceneFader;
+
+        // ⭐ static으로 변경 - 씬 로드 시에도 유지됨!
+        private static string sceneTransitionSpawnPoint = "";
+        private static GameStartMode pendingStartMode = GameStartMode.NewGame;
 
         private enum GameStartMode
         {
             NewGame,
             Continue,
-            RestartFromCheckpoint
+            RestartFromCheckpoint,
+            SceneTransition
         }
 
         private GameStartMode currentStartMode = GameStartMode.NewGame;
 
+        public void SetSceneTransitionMode(string spawnPointName)
+        {
+            // ⭐ static 변수에 저장
+            pendingStartMode = GameStartMode.SceneTransition;
+            sceneTransitionSpawnPoint = spawnPointName;
+            Debug.Log($"[GameManager] SetSceneTransitionMode: {spawnPointName}, pendingMode: {pendingStartMode}");
+        }
+
         private void Awake()
         {
-            if (Instance != null && Instance != this)
+            if (Instance != null)
             {
                 Destroy(gameObject);
                 return;
@@ -49,7 +68,7 @@ namespace FaintFear
         }
 
         // =========================
-        // 🔹 메인메뉴에서 호출되는 함수들
+        // Main Menu
         // =========================
 
         public void StartNewGame()
@@ -63,150 +82,152 @@ namespace FaintFear
 
         public void ContinueGame()
         {
-            if (!SaveSystem.HasSave())
-            {
-                Debug.LogWarning("[GameManager] No save file to continue");
-                StartNewGame();
-                return;
-            }
-
             currentStartMode = GameStartMode.Continue;
-            SceneManager.LoadScene(loadToScene);
+            SceneManager.LoadScene("Level01");
         }
 
         public void RestartFromCheckpoint()
         {
             currentStartMode = GameStartMode.RestartFromCheckpoint;
-            SceneManager.LoadScene(loadToScene);
+            SceneManager.LoadScene("Level01");
         }
 
         // =========================
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            if (scene.name != loadToScene)
+            // ⭐ pendingStartMode 확인
+            Debug.Log($"[GameManager] OnSceneLoaded: {scene.name}, pendingMode: {pendingStartMode}, currentMode: {currentStartMode}");
+
+            if (!gameplayScenes.Contains(scene.name))
             {
                 EnterMenuState();
                 return;
             }
 
-            //상시 탐색 BGM
+            EnterGameplayState();
+
             if (SoundManager.Instance != null)
                 SoundManager.Instance.PlayBGM("BGM_Explore");
 
-            var data = SaveSystem.LoadPreview();
-            TutorialCompleted = data != null && data.tutorialCompleted;
+            // ⭐ pendingStartMode가 있으면 그걸 사용
+            GameStartMode modeToExecute = pendingStartMode != GameStartMode.NewGame ? pendingStartMode : currentStartMode;
 
-            /*newGameSpawnPoint = GameObject.Find("StartSpawnPoint")?.transform;
-            if (newGameSpawnPoint == null)
-            {
-                Debug.LogError("StartSpawnPoint not found!");
-                return;
-            }*/
+            Debug.Log($"[GameManager] Executing mode: {modeToExecute}");
 
-            EnterGameplayState();
+            // ⭐ 실행 후 초기화
+            pendingStartMode = GameStartMode.NewGame;
+            currentStartMode = GameStartMode.NewGame;
+            string spawnToUse = sceneTransitionSpawnPoint;
+            sceneTransitionSpawnPoint = "";
 
-            switch (currentStartMode)
+            // ⭐ 저장된 모드로 실행
+            switch (modeToExecute)
             {
                 case GameStartMode.NewGame:
-                    HandleNewGame();
+                    Debug.Log($"[GameManager] Spawning at NewGame spawn: {newGameSpawnPointName}");
+                    SpawnPlayerAtSpawnPoint(newGameSpawnPointName);
+                    PlayerStatus.Instance?.ResetStatus();
                     break;
 
                 case GameStartMode.Continue:
                 case GameStartMode.RestartFromCheckpoint:
-                    HandleLoadGame();
+                    Debug.Log("[GameManager] Loading player from save");
+                    LoadPlayerFromSave();
+                    SaveSystem.ApplyWorldObjectLoad();
+                    break;
+
+                case GameStartMode.SceneTransition:
+                    Debug.Log($"[GameManager] SceneTransition mode - spawning at: {spawnToUse}");
+                    SpawnPlayerAtSpawnPoint(spawnToUse);
+                    SaveSystem.ApplyWorldObjectLoad();
                     break;
             }
-
-            currentStartMode = GameStartMode.NewGame;
         }
+
+        // =========================
+        // Player
+        // =========================
+
+        public void SpawnPlayerAtSpawnPoint(string spawnPointName)
+        {
+            Debug.Log($"[GameManager] SpawnPlayerAtSpawnPoint: {spawnPointName}");
+
+            GameObject spawnPoint = GameObject.Find(spawnPointName);
+            if (spawnPoint == null)
+            {
+                Debug.LogError($"[GameManager] SpawnPoint '{spawnPointName}' not found!");
+                return;
+            }
+
+            Debug.Log($"[GameManager] SpawnPoint found at: {spawnPoint.transform.position}");
+
+            SpawnPlayer(spawnPoint.transform.position, spawnPoint.transform.rotation);
+        }
+
+        private void SpawnPlayer(Vector3 position, Quaternion rotation)
+        {
+            GameObject oldPlayer = GameObject.FindWithTag("Player");
+            if (oldPlayer != null)
+            {
+                Debug.Log("[GameManager] Destroying old player");
+                Destroy(oldPlayer);
+            }
+
+            Debug.Log($"[GameManager] Instantiating player at: {position}");
+            GameObject player = Instantiate(playerPrefab, position, rotation);
+
+            BindPlayerSystems(player);
+
+            Debug.Log($"[GameManager] Player spawned at: {player.transform.position}");
+        }
+
+        private void LoadPlayerFromSave()
+        {
+            SaveData data = SaveSystem.LoadPreview();
+
+            if (data == null)
+            {
+                SpawnPlayerAtSpawnPoint(newGameSpawnPointName);
+                return;
+            }
+
+            SpawnPlayer(data.playerPosition, data.playerRotation);
+
+            PlayerStatus.Instance?.SetHealth(data.mental);
+            PlayerStatus.Instance.currentBattery = data.battery;
+            PlayerStatus.Instance.batteryCount = data.batteryCount;
+        }
+
+        private void BindPlayerSystems(GameObject player)
+        {
+            FlashlightUI ui = FindFirstObjectByType<FlashlightUI>();
+            ui?.BindPlayer(player);
+
+            var tutorials = FindObjectsByType<TutorialEventBase>(FindObjectsSortMode.None);
+            foreach (var t in tutorials)
+                t.BindPlayer(player);
+
+            CharacterController cc = player.GetComponent<CharacterController>();
+            if (cc != null)
+            {
+                cc.enabled = false;
+                cc.enabled = true;
+                cc.Move(Vector3.zero);
+            }
+            var flashInteraction = player.GetComponent<PlayerFlashLightInteraction>();
+            flashInteraction?.BindFlashlight(player);
+        }
+
+        // =========================
+        // State
+        // =========================
 
         public static void EnterMenuState()
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             Time.timeScale = 1f;
-        }
-
-        private void HandleNewGame()
-        {
-            if (PlayerStatus.Instance != null)
-                PlayerStatus.Instance.ResetStatus();
-
-            SpawnPlayerAtStart();
-        }
-
-        private void HandleLoadGame()
-        {
-            if (!SaveSystem.HasSave())
-            {
-                HandleNewGame();
-                return;
-            }
-
-            StartCoroutine(LoadGameWithFade());
-        }
-
-        private IEnumerator LoadGameWithFade()
-        {
-            sceneFader = GameObject.FindFirstObjectByType<SceneFader>();
-
-            GameObject player = GameObject.FindWithTag("Player");
-            PlayerMove move = player?.GetComponent<PlayerMove>();
-
-            if (move != null)
-            {
-                move.canMove = false;
-                move.SetLookLock(true);
-            }
-
-            yield return new WaitForSeconds(0.3f);
-
-            LoadPlayerWithCharacterController();
-
-            if (sceneFader != null)
-                sceneFader.FadeStart();
-
-            yield return new WaitForSeconds(1.5f);
-
-            if (move != null)
-            {
-                move.canMove = true;
-                move.SetLookLock(false);
-            }
-        }
-
-        private void LoadPlayerWithCharacterController()
-        {
-            SaveData data = SaveSystem.LoadPreview();
-            if (data == null) return;
-
-            GameObject player = GameObject.FindWithTag("Player");
-            if (player == null) return;
-
-            CharacterController cc = player.GetComponent<CharacterController>();
-            PlayerMove move = player.GetComponent<PlayerMove>();
-
-            if (move != null) move.enabled = false;
-            if (cc != null) cc.enabled = false;
-
-            Vector3 pos = data.playerPosition;
-            pos.y += 0.5f;
-
-            player.transform.SetPositionAndRotation(pos, data.playerRotation);
-
-            PlayerStatus.Instance.SetHealth(data.mental);
-            PlayerStatus.Instance.currentBattery = data.battery;
-
-            StartCoroutine(EnableCCNextFrame(cc, move));
-        }
-
-        public void GoToMainMenu()
-        {
-            if (SoundManager.Instance != null)
-                SoundManager.Instance.StopBGM();
-
-            SceneManager.LoadScene("MainMenu");
         }
 
         public static void EnterGameplayState()
@@ -216,53 +237,10 @@ namespace FaintFear
             Time.timeScale = 1f;
         }
 
-        private void SpawnPlayerAtStart()
+        public void GoToMainMenu()
         {
-            GameObject player = GameObject.FindWithTag("Player");
-            if (player == null) return;
-
-            CharacterController cc = player.GetComponent<CharacterController>();
-            PlayerMove move = player.GetComponent<PlayerMove>();
-
-            StartCoroutine(NewGameSpawnRoutine(player, cc, move));
-        }
-
-        private IEnumerator NewGameSpawnRoutine(GameObject player, CharacterController cc, PlayerMove move)
-        {
-            if (move != null) move.enabled = false;
-            if (cc != null) cc.enabled = false;
-
-            //Vector3 pos = newGameSpawnPoint.position;
-            //pos.y += 0.5f;
-
-            //player.transform.SetPositionAndRotation(pos, newGameSpawnPoint.rotation);
-
-            //yield return new WaitForEndOfFrame();
-
-            if (cc != null)
-            {
-                cc.enabled = true;
-                cc.Move(Vector3.zero);
-            }
-
-            yield return null;
-
-            if (move != null) move.enabled = true;
-        }
-
-        private IEnumerator EnableCCNextFrame(CharacterController cc, PlayerMove move)
-        {
-            yield return new WaitForEndOfFrame();
-
-            if (cc != null)
-            {
-                cc.enabled = true;
-                cc.Move(Vector3.zero);
-            }
-
-            yield return null;
-
-            if (move != null) move.enabled = true;
+            SoundManager.Instance?.StopBGM();
+            SceneManager.LoadScene("MainMenu");
         }
     }
 }
