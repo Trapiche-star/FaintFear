@@ -41,6 +41,9 @@ namespace FaintFear
             if (documentUI == null || playerMove == null)
                 return;
 
+            // + ADD : 문서 열기 사운드
+            SoundManager.Instance?.PlaySFX("SFX_Paper");
+
             if (documentUIImage == null)
                 documentUIImage = documentUI.GetComponentInChildren<Image>(true);
 
@@ -56,6 +59,9 @@ namespace FaintFear
         public void CloseDocument()
         {
             CachePlayer();
+
+            // + ADD : 문서 닫기 사운드
+            SoundManager.Instance?.PlaySFX("SFX_Paper");
 
             if (documentUI != null)
                 documentUI.SetActive(false);
