@@ -9,6 +9,7 @@ namespace FaintFear
         [SerializeField] protected bool isLocked = true;
         [SerializeField] protected bool isOpen = false;
         [SerializeField] protected string uniqueId;
+        [SerializeField] protected bool alwaysUnlocked = false;
 
         [Header("Sequence")]
         [SerializeField] protected SequenceTextManager sequenceText;
@@ -23,6 +24,12 @@ namespace FaintFear
         {
             if (isMoving) return;
 
+            if (alwaysUnlocked)
+            {
+                ToggleDoor();
+                return;
+            }
+
             if (isLocked)
             {
                 if (!CanUnlock())
@@ -31,15 +38,11 @@ namespace FaintFear
                     return;
                 }
                 UnlockDoor();
-
-                // ⭐ 잠금 해제 시에만 저장 (최초 1회)
                 RecordUnlockState();
-                return; // 잠금 해제만 하고 문은 안 열림
+                return;
             }
 
             ToggleDoor();
-
-            // ⭐ 문 열림/닫힘은 런타임 상태만 기록 (파일 저장 X)
             RuntimeStateManager.RecordDoorState(uniqueId, isOpen, isLocked);
         }
 
@@ -100,6 +103,13 @@ namespace FaintFear
 
         public virtual void Load(SaveData data)
         {
+            if (alwaysUnlocked)
+            {
+                isLocked = false;
+                isOpen = true;
+                return;
+            }
+
             var doorState = data.doorStates.Find(d => d.id == uniqueId);
             if (doorState != null)
             {

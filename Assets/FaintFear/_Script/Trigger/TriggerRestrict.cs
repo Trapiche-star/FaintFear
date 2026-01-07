@@ -42,6 +42,24 @@ namespace FaintFear
             boxCollider.isTrigger = true;
         }
 
+        private void Start()
+        {
+            var data = SaveSystem.LoadPreview();
+            bool tutorialDone = data != null && data.tutorialCompleted;
+
+            if (tutorialDone || GameManager.TutorialCompleted)
+            {
+                Destroy(gameObject);
+                return;
+            }
+        }
+        private void Update()
+        {
+            if (GameManager.TutorialCompleted)
+            {
+                Destroy(gameObject);
+            }
+        }
         private void LateUpdate()
         {
             if (!restrictionActive) return;

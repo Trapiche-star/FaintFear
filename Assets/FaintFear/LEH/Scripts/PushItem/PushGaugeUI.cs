@@ -43,7 +43,7 @@ public class PushGaugeUI : MonoBehaviour
         {
             fillImage.fillAmount = progress;
 
-            Debug.Log($"[PushGaugeUI] Gauge updated: {progress * 100:F1}%");
+            //Debug.Log($"[PushGaugeUI] Gauge updated: {progress * 100:F1}%");
 
             // 게이지가 거의 다 차면 색상 변경
             if (progress >= 0.95f)
