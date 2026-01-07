@@ -51,7 +51,7 @@ namespace FaintFear
             IsSceneTransitioning = true;
 
             // ⭐ 씬 이동 직전 저장
-            SaveSystem.SaveGame(checkpointId: "", tutorialCompleted: false);
+            //SaveSystem.SaveGame(checkpointId: "", tutorialCompleted: false, saveWorldObjects: true);
 
             if (!string.IsNullOrEmpty(spawnPointName) && GameManager.Instance != null)
             {

@@ -9,7 +9,8 @@ namespace FaintFear
             Path.Combine(Application.persistentDataPath, "save.json");
 
         // ===================== SAVE =====================
-        public static void SaveGame(string checkpointId = "", bool tutorialCompleted = false)
+        public static void SaveGame(string checkpointId = "", bool tutorialCompleted = false,
+    bool saveWorldObjects = true)
         {
             SaveData prev = LoadPreview();
             SaveData data = new SaveData();
@@ -33,18 +34,23 @@ namespace FaintFear
             data.lightsPermaOff = data.tutorialCompleted;
 
             // ===================== ⭐ 월드 오브젝트 상태 저장 =====================
-            var behaviours =
-                Object.FindObjectsByType<MonoBehaviour>(
-                    FindObjectsInactive.Include,
-                    FindObjectsSortMode.None
-                );
-
-            foreach (var behaviour in behaviours)
+            if (saveWorldObjects)
             {
-                if (behaviour is ISaveableWorldObject saveable)
+                var behaviours =
+                    Object.FindObjectsByType<MonoBehaviour>(
+                        FindObjectsInactive.Include,
+                        FindObjectsSortMode.None
+                    );
+                foreach (var behaviour in behaviours)
                 {
-                    saveable.Save(ref data);
+                    if (behaviour is ISaveableWorldObject saveable)
+                    {
+                        saveable.Save(ref data);
+                    }
                 }
+
+                // ⭐ 런타임 상태도 병합
+                RuntimeStateManager.MergeRuntimeStateToSaveData(ref data);
             }
 
             // ===================== 파일 저장 =====================
@@ -52,7 +58,6 @@ namespace FaintFear
                 SavePath,
                 JsonUtility.ToJson(data, true)
             );
-
             Debug.Log($"[SaveSystem] 게임 저장 완료 : {SavePath}");
         }
 

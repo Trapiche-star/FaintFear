@@ -127,6 +127,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 218468444}
     m_Modifications:
+    - target: {fileID: 2507957437047139022, guid: f544446edb1715b4f95ca7c16726a579, type: 3}
+      propertyPath: uniqueId
+      value: Level01_Lever_01
+      objectReference: {fileID: 0}
     - target: {fileID: 5098464546020958418, guid: f544446edb1715b4f95ca7c16726a579, type: 3}
       propertyPath: m_LocalPosition.x
       value: 15.496009
@@ -3131,6 +3135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e81d6ea49f3e8c4a99880a6475347d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueId: Level01_Key_04
   keyType: 8
   needHookMessage: "\uD6C4\uD06C\uAC00 \uD544\uC694\uD574 \uBCF4\uC778\uB2E4."
   acquireMessage: "\uAD50\uC2E4 \uC5F4\uC1E0"
@@ -3603,6 +3608,10 @@ PrefabInstance:
     - target: {fileID: 104301330839089203, guid: 6566d1b12bf8a4540988ec053edc3a20, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 184208690869328860, guid: 6566d1b12bf8a4540988ec053edc3a20, type: 3}
+      propertyPath: uniqueId
+      value: Level01_Lever_02
       objectReference: {fileID: 0}
     - target: {fileID: 8861150083341762019, guid: 6566d1b12bf8a4540988ec053edc3a20, type: 3}
       propertyPath: m_Name
@@ -4323,6 +4332,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a226c85f76dceab41a2e57d6e1e5dac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueId: Level01_Key_03
   keyType: 7
   messageText: "\uC0C1\uC601\uC2E4 \uC5F4\uC1E0"
   sequenceTextManager: {fileID: 2312052753772196972}
@@ -4586,6 +4596,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a226c85f76dceab41a2e57d6e1e5dac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueId: Level01_Key_01
   keyType: 2
   messageText: "\uC811\uC218\uCC98 \uC5F4\uC1E0"
   sequenceTextManager: {fileID: 2312052753772196972}
@@ -5966,6 +5977,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a226c85f76dceab41a2e57d6e1e5dac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueId: Level01_Key_02
   keyType: 4
   messageText: "\uACBD\uBE44\uC2E4 \uC5F4\uC1E0"
   sequenceTextManager: {fileID: 2312052753772196972}
@@ -6472,7 +6484,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 906c47bc7a69e2f4f8eae1286c19401d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueId: Level01_BoltCutter_01
   sequenceText: {fileID: 2312052753772196972}
+  acquireMessage: "\uBCFC\uD2B8 \uCEE4\uD130\uB97C \uD68D\uB4DD\uD588\uB2E4."
+  alreadyHaveMessage: "\uC774\uBBF8 \uBCFC\uD2B8 \uCEE4\uD130\uB97C \uAC00\uC9C0\uACE0
+    \uC788\uB2E4."
 --- !u!65 &1992850053
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7031,7 +7047,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 906c47bc7a69e2f4f8eae1286c19401d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueId: 
   sequenceText: {fileID: 2312052753772196972}
+  acquireMessage: "\uBCFC\uD2B8 \uCEE4\uD130\uB97C \uD68D\uB4DD\uD588\uB2E4."
+  alreadyHaveMessage: "\uC774\uBBF8 \uBCFC\uD2B8 \uCEE4\uD130\uB97C \uAC00\uC9C0\uACE0
+    \uC788\uB2E4."
 --- !u!1 &2075453431
 GameObject:
   m_ObjectHideFlags: 0

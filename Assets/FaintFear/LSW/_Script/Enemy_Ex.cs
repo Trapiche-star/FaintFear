@@ -163,6 +163,16 @@ namespace FaintFear
                 wanderTimer += Time.deltaTime;
                 float dist = Vector3.Distance(transform.position, currentDestination);
 
+                // -------------------------
+                // + 적 의심 상태 BGM_Tense 재생
+                if (target != null && CheckLineOfSight()) // 플레이어를 발견했지만 아직 Chase 아님
+                {
+                    if (SoundManager.Instance != null)
+                    {
+                        SoundManager.Instance.PlayBGM("BGM_Tense"); //+
+                    }
+                }
+
                 // 직진 타이머가 남아있다면 방향을 틀지 않고 앞으로만 이동
                 if (currentWalkStraightTimer > 0)
                 {
@@ -480,6 +490,13 @@ namespace FaintFear
                 enemyAudio?.OnChaseEnd();
                 // + 추적 중 플레이어를 놓쳐 수색 상태로 전환될 때
                 // + 추적 종료 BGM(BGM_ChaseEnd) 재생
+            }
+
+            // + 추가: 의심 상태 진입 시마다 BGM_Tense 재생
+            if (currentState == EnemyState.Wander && newState == EnemyState.Chase)
+            {
+                // 적이 배회 → Chase (의심/추적) 상태로 바뀔 때마다
+                SoundManager.Instance.PlayBGM("BGM_Tense"); // 조건 만족할 때마다 재생
             }
 
             currentState = newState;
