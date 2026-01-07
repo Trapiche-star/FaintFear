@@ -80,7 +80,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spotLight: {fileID: 2807296613162276726}
+  flashlightModel: {fileID: 0}
   batteryDrainRate: 10
+  toggleSFX: SFX_Flashlight
+  turnOnSFX: SFX_Flashlight_On
+  turnOffSFX: SFX_Flashlight_Off
+  batteryEmptySFX: SFX_Flashlight_Empty
 --- !u!1 &1699650090419864882
 GameObject:
   m_ObjectHideFlags: 0
@@ -864,13 +869,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8faa8c112ff83244ba46221406fd881c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  walkSpeed: 3
+  runSpeed: 6
+  currentState: 0
   gravity: -9.81
   jumpHeight: 1
   cameraRoot: {fileID: 0}
   lookSensitivity: 15
   minXRotation: -85
   maxXRotation: 85
+  canMove: 1
 --- !u!143 &7295266564363513482
 CharacterController:
   m_ObjectHideFlags: 0
@@ -910,11 +918,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rayDistance: 2
   cameraRoot: {fileID: 0}
-  crossHiair: {fileID: 0}
-  playerCrossHair: {fileID: 0}
   targetLayer:
     serializedVersion: 2
     m_Bits: 2304
+  crossHair: {fileID: 0}
+  playerCrossHair: {fileID: 0}
   actionUI: {fileID: 0}
 --- !u!114 &7694742110752303209
 MonoBehaviour:
@@ -944,6 +952,7 @@ MonoBehaviour:
   enemyChaseDrain: 1.6
   corpseRoomDrain: 0.4
   flashlightDamage: 0.6
+  safeZoneHeal: 3
   flashlightheal: 1.6
 --- !u!1 &6025288177002917330
 GameObject:
