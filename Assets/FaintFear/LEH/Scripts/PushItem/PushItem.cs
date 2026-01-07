@@ -150,9 +150,17 @@ namespace FaintFear
         {
             isPushing = false;
             isCleared = true;
-            DisablePushing();
+
+            //먼저 효과음 재생
+            Debug.Log("[PushItem] Complete Push SFX 재생 시도: " + completePushSFX);
             SoundManager.Instance?.PlaySFX(completePushSFX);
+
+            //상태 종료
+            DisablePushing();
+
+            //상자 이동 시작
             StartCoroutine(MoveToPosition());
+          
         }
 
         IEnumerator MoveToPosition()
