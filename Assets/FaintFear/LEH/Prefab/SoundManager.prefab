@@ -87,13 +87,6 @@ MonoBehaviour:
     loop: 0
     playOnAwake: 0
     source: {fileID: 0}
-  - name: BGM_MainMenu
-    clip: {fileID: 8300000, guid: 198b0b7775013a3469be6ea5926ce118, type: 3}
-    volume: 0.7
-    pitch: 1
-    loop: 0
-    playOnAwake: 0
-    source: {fileID: 0}
   sfxs:
   - name: SFX_DoorClose
     clip: {fileID: 8300000, guid: 31f01f693e4454542941134d476762a2, type: 3}

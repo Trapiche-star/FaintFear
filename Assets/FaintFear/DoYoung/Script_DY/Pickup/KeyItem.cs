@@ -37,6 +37,10 @@ namespace FaintFear
                 sequenceTextManager.gameObject.SetActive(true);
                 sequenceTextManager.ShowMessage(messageText);
             }
+
+            // + SFX 재생: 열쇠 획득 시 매번 재생
+            if (SoundManager.Instance != null)
+                SoundManager.Instance.PlaySFX("SFX_GetKey");
         }
 
         // ===================== UI =====================

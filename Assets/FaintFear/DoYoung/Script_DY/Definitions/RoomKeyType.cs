@@ -10,7 +10,9 @@ namespace FaintFear
         Key,                // 기본 열쇠 (공용 / 테스트용)
         OfficeA_Key,        // 접수처 A 열쇠
         Gatehouse_Key,      // 정문 / 경비소 열쇠
-        GuardRoom_Key,      // 경비실 열쇠        
+        GuardRoom_Key,      // 경비실 열쇠
+        ExamRoom_Key,       // 진료실 열쇠
+        Surgery_Key, 	    // 수술실 키
         Basement_Key,       // 지하 열쇠
         Kitchen_Key,        // 식당 열쇠
         DayRoom_Key,        // 상영실 열쇠

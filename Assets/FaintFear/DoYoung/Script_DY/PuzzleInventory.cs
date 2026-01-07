@@ -54,6 +54,10 @@ namespace FaintFear
                 return;
 
             ownedLevers[leverIndex] = true;
+
+            // + SFX_Pickup 재생
+            if (SoundManager.Instance != null)
+                SoundManager.Instance.PlaySFX("SFX_Pickup");
         }
 
         public bool ConsumeLever(int leverIndex)
@@ -71,6 +75,10 @@ namespace FaintFear
                 return;
 
             hasBoltCutter = true;
+
+            // + SFX_Pickup 재생
+            if (SoundManager.Instance != null)
+                SoundManager.Instance.PlaySFX("SFX_Pickup");
         }
 
         #endregion
