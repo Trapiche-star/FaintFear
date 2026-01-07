@@ -5,13 +5,36 @@ namespace FaintFear
     /// <summary>
     /// 엔딩 조건 판별 매니저
     /// 파워박스 슬롯에 실제로 활성화된 레버 상태를 기준으로 엔딩 가능 여부를 판단한다
+    /// 전역 싱글톤으로 유지되어 씬 이동과 무관하게 상태를 보존한다
     /// </summary>
     public class EndingManager : MonoBehaviour
     {
         #region Variables
 
+        public static EndingManager Instance { get; private set; }
+        // 전역 접근용 싱글톤 인스턴스
+
         // 레버 활성 상태 (0:빨강, 1:노랑, 2:검정, 3:파랑)
         private bool[] activatedLevers = new bool[4];
+
+        #endregion
+
+
+        #region Unity Event Method
+
+        private void Awake()
+        {
+            if (Instance != null)
+            {
+                Destroy(gameObject);
+                return;
+                // 만약 [이미 인스턴스가 존재한다면] [중복 객체를 제거한다]
+            }
+
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+            // 이 객체를 씬 이동 시에도 유지한다
+        }
 
         #endregion
 

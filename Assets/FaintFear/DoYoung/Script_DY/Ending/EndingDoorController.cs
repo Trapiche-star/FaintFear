@@ -12,7 +12,6 @@ namespace FaintFear
         #region Variables
 
         [Header("Reference")]
-        [SerializeField] private EndingManager endingManager;      // 엔딩 조건 매니저
         [SerializeField] private AEndingTrigger endingATrigger;    // 엔딩 A 트리거
         [SerializeField] private BEndingTrigger endingBTrigger;    // 엔딩 B 트리거
         [SerializeField] private SequenceTextManager textManager;  // 시퀀스 텍스트 매니저
@@ -40,17 +39,17 @@ namespace FaintFear
             if (isLocked)
                 return; // 만약 [시퀀스 출력 중이라면] [상호작용을 차단한다]
 
-            if (endingManager == null)
-                return; // 만약 [엔딩 매니저가 없다면] [처리하지 않는다]
+            if (EndingManager.Instance == null)
+                return; // 만약 [엔딩 매니저 인스턴스가 없다면] [처리하지 않는다]
 
-            if (endingManager.CanEnterEndingA())
+            if (EndingManager.Instance.CanEnterEndingA())
             {
                 if (endingATrigger != null)
                     endingATrigger.ExecuteEnding();
                 return; // 만약 [엔딩 A 조건이 충족되었다면] [엔딩 A를 실행한다]
             }
 
-            if (endingManager.CanEnterEndingB())
+            if (EndingManager.Instance.CanEnterEndingB())
             {
                 if (endingBTrigger != null)
                     endingBTrigger.ExecuteEnding();
