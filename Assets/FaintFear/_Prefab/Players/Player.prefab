@@ -338,7 +338,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealth: {fileID: 3628334409125768203}
-  vcam: {fileID: 5669124564287646063, guid: cf90c45b98e376e4d9807b0c579e6fb3, type: 3}
+  vcam: {fileID: 0}
   smoothSpeed: 3
   wobbleSpeed: 1.5
   wobbleAmount: 0.05
@@ -400,10 +400,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxStamina: 100
-  currentStamina: 0
   minStaminaToStart: 30
+  _currentStamina: 0
   consumeRate: 20
   recoverRate: 15
+  regenDelay: 2
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  exhaustedColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &569378629108264318
 GameObject:
   m_ObjectHideFlags: 0
@@ -681,7 +684,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spotLight: {fileID: 5241323646376783730}
+  flashlightModel: {fileID: 142324173518858455}
   batteryDrainRate: 0.5
+  toggleSFX: SFX_Flashlight
   turnOnSFX: SFX_Flashlight_On
   turnOffSFX: SFX_Flashlight_Off
   batteryEmptySFX: SFX_Flashlight_Empty
