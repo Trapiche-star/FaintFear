@@ -1,6 +1,7 @@
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using System.Collections;
 
 namespace FaintFear
 {
@@ -41,6 +42,11 @@ namespace FaintFear
         private float targetGrain;
 
         private bool enableWobble;
+
+        //+ 정신력 낮을 때 SFX 코루틴
+        private Coroutine lowSanitySFXCoroutine; 
+        //+ 정신력 낮은 BGM 상태 체크
+        private bool isLowSanityBGMPlaying = false; 
 
         #region Mental State Settings
         [System.Serializable]
@@ -99,6 +105,40 @@ namespace FaintFear
             float wobble = enableWobble
                 ? Mathf.Sin(Time.time * wobbleSpeed) * wobbleAmount
                 : 0f;
+
+            //+ 정신력 낮을 때만 BGM과 SFX 재생
+            if (playerHealth != null && playerHealth.CurrentSanity <= 40f) //+
+            {
+                if (SoundManager.Instance != null)
+                {
+                    //+ 낮은 정신력 BGM 한 번만 재생
+                    if (!isLowSanityBGMPlaying)
+                    {
+                        SoundManager.Instance.PlayBGM("BGM_LowSanity"); //+
+                        isLowSanityBGMPlaying = true; //+
+                    }
+
+                    //+ SFX 반복 재생
+                    if (lowSanitySFXCoroutine == null)
+                        lowSanitySFXCoroutine = StartCoroutine(PlayLowSanitySFX()); //+
+                }
+            }
+            else
+            {
+                //+ 정신력 회복 시 BGM과 SFX 중지
+                if (isLowSanityBGMPlaying)
+                {
+                    SoundManager.Instance.StopBGM(); //+
+                    isLowSanityBGMPlaying = false; //+
+                }
+
+                if (lowSanitySFXCoroutine != null)
+                {
+                    StopCoroutine(lowSanitySFXCoroutine); //+
+                    lowSanitySFXCoroutine = null; //+
+                }
+
+            }
 
             // Vignette
             if (vignette != null)
@@ -167,6 +207,20 @@ namespace FaintFear
             }
         }
 
+        //+ 정신력 낮을 때 반복 SFX
+        private IEnumerator PlayLowSanitySFX() //+
+        {
+            while (true)
+            {
+                if (SoundManager.Instance != null)
+                {
+                    SoundManager.Instance.PlaySFX("SFX_Whisper"); //+
+                    SoundManager.Instance.PlaySFX("SFX_Panting"); //+
+                }
+                yield return new WaitForSeconds(3f); //+ 3초 간격, 필요하면 조정 가능
+            }
+        }
+
         void OnMentalStateChanged(MentalState state)
         {
             switch (state)
@@ -181,20 +235,20 @@ namespace FaintFear
 
                 case MentalState.Tension:
                     ApplySetting(tension);
-                    AudioManager.Instance.Play("배경음");
+                    //AudioManager.Instance.Play("배경음");
                     break;
 
                 case MentalState.Fear:
                     ApplySetting(fear);
-                    AudioManager.Instance.Play("배경음");
-                    AudioManager.Instance.Play("심박 소리");
+                    //AudioManager.Instance.Play("배경음");
+                    //AudioManager.Instance.Play("심박 소리");
                     break;
 
                 case MentalState.Panic:
                     ApplySetting(panic);
-                    AudioManager.Instance.Play("배경음");
-                    AudioManager.Instance.Play("심박 소리");
-                    AudioManager.Instance.Play("숨소리");
+                    //AudioManager.Instance.Play("배경음");
+                    //AudioManager.Instance.Play("심박 소리");
+                    //AudioManager.Instance.Play("숨소리");
                     break;
             }
         }
