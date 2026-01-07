@@ -1701,15 +1701,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0db226948e449c45b1276a935162a53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionEnabled: 1
   isLocked: 1
-  useKeypadLock: 0
-  requiredKey: 0
+  isOpen: 0
+  uniqueId: 
   sequenceText: {fileID: 737463324}
-  lockedSequence: "\uBB38\uC774 \uC7A0\uACA8\uC788\uB2E4"
-  unlockedSequence: 
-  keypadSequence: 
-  cannotUseKeySequence: 
+  requiredKey: 0
+  hinge: {fileID: 0}
 --- !u!1001 &447225499
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2786,16 +2783,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eefcb77c05e1ae64db1edc9ccd398430, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLocked: 1
+  isOpen: 0
+  uniqueId: 
+  sequenceText: {fileID: 737463324}
   leftHinge: {fileID: 5848513}
   rightHinge: {fileID: 1623473577}
   leftOpenAngle: -90
   rightOpenAngle: 90
-  isLocked: 1
   requiredKey: 6
-  sequenceText: {fileID: 737463324}
-  lockedSequence: "\uBB38\uC774 \uC7A0\uACA8\uC788\uB2E4."
-  unlockedSequence: 
-  cannotUseKeySequence: 
 --- !u!1 &767820881
 GameObject:
   m_ObjectHideFlags: 0
@@ -3896,63 +3892,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3146392262424174836, guid: 208c22be195dd3340b4921fcab08f2f7, type: 3}
   m_PrefabInstance: {fileID: 1233370558}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1315849352
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 193085606118671879, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.03679397
-      objectReference: {fileID: 0}
-    - target: {fileID: 193085606118671879, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.8723661
-      objectReference: {fileID: 0}
-    - target: {fileID: 193085606118671879, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -10.659183
-      objectReference: {fileID: 0}
-    - target: {fileID: 193085606118671879, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 193085606118671879, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 193085606118671879, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 193085606118671879, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 193085606118671879, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 193085606118671879, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 193085606118671879, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5048336352988005997, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
-      propertyPath: m_Name
-      value: SoundManager
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
 --- !u!1 &1316897072
 GameObject:
   m_ObjectHideFlags: 0
@@ -4210,15 +4149,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0db226948e449c45b1276a935162a53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionEnabled: 1
   isLocked: 1
-  useKeypadLock: 0
-  requiredKey: 0
+  isOpen: 0
+  uniqueId: 
   sequenceText: {fileID: 0}
-  lockedSequence: 
-  unlockedSequence: 
-  keypadSequence: 
-  cannotUseKeySequence: 
+  requiredKey: 0
+  hinge: {fileID: 0}
 --- !u!1001 &1406539259
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4780,15 +4716,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0db226948e449c45b1276a935162a53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionEnabled: 1
   isLocked: 0
-  useKeypadLock: 0
-  requiredKey: 0
+  isOpen: 0
+  uniqueId: 
   sequenceText: {fileID: 737463324}
-  lockedSequence: "\uC7A0\uACA8\uC788\uB2E4"
-  unlockedSequence: 
-  keypadSequence: 
-  cannotUseKeySequence: 
+  requiredKey: 0
+  hinge: {fileID: 0}
 --- !u!1001 &1578843231
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6450,15 +6383,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0db226948e449c45b1276a935162a53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionEnabled: 1
   isLocked: 1
-  useKeypadLock: 0
-  requiredKey: 8
+  isOpen: 0
+  uniqueId: 
   sequenceText: {fileID: 737463324}
-  lockedSequence: "\uBB38\uC774 \uC7A0\uACA8\uC788\uB2E4"
-  unlockedSequence: 
-  keypadSequence: 
-  cannotUseKeySequence: 
+  requiredKey: 8
+  hinge: {fileID: 0}
 --- !u!4 &2071243362
 Transform:
   m_ObjectHideFlags: 0
@@ -6945,7 +6875,6 @@ SceneRoots:
   - {fileID: 1578843231}
   - {fileID: 248354363}
   - {fileID: 143800402}
-  - {fileID: 1315849352}
   - {fileID: 1141198655}
   - {fileID: 452919228}
   - {fileID: 1316897073}
