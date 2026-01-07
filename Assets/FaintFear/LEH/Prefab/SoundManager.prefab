@@ -49,7 +49,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: c6fd14da06ea88044a943a278d97e682, type: 3}
     volume: 0.7
     pitch: 1
-    loop: 0
+    loop: 1
     playOnAwake: 0
     source: {fileID: 0}
   - name: BGM_Tense
