@@ -1,132 +1,110 @@
-using UnityEngine;
+using FaintFear;
 using System.Collections;
+using UnityEngine;
 
-namespace FaintFear
+public class ChainLock : LockedDoorBase, IActionProvider, ISaveableWorldObject
 {
-    /// <summary>
-    /// 사슬과 자물쇠로 봉인된 문을 제어하는 체인락 도어 컨트롤러
-    /// 볼트 커터로 사슬을 제거한 이후에만 문을 열 수 있다.
-    /// </summary>
-    public class ChainLock : Interactive, IActionProvider
+    [SerializeField] private Transform hinge;
+    [SerializeField] private GameObject chainRoot;
+    [SerializeField] private float openAngle = -90f;
+
+    // ⭐ InstanceID 대신 uniqueId 기반으로 체인 ID 생성
+    private string ChainID => $"{uniqueId}_chain";
+
+    protected override bool CanUnlock()
     {
-        #region Variables
+        if (chainRoot == null || !chainRoot.activeSelf) return true;
 
-        [Header("Door")]
-        [SerializeField] private Transform hinge;          // 문 회전을 담당하는 힌지 트랜스폼
-        [SerializeField] private float openAngle = -90f;   // 문이 열릴 목표 각도
-        [SerializeField] private float rotateDuration = 1f;// 문 회전에 걸리는 시간
-
-        [Header("Chain")]
-        [SerializeField] private GameObject chainRoot;     // 사슬·자물쇠 오브젝트 묶음 (자식)
-
-        [Header("UI")]
-        [SerializeField] private SequenceTextManager sequenceText; // 텍스트 출력과 시퀀스를 담당
-
-        private bool isOpen = false;                        // 문 개방 상태
-        private bool isMoving = false;                      // 문 회전 중 여부
-
-        #endregion
-
-
-        #region Custom Method
-
-        // 플레이어 상호작용 처리
-        public override void Interaction()
+        if (PuzzleInventory.Instance != null && PuzzleInventory.Instance.HasBoltCutter)
         {
-            if (isMoving) return;
-            // 만약 [문이 회전 중이라면] [중복 상호작용을 막기 위해 종료한다]
-
-            if (IsLocked())
-            {
-                TryCutChain();
-                return;
-                // 만약 [체인이 남아 있다면] [문을 열지 않고 체인 처리만 시도한다]
-            }
-
-            ToggleDoor();
-            // 체인이 제거된 상태라면 문 열기 또는 닫기를 수행한다
-        }
-
-        // 현재 문이 체인에 의해 잠겨 있는지 여부
-        private bool IsLocked()
-        {
-            return chainRoot != null && chainRoot.activeSelf;
-            // 사슬 오브젝트가 활성화되어 있으면 잠긴 상태로 판단한다
-        }
-
-        // 볼트 커터로 체인을 제거 시도
-        private void TryCutChain()
-        {
-            if (PuzzleInventory.Instance == null ||
-                !PuzzleInventory.Instance.HasBoltCutter)
-            {
-                ShowMessage("사슬과 자물쇠로 단단히 잠겨 있다.\n자를 것이 필요하다.");
-                return;
-                // 만약 [볼트 커터가 없다면] [힌트 메시지를 출력하고 종료한다]
-            }
-
             chainRoot.SetActive(false);
-            // 사슬과 자물쇠 오브젝트를 제거한다
 
-            ShowMessage("볼트 커터로 사슬과 자물쇠를 끊어냈다.");
-            // 체인 제거 성공 메시지를 출력한다
+            // ⭐ 체인 비활성화 상태 기록
+            RuntimeStateManager.RecordDestroyedObject(ChainID);
+            Debug.Log($"[ChainLock] 체인 제거: {ChainID}");
+
+            return true;
         }
 
-        // 문 열기 / 닫기 토글
-        private void ToggleDoor()
-        {
-            StartCoroutine(RotateDoor(isOpen ? 0f : openAngle));
-            // 현재 문 상태에 따라 목표 각도를 결정하여 회전을 시작한다
+        return false;
+    }
 
-            isOpen = !isOpen;
-            // 문 개방 상태를 반전시킨다
+    protected override void ToggleDoor()
+    {
+        StartCoroutine(RotateDoor(isOpen ? 0f : openAngle));
+        isOpen = !isOpen;
+
+        // 문 상태 런타임 기록
+        RuntimeStateManager.RecordDoorState(GetID(), isOpen, isLocked: false);
+    }
+
+    private IEnumerator RotateDoor(float targetAngle)
+    {
+        isMoving = true;
+        float elapsed = 0f;
+        float duration = 1f;
+
+        Quaternion startRot = hinge.localRotation;
+        Quaternion targetRot = Quaternion.Euler(0, targetAngle, 0);
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            hinge.localRotation = Quaternion.Lerp(startRot, targetRot, elapsed / duration);
+            yield return null;
         }
 
-        // 문 회전 애니메이션 처리
-        private IEnumerator RotateDoor(float targetAngle)
+        hinge.localRotation = targetRot;
+        isMoving = false;
+    }
+
+    protected override void ApplyDoorRotation()
+    {
+        if (hinge != null)
+            hinge.localRotation = Quaternion.Euler(0, isOpen ? openAngle : 0, 0);
+    }
+
+    public string GetActionText()
+    {
+        return isOpen ? "[E] 문 닫기" : "[E] 문 열기";
+    }
+
+    // ===================== ISaveableWorldObject =====================
+
+    public override void Save(ref SaveData data)
+    {
+        // 부모 클래스의 문 상태 저장 (isOpen, isLocked)
+        base.Save(ref data);
+
+        // ⭐ 체인 상태 추가 저장
+        if (chainRoot != null && !chainRoot.activeSelf)
         {
-            isMoving = true;
-            // 문 회전 중 상태로 전환한다
-
-            Quaternion startRot = hinge.localRotation;
-            Quaternion targetRot = Quaternion.Euler(0f, targetAngle, 0f);
-
-            float elapsed = 0f;
-            while (elapsed < rotateDuration)
+            if (!data.destroyedObjects.Contains(ChainID))
             {
-                elapsed += Time.deltaTime;
-                hinge.localRotation = Quaternion.Lerp(startRot, targetRot, elapsed / rotateDuration);
-                yield return null;
-                // 지정된 시간 동안 문을 부드럽게 회전시킨다
+                data.destroyedObjects.Add(ChainID);
+                Debug.Log($"[ChainLock] Save: 체인 상태 저장 - {ChainID}");
             }
-
-            hinge.localRotation = targetRot;
-            isMoving = false;
-            // 회전 완료 후 상태를 복구한다
         }
+    }
 
-        // HUD 메시지 출력
-        private void ShowMessage(string message)
+    public override void Load(SaveData data)
+    {
+        // 부모 클래스의 문 상태 로드
+        base.Load(data);
+
+        // ⭐ 체인 상태 로드
+        bool chainDestroyed = data.destroyedObjects.Contains(ChainID);
+
+        if (chainRoot != null)
         {
-            if (sequenceText == null) return;
-            // 텍스트 매니저가 없으면 메시지를 출력하지 않는다
+            chainRoot.SetActive(!chainDestroyed);
+            Debug.Log($"[ChainLock] Load: 체인 상태 복원 - {ChainID}, Active: {!chainDestroyed}");
 
-            sequenceText.ShowMessage(message);
-            // 시퀀스 텍스트로 메시지를 출력한다
+            // 런타임 상태에도 반영
+            if (chainDestroyed)
+            {
+                RuntimeStateManager.RecordDestroyedObject(ChainID);
+            }
         }
-
-        #endregion
-
-
-        #region Property
-
-        // Action UI에 표시될 문구 제공
-        public string GetActionText()
-        {
-            return isOpen ? "문 닫기" : "문 열기";
-            // 문 상태에 따라 액션 UI 텍스트를 반환한다
-        }
-
-        #endregion
     }
 }

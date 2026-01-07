@@ -50,8 +50,9 @@ public class IdleBGMManager : MonoBehaviour
     {
         bool isOtherPlaying = false;
 
-        // 씬 전체 AudioSource 검사
-        AudioSource[] allSources = FindObjectsOfType<AudioSource>();
+        // 최신 Unity 기준: FindObjectsOfType 대신 FindObjectsByType 사용
+        AudioSource[] allSources = Object.FindObjectsByType<AudioSource>(FindObjectsSortMode.None);
+
         foreach (AudioSource src in allSources)
         {
             if (src != idleBGM && src.isPlaying)
@@ -72,4 +73,21 @@ public class IdleBGMManager : MonoBehaviour
                 idleBGM.Play();
         }
     }
+    // 외부에서 강제로 IdleBGM 재생/정지 가능
+    public void PlayIdleBGM()
+    {
+        if (!idleBGM.isPlaying)
+            idleBGM.Play();
+    }
+
+    public void StopIdleBGM()
+    {
+        if (idleBGM.isPlaying)
+            idleBGM.Stop();
+    }
+
 }
+
+
+
+
