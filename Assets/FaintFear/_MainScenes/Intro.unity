@@ -389,6 +389,74 @@ PrefabInstance:
       propertyPath: m_Name
       value: SoundManager
       objectReference: {fileID: 0}
+    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: bgms.Array.size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: bgms.Array.data[6].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 8c26cb679963e7b40be93a5d8d20d6aa, type: 3}
+    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: bgms.Array.data[6].name
+      value: 'BGM_EndingB '
+      objectReference: {fileID: 0}
+    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: bgms.Array.data[7].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 198b0b7775013a3469be6ea5926ce118, type: 3}
+    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: bgms.Array.data[7].name
+      value: 'BGM_MainMenu '
+      objectReference: {fileID: 0}
+    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: bgms.Array.data[8].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 8205270bef23c7a45bd395e3ff190258, type: 3}
+    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: bgms.Array.data[8].name
+      value: BGM_EndingA
+      objectReference: {fileID: 0}
+    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: bgms.Array.data[9].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: f37513ffce2b990479c700f821db00b1, type: 3}
+    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: bgms.Array.data[9].name
+      value: BGM_EndingC
+      objectReference: {fileID: 0}
+    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: bgms.Array.data[6].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: bgms.Array.data[7].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: bgms.Array.data[8].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: bgms.Array.data[9].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: bgms.Array.data[6].volume
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: bgms.Array.data[7].volume
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: bgms.Array.data[8].volume
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5700313891607989032, guid: 3d361301770837b4bbc2ccf4e5738044, type: 3}
+      propertyPath: bgms.Array.data[9].volume
+      value: 0.7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1362,6 +1430,63 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 1
   m_TargetDisplay: 0
+--- !u!1001 &3848464570692587268
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4281327250272946933, guid: 8b11bfc89479f194b899c2b5865438df, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.59205717
+      objectReference: {fileID: 0}
+    - target: {fileID: 4281327250272946933, guid: 8b11bfc89479f194b899c2b5865438df, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.9242077
+      objectReference: {fileID: 0}
+    - target: {fileID: 4281327250272946933, guid: 8b11bfc89479f194b899c2b5865438df, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -9.217382
+      objectReference: {fileID: 0}
+    - target: {fileID: 4281327250272946933, guid: 8b11bfc89479f194b899c2b5865438df, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4281327250272946933, guid: 8b11bfc89479f194b899c2b5865438df, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4281327250272946933, guid: 8b11bfc89479f194b899c2b5865438df, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4281327250272946933, guid: 8b11bfc89479f194b899c2b5865438df, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4281327250272946933, guid: 8b11bfc89479f194b899c2b5865438df, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4281327250272946933, guid: 8b11bfc89479f194b899c2b5865438df, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4281327250272946933, guid: 8b11bfc89479f194b899c2b5865438df, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4808502258256163478, guid: 8b11bfc89479f194b899c2b5865438df, type: 3}
+      propertyPath: m_Name
+      value: BGMStarter
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8b11bfc89479f194b899c2b5865438df, type: 3}
 --- !u!224 &4365536441008765269
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1449,3 +1574,4 @@ SceneRoots:
   - {fileID: 2022621235}
   - {fileID: 1267429648}
   - {fileID: 518706506}
+  - {fileID: 3848464570692587268}
