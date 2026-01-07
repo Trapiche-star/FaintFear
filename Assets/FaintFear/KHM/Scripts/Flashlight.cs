@@ -9,6 +9,7 @@ namespace FaintFear
     {
         [Header("Light")]
         public Light spotLight;
+        [SerializeField] private GameObject flashlightModel;
 
         [Header("Battery")]
         [SerializeField] private float batteryDrainRate = 10f; // 1초당 배터리 소모량
@@ -23,7 +24,9 @@ namespace FaintFear
         [SerializeField] private string turnOffSFX = "SFX_Flashlight_Off";
         [SerializeField] private string batteryEmptySFX = "SFX_Flashlight_Empty";
 
-        
+        private PlayerMove playerMove;
+
+        private bool wasOnBeforePush = false; // ⭐ 밀기 전 상태 저장
 
         private bool isOn = false;
 
@@ -44,7 +47,18 @@ namespace FaintFear
                 DrainBattery();
             }
         }
+        private void OnEnable()
+        {
+            playerMove = GetComponentInParent<PlayerMove>();
+            if (playerMove != null)
+                playerMove.OnPushEvent += OnPushStateChanged;
+        }
 
+        private void OnDisable()
+        {
+            if (playerMove != null)
+                playerMove.OnPushEvent -= OnPushStateChanged;
+        }
         #region Public Method
         public void ToggleLight()
         {
@@ -119,6 +133,27 @@ namespace FaintFear
                 {
                     TurnOff(true);
                 }
+            }
+        }
+
+        private void OnPushStateChanged(bool isPushing)
+        {
+            if (isPushing)
+            {
+                wasOnBeforePush = isOn;
+
+                TurnOff(false);
+
+                if (flashlightModel != null)
+                    flashlightModel.SetActive(false);
+            }
+            else
+            {
+                if (flashlightModel != null)
+                    flashlightModel.SetActive(true);
+
+                if (wasOnBeforePush)
+                    TurnOn();
             }
         }
         #endregion
