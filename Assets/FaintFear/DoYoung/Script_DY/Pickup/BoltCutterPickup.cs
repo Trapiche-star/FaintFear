@@ -4,77 +4,54 @@ namespace FaintFear
 {
     /// <summary>
     /// 볼트 커터를 획득하는 퍼즐용 픽업 오브젝트
+    /// 영구 퍼즐 도구로 등록되며 저장된다
     /// </summary>
-    public class BoltCutterPickup : Interactive, IActionProvider
+    public class BoltCutterPickup : PickupItemBase, IActionProvider
     {
-        #region Variables
+        [Header("UI")]
+        [SerializeField] private SequenceTextManager sequenceText;
 
-        [SerializeField]
-        private SequenceTextManager sequenceText; // HUD 텍스트 출력 담당 (System UI)
+        [SerializeField] private string acquireMessage = "볼트 커터를 획득했다.";
+        [SerializeField] private string alreadyHaveMessage = "이미 볼트 커터를 가지고 있다.";
 
-        #endregion
+        // ===================== Unity =====================
 
-
-        #region Unity Event Method
-
-        // 픽업 오브젝트 초기 설정
         private void Awake()
         {
-            // 인스펙터에서 지정되지 않았다면 경고만 출력한다
             if (sequenceText == null)
                 Debug.LogWarning($"{name}: SequenceTextManager가 지정되지 않음");
         }
 
-        #endregion
+        // ===================== Pickup =====================
 
-
-        #region Custom Method
-
-        // 플레이어 상호작용 처리
-        public override void Interaction()
+        protected override void OnPickup()
         {
-            // 퍼즐 인벤토리가 존재하지 않으면 진행할 수 없으므로 중단한다
-            if (PuzzleInventory.Instance == null)
-                return;
+            PuzzleInventory inventory = PuzzleInventory.Instance;
+            if (inventory == null) return;
 
-            // 이미 볼트 커터를 보유 중이라면 중복 획득을 방지한다
-            if (PuzzleInventory.Instance.HasBoltCutter)
+            // 이미 보유 중이라면 메시지만 출력하고 종료
+            if (inventory.HasBoltCutter)
             {
-                ShowHUDMessage("이미 볼트 커터를 가지고 있다.");
+                ShowHUDMessage(alreadyHaveMessage);
                 return;
             }
 
-            // 퍼즐 인벤토리에 볼트 커터 보유 상태를 등록한다
-            PuzzleInventory.Instance.AcquireBoltCutter();
-
-            // 획득 메시지를 HUD에 출력한다
-            ShowHUDMessage("볼트 커터를 획득했다.");
-
-            // 월드 픽업 오브젝트를 제거한다
-            gameObject.SetActive(false);
+            // 볼트 커터 획득 처리
+            inventory.AcquireBoltCutter();
+            ShowHUDMessage(acquireMessage);
         }
 
-        // SequenceTextManager를 통해 메시지 출력
+        // ===================== UI =====================
+
         private void ShowHUDMessage(string message)
         {
-            // 텍스트 매니저가 없으면 출력하지 않는다
-            if (sequenceText == null)
-                return;
-
+            if (sequenceText == null) return;
             sequenceText.ShowMessage(message);
         }
 
-        #endregion
-
-
-        #region Property
-
-        // 액션 UI에 표시될 문구 제공
         public string GetActionText()
         {
-            return "줍기";
+            return "[E] 줍기";
         }
-
-        #endregion
     }
 }

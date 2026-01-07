@@ -1167,6 +1167,8 @@ MonoBehaviour:
     \uAC19\uB2E4."
   fail_Second: "\uC9C0\uAE08\uC740 \uC0AC\uC6A9\uD560 \uC218 \uC5C6\uB2E4."
   lineHoldTime: 1
+  targetSceneName: Level02
+  spawnPointName: FromLevel01
   actionText: "\uC0AC\uC6A9\uD558\uAE30"
 --- !u!1 &740514488
 GameObject:
@@ -1283,10 +1285,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 636cb40ddb0526842b228645e6341e3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1807902829}
   playerRadius: 0.3
   pushBackOffset: 0.2
   sequenceText: {fileID: 1466940450}
+  dialogueLine: "\uB108\uBB34 \uC5B4\uB450\uC6CC\uC11C \uC190\uC804\uB4F1 \uC5C6\uC774\uB294
+    \uB354 \uC774\uC0C1 \uB098\uC544\uAC08 \uC218 \uC5C6\uB2E4."
 --- !u!1 &804914822
 GameObject:
   m_ObjectHideFlags: 0
@@ -1732,8 +1735,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lightZone: {fileID: 803317310}
   triggerRestrict: {fileID: 803317311}
-  vcam: {fileID: 438918824}
-  cameraPosition: {fileID: 0}
   windowLookPoint: {fileID: 62703778}
   rotateSpeed: 5
   ghost: {fileID: 1824717617}
@@ -2658,11 +2659,6 @@ MonoBehaviour:
 Transform:
   m_CorrespondingSourceObject: {fileID: 5099307694970354947, guid: 54f457b7b64fc174aadd1e923afb1c74, type: 3}
   m_PrefabInstance: {fileID: 688463669262474905}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1807902829 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7176194923065873942, guid: 72a3caab7b2369049a6fdcd6dd906b68, type: 3}
-  m_PrefabInstance: {fileID: 7684836878560161770}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1813968113
 PrefabInstance:

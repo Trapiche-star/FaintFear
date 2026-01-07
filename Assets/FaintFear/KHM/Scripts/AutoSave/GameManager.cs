@@ -57,6 +57,32 @@ namespace FaintFear
             TutorialCompleted = data != null && data.tutorialCompleted;
         }
 
+        private void Update()
+        {
+            // ⭐ 치트키: G키로 즉시 저장
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                CheatSave();
+            }
+        }
+        private void CheatSave()
+        {
+            // 현재 게임플레이 씬에 있을 때만 작동
+            if (!gameplayScenes.Contains(SceneManager.GetActiveScene().name))
+            {
+                Debug.Log("[Cheat] 게임플레이 씬에서만 저장 가능합니다");
+                return;
+            }
+
+            SaveSystem.SaveGame(
+                checkpointId: "cheat_save",
+                tutorialCompleted: TutorialCompleted,
+                saveWorldObjects: true
+            );
+
+            Debug.Log("=== [CHEAT] G키 저장 완료! ===");
+        }
+
         private void OnEnable()
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -96,7 +122,6 @@ namespace FaintFear
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            // ⭐ pendingStartMode 확인
             Debug.Log($"[GameManager] OnSceneLoaded: {scene.name}, pendingMode: {pendingStartMode}, currentMode: {currentStartMode}");
 
             if (!gameplayScenes.Contains(scene.name))
@@ -110,22 +135,20 @@ namespace FaintFear
             if (SoundManager.Instance != null)
                 SoundManager.Instance.PlayBGM("BGM_Explore");
 
-            // ⭐ pendingStartMode가 있으면 그걸 사용
             GameStartMode modeToExecute = pendingStartMode != GameStartMode.NewGame ? pendingStartMode : currentStartMode;
 
             Debug.Log($"[GameManager] Executing mode: {modeToExecute}");
 
-            // ⭐ 실행 후 초기화
             pendingStartMode = GameStartMode.NewGame;
             currentStartMode = GameStartMode.NewGame;
             string spawnToUse = sceneTransitionSpawnPoint;
             sceneTransitionSpawnPoint = "";
 
-            // ⭐ 저장된 모드로 실행
             switch (modeToExecute)
             {
                 case GameStartMode.NewGame:
                     Debug.Log($"[GameManager] Spawning at NewGame spawn: {newGameSpawnPointName}");
+                    RuntimeStateManager.ClearRuntimeState(); // ⭐ 새 게임 시 런타임 상태 초기화
                     SpawnPlayerAtSpawnPoint(newGameSpawnPointName);
                     PlayerStatus.Instance?.ResetStatus();
                     break;
@@ -133,16 +156,19 @@ namespace FaintFear
                 case GameStartMode.Continue:
                 case GameStartMode.RestartFromCheckpoint:
                     Debug.Log("[GameManager] Loading player from save");
+                    RuntimeStateManager.ClearRuntimeState(); // ⭐ 이어하기 시 런타임 상태 초기화
                     LoadPlayerFromSave();
+                    SaveSystem.ApplyWorldObjectLoad();
                     break;
 
                 case GameStartMode.SceneTransition:
                     Debug.Log($"[GameManager] SceneTransition mode - spawning at: {spawnToUse}");
                     SpawnPlayerAtSpawnPoint(spawnToUse);
+                    SaveSystem.ApplyWorldObjectLoad(); // 저장된 상태 적용
+                    RuntimeStateManager.ApplyRuntimeState(); // ⭐ 런타임 상태 적용
                     break;
             }
         }
-
         // =========================
         // Player
         // =========================

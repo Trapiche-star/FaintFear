@@ -73,6 +73,9 @@ namespace FaintFear
         // UI를 닫고 플레이어 제어를 복구한다
         private void Close()
         {
+            // 만약 [현재 열려 있는 문서가 있다면] [해당 문서의 닫기 처리를 실행한다]
+            PickupDocument.Current?.CloseDocument();            
+
             gameObject.SetActive(false);
             // UI 오브젝트를 비활성화한다
 
