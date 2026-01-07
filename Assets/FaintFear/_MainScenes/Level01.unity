@@ -569,13 +569,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isLocked: 1
+  isOpen: 0
+  uniqueId: 
+  sequenceText: {fileID: 2312052753772196972}
   targetSceneName: BasementScene
   spawnPointName: StartSpawnPoint
-  sequenceText: {fileID: 2312052753772196972}
-  lockedMessage: "\uBB38\uC774 \uC7A0\uACA8\uC788\uB2E4. \uD0A4\uD328\uB4DC\uB85C
-    \uC5F4 \uC218 \uC788\uC744 \uAC83 \uAC19\uB2E4."
   transitionMessage: "\uBB38\uC744 \uC5F4\uACE0 \uB4E4\uC5B4\uAC04\uB2E4..."
-  doorID: Level01_BasementDoorLock_01
 --- !u!1 &157434357
 GameObject:
   m_ObjectHideFlags: 0
@@ -93960,7 +93959,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   correctCode: 2444
   maxLength: 4
-  targetDoorLock: {fileID: 136095028}
+  targetDoor: {fileID: 136095028}
   displayText: {fileID: 4789849434032873601}
   panelRenderer: {fileID: 45681600506728548}
   emissionProperty: _EmissionColor

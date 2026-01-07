@@ -16,7 +16,7 @@ namespace FaintFear
         [SerializeField] private int maxLength = 4;
 
         [Header("Door Lock")]
-        [SerializeField] private SceneTransitionDoor targetDoorLock; // ⭐ 해제할 DoorLock
+        [SerializeField] private LockedDoorBase targetDoor; // ⭐ 해제할 DoorLock
 
         [Header("Display")]
         [SerializeField] private TMP_Text displayText;
@@ -92,7 +92,6 @@ namespace FaintFear
         {
             if (input == correctCode)
             {
-                // ✅ 정답 처리
                 isUnlocked = true;
 
                 if (displayText != null)
@@ -100,28 +99,16 @@ namespace FaintFear
 
                 SetPanelColor(grantedColor);
 
-                if (targetDoorLock != null)
+                if (targetDoor != null)
                 {
-                    // 1️⃣ 문 해제
-                    targetDoorLock.Unlock();
+                    // 🔓 DoorLock / ChainLock / 기타 LockedDoorBase 전부 해제
+                    targetDoor.ForceUnlockFromKeypad();
 
-                    // 2️⃣ 런타임 상태 기록 (문 상태)
-                    string doorID = targetDoorLock.GetInstanceID().ToString();
-                    RuntimeStateManager.RecordDoorState(doorID, isOpen: true, isLocked: false);
-
-                    // 3️⃣ 바로 체크포인트 저장
-                    SaveSystem.SaveGame(
-                        checkpointId: "auto_checkpoint_" + System.DateTime.Now.ToString("yyyyMMdd_HHmmss"),
-                        tutorialCompleted: GameManager.TutorialCompleted,
-                        saveWorldObjects: true
-                    );
-
-                    Debug.Log($"[UnifiedKeypad] 비밀번호 성공, 문 해제 및 자동저장 완료: {doorID}");
+                    Debug.Log($"[UnifiedKeypad] 키패드로 문 잠금 해제: {targetDoor.GetID()}");
                 }
             }
             else
             {
-                // 오답
                 StartCoroutine(ShowErrorRoutine());
             }
         }
