@@ -74,6 +74,13 @@ namespace FaintFear
                 Debug.Log("[ElevatorOpen] 엘리베이터 사용 - 자동저장 요청");
             }
 
+            // + 엘리베이터 SFX 재생
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlaySFX("SFX_Elevator");
+                Debug.Log("[ElevatorOpen] 엘리베이터 SFX 재생");
+            }
+
             if (SceneLoadManager.Instance != null)
             {
                 SceneLoadManager.Instance.LoadScene(targetSceneName, spawnPointName);
