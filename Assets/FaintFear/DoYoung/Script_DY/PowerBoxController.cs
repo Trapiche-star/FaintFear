@@ -141,14 +141,22 @@ namespace FaintFear
         {
             isPowerSupplied = data.powerBoxData.isPowerSupplied;
             isCompleted = data.powerBoxData.isCompleted;
+            wasSavedAsCheckpoint = isCompleted; // 완료됐으면 이미 저장됨
 
-            // 슬롯 상태 복원
+            // 슬롯 상태 복원 (매니저 알림 포함)
             for (int i = 0; i < slots.Length && i < data.powerBoxData.filledSlots.Length; i++)
             {
                 if (data.powerBoxData.filledSlots[i])
                 {
-                    slots[i].RestoreFilledState();
+                    // ⭐ notifyManagers를 false로 설정하여 EndingManager, ElevatorManager 중복 호출 방지
+                    slots[i].RestoreFilledState(true, false);
                 }
+            }
+
+            // ⭐ 전력 공급 상태 복원 후 ElevatorManager에 알림
+            if (isPowerSupplied && ElevatorManager.Instance != null)
+            {
+                ElevatorManager.Instance.SupplyPower();
             }
 
             // 전력 공급 상태에 따라 슬롯 활성화
