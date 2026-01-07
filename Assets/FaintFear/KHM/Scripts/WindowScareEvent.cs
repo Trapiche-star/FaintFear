@@ -87,6 +87,12 @@ namespace FaintFear
             lightZone.SetLightsActive(false);
             lightZone.SetPermanentlyOff();
 
+            //+ 🔊 소등 효과음 재생
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlaySFX("SFX_LightOff"); //+
+            }
+
             // 손전등 튜토리얼은 지속 출력
             sequenceText.ShowPersistentMessage(dialogueLine01);
 
