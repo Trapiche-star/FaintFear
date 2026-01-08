@@ -29,6 +29,9 @@ namespace FaintFear
         private readonly string dialogueLine02 = "어둠에 노출될 때마다 비정상적인 공포심이 몰려든다...";
         private readonly string dialogueLine03 = "빛에서 멀어지지 않는게 좋겠다.";
 
+        [Header("EnemySpawner")]
+        public GameObject spawner;
+
         #endregion
 
         #region Unity Event Method
@@ -151,6 +154,8 @@ namespace FaintFear
             AutoSaveManager.Instance.RequestSave("TutorialEnd");
 
             sequenceText.Hide();
+
+            spawner.SetActive(true);
         }
 
         // 카메라를 창문 방향으로 부드럽게 회전시킨다

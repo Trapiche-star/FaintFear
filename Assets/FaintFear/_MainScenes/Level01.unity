@@ -1024,6 +1024,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 260867823}
   m_Mesh: {fileID: -1951827193649158135, guid: 8bbf65342b442c946b4f132458d4d733, type: 3}
+--- !u!1 &282038656 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1347357306439633456, guid: ebcd2eef575c87149bd65ad2f65b4b49, type: 3}
+  m_PrefabInstance: {fileID: 4975032953908500281}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &305519705
 GameObject:
   m_ObjectHideFlags: 0
@@ -3371,6 +3376,7 @@ MonoBehaviour:
   moveTarget: {fileID: 740514489}
   ghostSpeed: 10
   sequenceText: {fileID: 2312052753772196972}
+  spawner: {fileID: 282038656}
 --- !u!1 &924158761
 GameObject:
   m_ObjectHideFlags: 0
@@ -97196,6 +97202,10 @@ PrefabInstance:
     - target: {fileID: 1347357306439633456, guid: ebcd2eef575c87149bd65ad2f65b4b49, type: 3}
       propertyPath: m_Name
       value: EnemySpawner
+      objectReference: {fileID: 0}
+    - target: {fileID: 1347357306439633456, guid: ebcd2eef575c87149bd65ad2f65b4b49, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8085459319277207177, guid: ebcd2eef575c87149bd65ad2f65b4b49, type: 3}
       propertyPath: m_LocalPosition.x
