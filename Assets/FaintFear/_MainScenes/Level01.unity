@@ -571,6 +571,7 @@ MonoBehaviour:
   isLocked: 1
   isOpen: 0
   uniqueId: Level01_BasementDoor_01
+  alwaysUnlocked: 0
   sequenceText: {fileID: 2312052753772196972}
   targetSceneName: BasementScene
   spawnPointName: StartSpawnPoint
@@ -2863,7 +2864,6 @@ MonoBehaviour:
   activeRange: 8
   inactiveRange: 0
   triggerLightDistance: 10
-  borderTolerance: 0.3
 --- !u!114 &803317311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3169,7 +3169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uniqueId: Level01_Key_04
-  keyType: 8
+  keyType: 10
   needHookMessage: "\uD6C4\uD06C\uAC00 \uD544\uC694\uD574 \uBCF4\uC778\uB2E4."
   acquireMessage: "\uAD50\uC2E4 \uC5F4\uC1E0"
   sequenceTextManager: {fileID: 2312052753772196972}
@@ -3852,7 +3852,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 184208690869328860, guid: 6566d1b12bf8a4540988ec053edc3a20, type: 3}
       propertyPath: uniqueId
-      value: Level01_Lever_02
+      value: Level01_Lever_04
       objectReference: {fileID: 0}
     - target: {fileID: 8861150083341762019, guid: 6566d1b12bf8a4540988ec053edc3a20, type: 3}
       propertyPath: m_Name
@@ -4129,6 +4129,7 @@ MonoBehaviour:
   isLocked: 1
   isOpen: 0
   uniqueId: Level01_DoorLock_01
+  alwaysUnlocked: 0
   sequenceText: {fileID: 2312052753772196972}
   requiredKey: 2
   hinge: {fileID: 1154123284}
@@ -4885,7 +4886,7 @@ PrefabInstance:
       objectReference: {fileID: 2312052753772196972}
     - target: {fileID: 7812120577503876879, guid: e9493c8923548344eb8bcb563e13ce19, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.002
+      value: 0.0020000935
       objectReference: {fileID: 0}
     - target: {fileID: 7812120577503876879, guid: e9493c8923548344eb8bcb563e13ce19, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4901,7 +4902,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7812120577503876879, guid: e9493c8923548344eb8bcb563e13ce19, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7812120577503876879, guid: e9493c8923548344eb8bcb563e13ce19, type: 3}
       propertyPath: m_LocalRotation.y
@@ -4909,7 +4910,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7812120577503876879, guid: e9493c8923548344eb8bcb563e13ce19, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7812120577503876879, guid: e9493c8923548344eb8bcb563e13ce19, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5420,6 +5421,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1473405857}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1674351876
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5418591066058700258, guid: cc570d2a69e77e746a60c87271fccfa1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.59152067
+      objectReference: {fileID: 0}
+    - target: {fileID: 5418591066058700258, guid: cc570d2a69e77e746a60c87271fccfa1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.7551687
+      objectReference: {fileID: 0}
+    - target: {fileID: 5418591066058700258, guid: cc570d2a69e77e746a60c87271fccfa1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -10.2808075
+      objectReference: {fileID: 0}
+    - target: {fileID: 5418591066058700258, guid: cc570d2a69e77e746a60c87271fccfa1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5418591066058700258, guid: cc570d2a69e77e746a60c87271fccfa1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5418591066058700258, guid: cc570d2a69e77e746a60c87271fccfa1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5418591066058700258, guid: cc570d2a69e77e746a60c87271fccfa1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5418591066058700258, guid: cc570d2a69e77e746a60c87271fccfa1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5418591066058700258, guid: cc570d2a69e77e746a60c87271fccfa1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5418591066058700258, guid: cc570d2a69e77e746a60c87271fccfa1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7516860902067576502, guid: cc570d2a69e77e746a60c87271fccfa1, type: 3}
+      propertyPath: m_Name
+      value: EndingManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cc570d2a69e77e746a60c87271fccfa1, type: 3}
 --- !u!1 &1719362302 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6363061078321415962, guid: 3e93321d69d757d4197caad566bc1068, type: 3}
@@ -6104,6 +6162,7 @@ MonoBehaviour:
   isLocked: 1
   isOpen: 0
   uniqueId: 
+  alwaysUnlocked: 0
   sequenceText: {fileID: 0}
   requiredKey: 0
   hinge: {fileID: 0}
@@ -6434,6 +6493,7 @@ MonoBehaviour:
   isLocked: 1
   isOpen: 0
   uniqueId: Level01_DoorLock_02
+  alwaysUnlocked: 0
   sequenceText: {fileID: 2312052753772196972}
   requiredKey: 4
   hinge: {fileID: 968287828}
@@ -8819,6 +8879,7 @@ MonoBehaviour:
   isLocked: 1
   isOpen: 0
   uniqueId: 
+  alwaysUnlocked: 0
   sequenceText: {fileID: 0}
   requiredKey: 0
   hinge: {fileID: 0}
@@ -27032,6 +27093,7 @@ MonoBehaviour:
   isLocked: 1
   isOpen: 0
   uniqueId: 
+  alwaysUnlocked: 0
   sequenceText: {fileID: 0}
   requiredKey: 0
   hinge: {fileID: 0}
@@ -75770,6 +75832,7 @@ MonoBehaviour:
   isLocked: 1
   isOpen: 0
   uniqueId: 
+  alwaysUnlocked: 0
   sequenceText: {fileID: 0}
   requiredKey: 0
   hinge: {fileID: 0}
@@ -126017,12 +126080,14 @@ MonoBehaviour:
   isLocked: 1
   isOpen: 0
   uniqueId: Level01_DoubleDoorLock_01
+  alwaysUnlocked: 0
   sequenceText: {fileID: 2312052753772196972}
   leftHinge: {fileID: 1692313888091214937}
   rightHinge: {fileID: 1618785060650774179}
   leftOpenAngle: -90
   rightOpenAngle: 90
   requiredKey: 7
+  unlockTrigger: {fileID: 0}
 --- !u!1 &6500554518531786373
 GameObject:
   m_ObjectHideFlags: 0
@@ -169599,6 +169664,7 @@ MonoBehaviour:
   isLocked: 1
   isOpen: 0
   uniqueId: 
+  alwaysUnlocked: 0
   sequenceText: {fileID: 0}
   requiredKey: 0
   hinge: {fileID: 0}
@@ -174341,6 +174407,7 @@ SceneRoots:
   - {fileID: 1121888787}
   - {fileID: 1095682883}
   - {fileID: 1303353210}
+  - {fileID: 1674351876}
   - {fileID: 1818590460}
   - {fileID: 251237380}
   - {fileID: 2173105014912353909}
@@ -174354,5 +174421,5 @@ SceneRoots:
   - {fileID: 7684836878560161770}
   - {fileID: 4975032953908500281}
   - {fileID: 681683540}
-  - {fileID: 1385774943}
   - {fileID: 660099525}
+  - {fileID: 1385774943}
