@@ -13,14 +13,36 @@ namespace FaintFear
             var player = PlayerStatus.Instance;
             if (player == null) return false;
 
-            if (!player.HasKey(requiredKey)) return false;
+            if (!player.HasKey(requiredKey))
+            {
+                //열쇠 없을 때 잠김 SFX 재생
+                if (SoundManager.Instance != null)
+                    SoundManager.Instance.PlaySFX("SFX_DoorLocked");
+                return false;
+            }
 
+            // 열쇠 소비
             player.ConsumeKey(requiredKey);
             return true;
+            
+            //if (!player.HasKey(requiredKey)) return false;
+
+            //player.ConsumeKey(requiredKey);
+            //return true;
         }
 
         protected override void ToggleDoor()
         {
+            // 문 열림/닫힘 SFX 재생
+            if (SoundManager.Instance != null)
+            {
+                if (isOpen)
+                    SoundManager.Instance.PlaySFX("SFX_DoorClose"); // 문 닫힘
+                else
+                    SoundManager.Instance.PlaySFX("SFX_DoorOpen"); // 문 열림
+            }
+
+
             StartCoroutine(MoveDoorRoutine(isOpen ? 0f : -90f));
             isOpen = !isOpen;
         }
