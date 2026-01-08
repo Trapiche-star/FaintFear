@@ -3447,7 +3447,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7841288822147156284, guid: 4b05a736cd6cb704ca14b326ee2c5362, type: 3}
       propertyPath: m_Name
-      value: Document_8
+      value: Document_7
       objectReference: {fileID: 0}
     - target: {fileID: 8072504086039504652, guid: 4b05a736cd6cb704ca14b326ee2c5362, type: 3}
       propertyPath: uniqueId
@@ -3460,7 +3460,7 @@ PrefabInstance:
     - target: {fileID: 8072504086039504652, guid: 4b05a736cd6cb704ca14b326ee2c5362, type: 3}
       propertyPath: documentSprite
       value: 
-      objectReference: {fileID: 21300000, guid: f09f5339ae7d93b4eb3dd7d8e9749a56, type: 3}
+      objectReference: {fileID: 21300000, guid: 2d033fbbca87ced4d98b2cc5e71b4491, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4366,6 +4366,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1447738235}
     m_Modifications:
+    - target: {fileID: 455095583298780836, guid: 062253ccb22906149b298e00510d8931, type: 3}
+      propertyPath: m_Size.x
+      value: 2.9378138
+      objectReference: {fileID: 0}
+    - target: {fileID: 455095583298780836, guid: 062253ccb22906149b298e00510d8931, type: 3}
+      propertyPath: m_Center.x
+      value: 0.96890664
+      objectReference: {fileID: 0}
+    - target: {fileID: 455095583298780836, guid: 062253ccb22906149b298e00510d8931, type: 3}
+      propertyPath: m_Center.z
+      value: -5.980305e-11
+      objectReference: {fileID: 0}
     - target: {fileID: 3139693155242744838, guid: 062253ccb22906149b298e00510d8931, type: 3}
       propertyPath: m_LocalPosition.x
       value: 26.202024
@@ -4405,6 +4417,14 @@ PrefabInstance:
     - target: {fileID: 3139693155242744838, guid: 062253ccb22906149b298e00510d8931, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5204548188610162783, guid: 062253ccb22906149b298e00510d8931, type: 3}
+      propertyPath: m_Size.x
+      value: 2.3195229
+      objectReference: {fileID: 0}
+    - target: {fileID: 5204548188610162783, guid: 062253ccb22906149b298e00510d8931, type: 3}
+      propertyPath: m_Center.x
+      value: -0.6597614
       objectReference: {fileID: 0}
     - target: {fileID: 8870677177886142474, guid: 062253ccb22906149b298e00510d8931, type: 3}
       propertyPath: m_Name
