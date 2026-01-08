@@ -34,6 +34,10 @@ namespace FaintFear
         #endregion
 
         #region Public Methods
+        public void RecordPowerBoxStateToRuntime()
+        {
+            RecordPowerBoxState();
+        }
 
         public void CheckPuzzleComplete()
         {
@@ -113,7 +117,13 @@ namespace FaintFear
         // ⭐ 런타임 상태 기록
         private void RecordPowerBoxState()
         {
-            RuntimeStateManager.RecordPowerBoxState(uniqueId, GetFilledSlots(), isPowerSupplied, isCompleted);
+            RuntimeStateManager.RecordPowerBoxState(
+                uniqueId,
+                GetFilledSlots(),
+                GetLeverObjectsActive(), // ⭐ 추가
+                isPowerSupplied,
+                isCompleted
+            );
         }
 
         private bool[] GetFilledSlots()
@@ -125,7 +135,15 @@ namespace FaintFear
             }
             return filled;
         }
-
+        private bool[] GetLeverObjectsActive()
+        {
+            bool[] active = new bool[slots.Length];
+            for (int i = 0; i < slots.Length; i++)
+            {
+                active[i] = slots[i].IsLeverObjectActive;
+            }
+            return active;
+        }
         #endregion
 
         #region Property
@@ -140,6 +158,7 @@ namespace FaintFear
         public void Save(ref SaveData data)
         {
             data.powerBoxData.filledSlots = GetFilledSlots();
+            data.powerBoxData.leverObjectsActive = GetLeverObjectsActive();
             data.powerBoxData.isPowerSupplied = isPowerSupplied;
             data.powerBoxData.isCompleted = isCompleted;
         }
@@ -148,25 +167,27 @@ namespace FaintFear
         {
             isPowerSupplied = data.powerBoxData.isPowerSupplied;
             isCompleted = data.powerBoxData.isCompleted;
-            wasSavedAsCheckpoint = isCompleted; // 완료됐으면 이미 저장됨
+            wasSavedAsCheckpoint = isCompleted;
 
-            // 슬롯 상태 복원 (매니저 알림 포함)
+            // ⭐ 수정: 레버 오브젝트 활성화 상태도 함께 복원
             for (int i = 0; i < slots.Length && i < data.powerBoxData.filledSlots.Length; i++)
             {
-                if (data.powerBoxData.filledSlots[i])
+                bool filled = data.powerBoxData.filledSlots[i];
+                bool leverActive = i < data.powerBoxData.leverObjectsActive.Length
+                    ? data.powerBoxData.leverObjectsActive[i]
+                    : filled; // 이전 저장 데이터 호환성
+
+                if (filled)
                 {
-                    // ⭐ notifyManagers를 false로 설정하여 EndingManager, ElevatorManager 중복 호출 방지
-                    slots[i].RestoreFilledState(true, false);
+                    slots[i].RestoreFilledState(filled, leverActive, false);
                 }
             }
 
-            // ⭐ 전력 공급 상태 복원 후 ElevatorManager에 알림
             if (isPowerSupplied && ElevatorManager.Instance != null)
             {
                 ElevatorManager.Instance.SupplyPower();
             }
 
-            // 전력 공급 상태에 따라 슬롯 활성화
             if (isPowerSupplied)
             {
                 for (int i = 1; i < slotColliders.Length; i++)
@@ -176,7 +197,6 @@ namespace FaintFear
                 }
             }
 
-            // 퍼즐 완료 시 모든 슬롯 비활성화
             if (isCompleted)
             {
                 SetSlotTriggerActive(false);

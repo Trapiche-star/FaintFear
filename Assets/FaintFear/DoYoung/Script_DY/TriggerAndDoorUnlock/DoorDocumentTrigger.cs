@@ -13,21 +13,31 @@ namespace FaintFear
 
         private int messageIndex = 0;
 
-        // 퍼즐 완료 신호로 잠금 해제
+        // ⭐ 추가: Start에서 퍼즐 완료 상태 확인
+        private void Start()
+        {
+            // 퍼즐이 이미 완료되었다면 잠금 해제
+            if (DocumentPuzzleManager.Instance != null &&
+                DocumentPuzzleManager.Instance.IsCompleted)
+            {
+                isLocked = false;
+                Debug.Log($"[DoorDocumentTrigger] 퍼즐 완료 상태 복원: {gameObject.name}");
+            }
+        }
+
         public void SetUnlocked(bool unlocked)
         {
             isLocked = !unlocked;
 
-            // ⭐ 잠금 해제 시 저장 (protected 메서드 호출)
             if (!isLocked)
             {
                 RecordUnlockState();
+                Debug.Log($"[DoorDocumentTrigger] 잠금 해제됨: {gameObject.name}");
             }
         }
 
         protected override bool CanUnlock()
         {
-            // 이 문은 퍼즐 완료로만 열리므로 여기선 항상 false
             return false;
         }
 
@@ -42,7 +52,6 @@ namespace FaintFear
             isMoving = true;
             float elapsed = 0f;
             float duration = 1f;
-
             Quaternion startRot = hinge.localRotation;
             Quaternion targetRot = Quaternion.Euler(0, targetAngle, 0);
 

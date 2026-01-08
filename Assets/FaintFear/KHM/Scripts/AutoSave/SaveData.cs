@@ -46,20 +46,19 @@ public class SaveData
     public bool[] ownedLevers = new bool[4];
     public bool hasBoltCutter = false;
 
-    //레버 상태
-    public bool[] leverObjectsActive = new bool[4];
-
     //분전반
     public PowerBoxData powerBoxData = new PowerBoxData();
 
     //엘리베이터
     public ElevatorData elevatorData = new ElevatorData();
+    public EndingData endingData = new EndingData();
 }
 
 [Serializable]
 public class PowerBoxData
 {
     public bool[] filledSlots = new bool[4];
+    public bool[] leverObjectsActive = new bool[4];
     public bool isPowerSupplied = false;
     public bool isCompleted = false;
 }
@@ -74,6 +73,12 @@ public class MovedObjectData
 {
     public string id;
     public Vector3 position;
+}
+
+[Serializable]
+public class EndingData
+{
+    public bool[] activatedLevers = new bool[4]; // 0:빨강, 1:노랑, 2:검정, 3:파랑
 }
 
 [Serializable]

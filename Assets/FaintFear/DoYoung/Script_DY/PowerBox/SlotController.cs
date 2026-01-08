@@ -2,114 +2,104 @@ using UnityEngine;
 
 namespace FaintFear
 {
-    /// <summary>
-    /// 슬롯 상태 컨트롤러
-    /// 레버 요구 조건을 검사하고 성공 시 슬롯을 채운다
-    /// </summary>
     public class SlotController : MonoBehaviour
     {
         #region Variables
 
-        [SerializeField] private int requiredLeverIndex = 0;      // 이 슬롯이 요구하는 레버 인덱스
-        [SerializeField] private GameObject insertedLever;        // 슬롯에 꽂혔을 때 표시될 레버 오브젝트
-        [SerializeField] private PowerBoxController powerBox;     // 파워박스 퍼즐 관리자
+        [SerializeField] private int requiredLeverIndex = 0;
+        [SerializeField] private GameObject insertedLever;
+        [SerializeField] private PowerBoxController powerBox;
 
-        private bool isFilled = false;                            // 슬롯이 이미 채워졌는지 여부
+        private bool isFilled = false;
 
         #endregion
-
 
         #region Property
 
-        public bool IsFilled => isFilled;                         // 슬롯 채워짐 상태 반환
-        public int RequiredLeverIndex => requiredLeverIndex;      // 요구 레버 인덱스 반환
+        public bool IsFilled => isFilled;
+        public int RequiredLeverIndex => requiredLeverIndex;
+        // ⭐ 추가: 레버 오브젝트 활성화 상태 반환
+        public bool IsLeverObjectActive => insertedLever != null && insertedLever.activeSelf;
 
         #endregion
 
-
         #region Custom Method
 
-        // 슬롯에 레버를 삽입하려고 시도한다
         public bool TryInsert()
         {
             if (isFilled)
-                return false; // 만약 [이미 슬롯이 채워져 있다면] [삽입을 허용하지 않는다]
+                return false;
 
             if (PuzzleInventory.Instance == null)
-                return false; // 만약 [퍼즐 인벤토리가 없다면] [처리를 중단한다]
+                return false;
 
             if (!PuzzleInventory.Instance.HasLever(requiredLeverIndex))
-                return false; // 만약 [요구 레버를 소지하지 않았다면] [삽입에 실패한다]
+                return false;
 
             PuzzleInventory.Instance.ConsumeLever(requiredLeverIndex);
-            // 레버를 소모한다
-
             FillSlot();
-            // 슬롯을 채우는 실제 처리를 실행한다
 
             return true;
         }
 
-        // 슬롯을 채웠을 때의 실제 처리
         private void FillSlot()
         {
             if (isFilled)
-                return; // 만약 [이미 채워진 상태라면] [중복 실행을 방지한다]
+                return;
 
             isFilled = true;
-            // 슬롯 상태를 채워진 상태로 변경한다
 
             if (insertedLever != null)
                 insertedLever.SetActive(true);
-            // 슬롯에 맞는 레버 오브젝트를 화면에 표시한다
 
             if (EndingManager.Instance != null)
                 EndingManager.Instance.SetLeverActivated(requiredLeverIndex);
-            // 만약 [엔딩 매니저 인스턴스가 존재한다면] [이 슬롯의 레버 활성 상태를 기록한다]
 
             if (ElevatorManager.Instance != null && requiredLeverIndex == 0)
                 ElevatorManager.Instance.SupplyPower();
-            // 만약 [이 슬롯이 빨간 스위치라면] [전역 엘리베이터 매니저에 전력 공급을 전달한다]
 
             if (powerBox != null)
                 powerBox.CheckPuzzleComplete();
-            // 퍼즐 전체 완료 여부를 다시 검사하도록 보고한다
+
+            // ⭐ 추가: 레버 삽입 시 런타임 상태 기록
+            if (powerBox != null)
+                powerBox.RecordPowerBoxStateToRuntime();
         }
 
-        // 외부에서 인자 없이 슬롯 상태를 복구한다 (기본: 채워진 상태로 복구)
+        // ⭐ 수정: 레버 오브젝트 활성화 상태도 함께 복구
         public void RestoreFilledState()
         {
-            RestoreFilledState(true, true);
-            // 만약 [기본 복구 호출이라면] [채워진 상태로 설정하고 관련 매니저에 알린다]
+            RestoreFilledState(true, true, true);
         }
 
-        // 외부에서 슬롯 채워짐 상태를 복구한다 (세이브/로드 또는 초기화 용도)
         public void RestoreFilledState(bool filled, bool notifyManagers = true)
         {
-            isFilled = filled;
-            // 슬롯 내부 상태를 복구한다
+            RestoreFilledState(filled, filled, notifyManagers);
+        }
 
+        // ⭐ 추가: 레버 오브젝트 활성화 상태를 별도로 제어할 수 있는 오버로드
+        public void RestoreFilledState(bool filled, bool leverObjectActive, bool notifyManagers = true)
+        {
+            isFilled = filled;
+
+            // ⭐ 레버 오브젝트는 leverObjectActive 파라미터에 따라 설정
             if (insertedLever != null)
-                insertedLever.SetActive(filled);
-            // 만약 [표시용 레버 오브젝트가 있다면] [복구 상태에 맞게 활성 여부를 반영한다]
+                insertedLever.SetActive(leverObjectActive);
 
             if (!filled)
-                return; // 만약 [채워진 상태가 아니라면] [추가 알림을 하지 않는다]
+                return;
 
             if (!notifyManagers)
-                return; // 만약 [매니저 알림을 원하지 않는다면] [여기서 종료한다]
+                return;
 
             if (EndingManager.Instance != null)
                 EndingManager.Instance.SetLeverActivated(requiredLeverIndex);
-            // 만약 [엔딩 매니저 인스턴스가 존재한다면] [현재 슬롯 인덱스를 활성으로 기록한다]
 
             if (ElevatorManager.Instance != null && requiredLeverIndex == 0)
                 ElevatorManager.Instance.SupplyPower();
-            // 만약 [이 슬롯이 빨간 스위치라면] [전역 엘리베이터 매니저에 전력 공급을 전달한다]
 
             if (powerBox != null)
                 powerBox.CheckPuzzleComplete();
-            // 만약 [파워박스가 존재한다면] [퍼즐 완료 여부를 다시 검사한다]
         }
 
         #endregion

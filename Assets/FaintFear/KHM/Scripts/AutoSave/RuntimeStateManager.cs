@@ -22,6 +22,7 @@ namespace FaintFear
 
         private static PowerBoxData runtimePowerBoxState = null;
         private static ElevatorData runtimeElevatorState = null;
+        private static EndingData runtimeEndingState = null;
 
         // =====================
         // Unity
@@ -42,7 +43,13 @@ namespace FaintFear
         // =====================
         // Record (런타임 기록)
         // =====================
+        public static void RecordEndingState(bool[] activatedLevers)
+        {
+            if (runtimeEndingState == null)
+                runtimeEndingState = new EndingData();
 
+            runtimeEndingState.activatedLevers = activatedLevers;
+        }
         public static void RecordDestroyedObject(string id)
         {
             if (string.IsNullOrEmpty(id)) return;
@@ -77,6 +84,7 @@ namespace FaintFear
         public static void RecordPowerBoxState(
             string id,
             bool[] filledSlots,
+            bool[] leverObjectsActive,
             bool isPowerSupplied,
             bool isCompleted)
         {
@@ -84,6 +92,7 @@ namespace FaintFear
                 runtimePowerBoxState = new PowerBoxData();
 
             runtimePowerBoxState.filledSlots = filledSlots;
+            runtimePowerBoxState.leverObjectsActive = leverObjectsActive;
             runtimePowerBoxState.isPowerSupplied = isPowerSupplied;
             runtimePowerBoxState.isCompleted = isCompleted;
         }
@@ -156,6 +165,13 @@ namespace FaintFear
                     temp.elevatorData = runtimeElevatorState;
                     saveable.Load(temp);
                 }
+
+                if (runtimeEndingState != null && behaviour is EndingManager)
+                {
+                    SaveData temp = new SaveData();
+                    temp.endingData = runtimeEndingState;
+                    saveable.Load(temp);
+                }
             }
 
             Debug.Log("[RuntimeState] 런타임 상태 적용 완료");
@@ -218,6 +234,9 @@ namespace FaintFear
                     data.readDocuments.Add(id);
             }
 
+            if (runtimeEndingState != null)
+                data.endingData = runtimeEndingState;
+
             Debug.Log("[RuntimeState] 런타임 → SaveData 병합 완료");
         }
 
@@ -233,6 +252,7 @@ namespace FaintFear
             runtimeReadDocuments.Clear();
             runtimePowerBoxState = null;
             runtimeElevatorState = null;
+            runtimeEndingState = null;
 
             Debug.Log("[RuntimeState] 런타임 상태 초기화");
         }

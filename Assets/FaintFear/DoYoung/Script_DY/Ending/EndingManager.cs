@@ -2,23 +2,15 @@ using UnityEngine;
 
 namespace FaintFear
 {
-    /// <summary>
-    /// 엔딩 조건 판별 매니저
-    /// 파워박스 슬롯에 실제로 활성화된 레버 상태를 기준으로 엔딩 가능 여부를 판단한다
-    /// 전역 싱글톤으로 유지되어 씬 이동과 무관하게 상태를 보존한다
-    /// </summary>
-    public class EndingManager : MonoBehaviour
+    public class EndingManager : MonoBehaviour, ISaveableWorldObject
     {
         #region Variables
 
         public static EndingManager Instance { get; private set; }
-        // 전역 접근용 싱글톤 인스턴스
 
-        // 레버 활성 상태 (0:빨강, 1:노랑, 2:검정, 3:파랑)
         private bool[] activatedLevers = new bool[4];
 
         #endregion
-
 
         #region Unity Event Method
 
@@ -28,30 +20,30 @@ namespace FaintFear
             {
                 Destroy(gameObject);
                 return;
-                // 만약 [이미 인스턴스가 존재한다면] [중복 객체를 제거한다]
             }
 
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            // 이 객체를 씬 이동 시에도 유지한다
+
+            // ⭐ 추가: 시작 시 저장된 상태 복원
+            RestoreLeverStates();
         }
 
         #endregion
 
-
         #region Custom Method
 
-        // 슬롯에서 레버 활성화를 전달받는다
         public void SetLeverActivated(int leverIndex)
         {
             if (leverIndex < 0 || leverIndex >= activatedLevers.Length)
-                return; // 만약 [잘못된 인덱스라면] [처리하지 않는다]
+                return;
 
             activatedLevers[leverIndex] = true;
-            // 해당 레버를 활성 상태로 기록한다
+
+            // ⭐ 추가: 레버 활성화 시 런타임 상태 기록
+            RecordEndingState();
         }
 
-        // 엔딩 A 가능 여부를 판단한다
         public bool CanEnterEndingA()
         {
             bool allActivated =
@@ -61,13 +53,11 @@ namespace FaintFear
                 activatedLevers[3];
 
             if (allActivated)
-                return false; // 만약 [4개 레버가 모두 활성화되었다면] [엔딩 A는 차단된다]
+                return false;
 
             return activatedLevers[0];
-            // 빨강 레버가 활성화되어 있다면 엔딩 A 가능
         }
 
-        // 엔딩 B 가능 여부를 판단한다
         public bool CanEnterEndingB()
         {
             return
@@ -75,9 +65,58 @@ namespace FaintFear
                 activatedLevers[1] &&
                 activatedLevers[2] &&
                 activatedLevers[3];
-            // 4개 레버가 모두 활성화된 경우에만 엔딩 B 가능
         }
 
+        // ⭐ 추가: 런타임 상태 기록
+        private void RecordEndingState()
+        {
+            RuntimeStateManager.RecordEndingState(activatedLevers);
+        }
+
+        // ⭐ 추가: 저장된 상태 복원
+        private void RestoreLeverStates()
+        {
+            SaveData data = SaveSystem.LoadPreview();
+            if (data == null) return;
+
+            // SaveData에서 레버 상태 복원
+            if (data.endingData != null && data.endingData.activatedLevers != null)
+            {
+                for (int i = 0; i < activatedLevers.Length && i < data.endingData.activatedLevers.Length; i++)
+                {
+                    activatedLevers[i] = data.endingData.activatedLevers[i];
+                }
+
+                Debug.Log($"[EndingManager] 레버 상태 복원: " +
+                    $"빨강={activatedLevers[0]}, 노랑={activatedLevers[1]}, " +
+                    $"검정={activatedLevers[2]}, 파랑={activatedLevers[3]}");
+            }
+        }
+
+        // ⭐ 추가: 디버그용 - 현재 상태 확인
+        public string GetCurrentStatus()
+        {
+            return $"레버 상태 - 빨강:{activatedLevers[0]}, 노랑:{activatedLevers[1]}, " +
+                   $"검정:{activatedLevers[2]}, 파랑:{activatedLevers[3]} | " +
+                   $"엔딩A 가능:{CanEnterEndingA()}, 엔딩B 가능:{CanEnterEndingB()}";
+        }
+        public string GetID() => "EndingManager_Global";
+
+        public void Save(ref SaveData data)
+        {
+            data.endingData.activatedLevers = (bool[])activatedLevers.Clone();
+        }
+
+        public void Load(SaveData data)
+        {
+            if (data.endingData != null && data.endingData.activatedLevers != null)
+            {
+                for (int i = 0; i < activatedLevers.Length && i < data.endingData.activatedLevers.Length; i++)
+                {
+                    activatedLevers[i] = data.endingData.activatedLevers[i];
+                }
+            }
+        }
         #endregion
     }
 }
