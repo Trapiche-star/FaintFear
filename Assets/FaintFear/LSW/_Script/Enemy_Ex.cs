@@ -18,6 +18,7 @@ namespace FaintFear
         [Header("Settings")]
         [SerializeField] private string playerTag = "Player";
         [SerializeField] private LayerMask visionLayer;
+        private PlayerHealth playerHealth;
 
         [Header("Stats")]
         [SerializeField] private float moveSpeed = 4.0f;
@@ -29,7 +30,7 @@ namespace FaintFear
         // 공격 판정 관련 설정
         [Header("Attack Settings")]
         [SerializeField] private float attackImpactRadius = 1.0f;   // 실제 타격 범위 반경
-        [SerializeField] private int damage = 10;
+        [SerializeField] private int damage = 30;
         [SerializeField] private Vector3 attackOffset = new Vector3(0, 1.0f, 1.0f); // 타격 위치 (캐릭터 앞)
         [SerializeField] private LayerMask targetLayer;             // 플레이어 레이어
         [SerializeField] private float attackCooldown = 2.0f;       // 공격 쿨타임
@@ -118,6 +119,9 @@ namespace FaintFear
                     AttackUpdate();
                     break;
             }
+
+            //정신력
+            UpdateMentalEffects();
         }
 
         // --- 상태별 로직 ---
@@ -359,22 +363,14 @@ namespace FaintFear
             // 구체 범위 내의 충돌체 검출
             Collider[] hitColliders = Physics.OverlapSphere(hitPoint, attackImpactRadius, targetLayer);
 
-            if (hitColliders.Length > 0)
-                Debug.Log(hitColliders[0].gameObject);
-
             foreach (var hit in hitColliders)
             {
-                // IDamageable 인터페이스가 있는지 확인 후 데미지 전달
-                IDamageable damageable = hit.GetComponent<IDamageable>();
-                if (damageable != null)
+                PlayerHealth playerHealth = hit.GetComponent<PlayerHealth>();
+                if (playerHealth != null)
                 {
-                    Debug.Log("11");
-                    damageable.TakeDamage(damage);
-
-                    enemyAudio?.OnHitPlayer();
-                    // + 적의 공격이 실제로 플레이어에게 명중했을 때 호출
-                    // + 플레이어 피격음 재생 (SFX_Hurt)
-                    // + 공격 애니메이션 시작음(OnAttack)과 역할 분리
+                    playerHealth.TakeDamage(damage);   // 한 번 데미지
+                    enemyAudio?.OnHitPlayer();         // 타격 성공 사운드
+                    break;
                 }
             }
         }
@@ -478,6 +474,15 @@ namespace FaintFear
 
         private void ChangeState(EnemyState newState)
         {
+            //적 추적에서 벗어나는 순간 정신력 회복
+            if (currentState == EnemyState.SearchLastPos && newState == EnemyState.Wander)
+            {
+                if (playerHealth != null)
+                {
+                    playerHealth.HealInstant(20f);
+                }
+            }
+
             if (currentState != EnemyState.Chase && newState == EnemyState.Chase)
             {
                 enemyAudio?.OnChaseStart();
@@ -520,11 +525,38 @@ namespace FaintFear
             }
         }
 
+        //정신력 이벤트
+        private void UpdateMentalEffects()
+        {
+            if (playerHealth == null) return;
+
+            bool looking = CheckLineOfSight();
+            bool chasing = currentState == EnemyState.Chase;
+
+            playerHealth.IsEnemyLooking = looking;
+            playerHealth.IsBeingChased = chasing;
+        }
+
         // --- 유니티 이벤트 ---
 
         // 플레이어가 범위 내에 있을 때 계속 감지 시도 (등 뒤에 있다가 앞으로 오는 경우 등 대응)
         private void OnTriggerStay(Collider other)
         {
+            if (other.CompareTag(playerTag))
+            {
+                target = other.transform;
+
+                if (playerHealth == null)
+                    playerHealth = other.GetComponent<PlayerHealth>();
+
+                if (currentState == EnemyState.Wander && CheckLineOfSight())
+                {
+                    lastKnownPos = target.position;
+                    detectTrigger.enabled = false;
+                    ChangeState(EnemyState.Chase);
+                }
+            }
+
             if (currentState == EnemyState.Wander && other.CompareTag(playerTag))
             {
                 target = other.transform;

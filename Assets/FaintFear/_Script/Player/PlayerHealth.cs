@@ -36,6 +36,8 @@ namespace FaintFear
         //정신력 이벤트
         private bool isInSafeZone = false;
         private bool isInCorpseRoom = false;
+        private bool isEnemyLooking = false;
+        private bool isBeingChased = false;
 
         public UnityAction onDie;
         public event Action<MentalState> OnMentalStateChanged;
@@ -58,6 +60,24 @@ namespace FaintFear
                 isInSafeZone = value;
             }
         }
+        public bool IsBeingChased
+        {
+            get { return isBeingChased; }
+            set
+            {
+                isBeingChased = value;
+            }
+        }
+
+        public bool IsEnemyLooking
+        {
+            get { return isEnemyLooking; }
+            set
+            {
+                isEnemyLooking = value;
+            }
+        }
+
         //시체와 같은 방에 있을 때
         public bool IsInCorpseRoom
         {
@@ -103,12 +123,12 @@ namespace FaintFear
                     mentalDelta -= flashlightDamage;
 
                 //적을 응시했을 때 
-                /*if (isEnemyLooking)
-                    mentalDelta -= enemyLookDrain;*/
+                if (isEnemyLooking)
+                    mentalDelta -= enemyLookDrain;
 
                 //적이 추적해올 때
-                /*if (isBeingChased)
-                    mentalDelta -= enemyChaseDrain;*/
+                if (isBeingChased)
+                    mentalDelta -= enemyChaseDrain;
 
                 //시체와 같은 방에 있었을 때 
                 if (isInCorpseRoom)
@@ -150,6 +170,16 @@ namespace FaintFear
             {
                 Die();
             }
+        }
+        public void HealInstant(float amount)
+        {
+            if (isDeath) return;
+
+            mental += amount;
+            mental = Mathf.Clamp(mental, 0f, PlayerStatus.Instance.maxMentalPower);
+
+            PlayerStatus.Instance.SetHealth(mental);
+            UpdateMentalState();
         }
 
         //정신력 단계 범위 설정
