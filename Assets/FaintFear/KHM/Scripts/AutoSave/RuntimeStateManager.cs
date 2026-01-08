@@ -5,19 +5,27 @@ namespace FaintFear
 {
     /// <summary>
     /// 런타임 중 월드 오브젝트 상태를 메모리에만 유지
-    /// 체크포인트에서만 파일로 저장
+    /// 체크포인트에서만 SaveData로 병합
     /// </summary>
     public class RuntimeStateManager : MonoBehaviour
     {
         public static RuntimeStateManager Instance { get; private set; }
 
-        // ⭐ 런타임 중에만 유지되는 임시 상태
-        private static HashSet<string> runtimeDestroyedObjects = new HashSet<string>();
-        private static Dictionary<string, Vector3> runtimeMovedObjects = new Dictionary<string, Vector3>();
-        private static Dictionary<string, DoorStateData> runtimeDoorStates = new Dictionary<string, DoorStateData>();
-        private static HashSet<string> runtimeReadDocuments = new HashSet<string>();
+        // =====================
+        // Runtime-only State
+        // =====================
+
+        private static HashSet<string> runtimeDestroyedObjects = new();
+        private static Dictionary<string, Vector3> runtimeMovedObjects = new();
+        private static Dictionary<string, DoorStateData> runtimeDoorStates = new();
+        private static HashSet<string> runtimeReadDocuments = new();
+
         private static PowerBoxData runtimePowerBoxState = null;
         private static ElevatorData runtimeElevatorState = null;
+
+        // =====================
+        // Unity
+        // =====================
 
         private void Awake()
         {
@@ -31,9 +39,46 @@ namespace FaintFear
             DontDestroyOnLoad(gameObject);
         }
 
-        // ===================== 런타임 상태 기록 =====================
-        // PowerBox 상태 기록 메서드:
-        public static void RecordPowerBoxState(string id, bool[] filledSlots, bool isPowerSupplied, bool isCompleted)
+        // =====================
+        // Record (런타임 기록)
+        // =====================
+
+        public static void RecordDestroyedObject(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return;
+            runtimeDestroyedObjects.Add(id);
+        }
+
+        public static void RecordMovedObject(string id, Vector3 position)
+        {
+            if (string.IsNullOrEmpty(id)) return;
+            runtimeMovedObjects[id] = position;
+        }
+
+        public static void RecordDoorState(string id, bool isOpen, bool isLocked)
+        {
+            if (string.IsNullOrEmpty(id)) return;
+
+            if (!runtimeDoorStates.ContainsKey(id))
+                runtimeDoorStates[id] = new DoorStateData { id = id };
+
+            runtimeDoorStates[id].isOpen = isOpen;
+            runtimeDoorStates[id].isLocked = isLocked;
+        }
+
+        // ⭐ 문서 읽음 기록 (복구됨)
+        public static void RecordDocumentRead(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return;
+            runtimeReadDocuments.Add(id);
+        }
+
+        // ⭐ PowerBox 기록
+        public static void RecordPowerBoxState(
+            string id,
+            bool[] filledSlots,
+            bool isPowerSupplied,
+            bool isCompleted)
         {
             if (runtimePowerBoxState == null)
                 runtimePowerBoxState = new PowerBoxData();
@@ -41,76 +86,20 @@ namespace FaintFear
             runtimePowerBoxState.filledSlots = filledSlots;
             runtimePowerBoxState.isPowerSupplied = isPowerSupplied;
             runtimePowerBoxState.isCompleted = isCompleted;
-
-            Debug.Log($"[RuntimeState] PowerBox 상태 기록 - Power: {isPowerSupplied}, Complete: {isCompleted}");
         }
 
-        // Elevator 상태 기록 메서드:
+        // ⭐ Elevator 기록
         public static void RecordElevatorState(bool isPowerSupplied)
         {
             if (runtimeElevatorState == null)
                 runtimeElevatorState = new ElevatorData();
 
             runtimeElevatorState.isPowerSupplied = isPowerSupplied;
-
-            Debug.Log($"[RuntimeState] Elevator 상태 기록 - Power: {isPowerSupplied}");
-        }
-        public static void RecordDestroyedObject(string id)
-        {
-            if (string.IsNullOrEmpty(id))
-            {
-                Debug.LogWarning("[RuntimeState] ID가 null인 오브젝트는 기록할 수 없습니다");
-                return;
-            }
-
-            runtimeDestroyedObjects.Add(id);
-            Debug.Log($"[RuntimeState] 오브젝트 비활성화 기록: {id}");
         }
 
-        public static void RecordMovedObject(string id, Vector3 position)
-        {
-            if (string.IsNullOrEmpty(id))
-            {
-                Debug.LogWarning("[RuntimeState] ID가 null인 오브젝트는 기록할 수 없습니다");
-                return;
-            }
-
-            runtimeMovedObjects[id] = position;
-        }
-
-        // ⭐ 문 상태 기록
-        public static void RecordDoorState(string id, bool isOpen, bool isLocked)
-        {
-            if (string.IsNullOrEmpty(id))
-            {
-                Debug.LogWarning("[RuntimeState] ID가 null인 문은 기록할 수 없습니다");
-                return;
-            }
-
-            if (!runtimeDoorStates.ContainsKey(id))
-            {
-                runtimeDoorStates[id] = new DoorStateData { id = id };
-            }
-
-            runtimeDoorStates[id].isOpen = isOpen;
-            runtimeDoorStates[id].isLocked = isLocked;
-            Debug.Log($"[RuntimeState] 문 상태 기록: {id} (Open: {isOpen}, Locked: {isLocked})");
-        }
-
-        // ⭐ 문서 읽음 기록
-        public static void RecordDocumentRead(string id)
-        {
-            if (string.IsNullOrEmpty(id))
-            {
-                Debug.LogWarning("[RuntimeState] ID가 null인 문서는 기록할 수 없습니다");
-                return;
-            }
-
-            runtimeReadDocuments.Add(id);
-            Debug.Log($"[RuntimeState] 문서 읽음 기록: {id}");
-        }
-
-        // ===================== 런타임 상태 적용 (씬 로드 시) =====================
+        // =====================
+        // Apply (씬 로드 시)
+        // =====================
 
         public static void ApplyRuntimeState()
         {
@@ -121,114 +110,93 @@ namespace FaintFear
 
             foreach (var behaviour in behaviours)
             {
-                if (behaviour is ISaveableWorldObject saveable)
+                if (behaviour is not ISaveableWorldObject saveable)
+                    continue;
+
+                string id = saveable.GetID();
+                if (string.IsNullOrEmpty(id))
+                    continue;
+
+                // 비활성화
+                if (runtimeDestroyedObjects.Contains(id))
+                    behaviour.gameObject.SetActive(false);
+
+                // 이동
+                if (runtimeMovedObjects.TryGetValue(id, out var pos))
+                    behaviour.transform.position = pos;
+
+                // 문 상태
+                if (runtimeDoorStates.ContainsKey(id))
                 {
-                    string id = saveable.GetID();
+                    SaveData temp = new SaveData();
+                    temp.doorStates.Add(runtimeDoorStates[id]);
+                    saveable.Load(temp);
+                }
 
-                    // null 체크
-                    if (string.IsNullOrEmpty(id))
-                    {
-                        Debug.LogWarning($"[RuntimeState] ID가 없는 오브젝트 발견: {behaviour.gameObject.name}");
-                        continue;
-                    }
+                // 문서 읽음
+                if (runtimeReadDocuments.Contains(id))
+                {
+                    SaveData temp = new SaveData();
+                    temp.readDocuments.Add(id);
+                    saveable.Load(temp);
+                }
 
-                    // 런타임에 비활성화된 오브젝트 처리
-                    if (runtimeDestroyedObjects.Contains(id))
-                    {
-                        behaviour.gameObject.SetActive(false);
-                        Debug.Log($"[RuntimeState] 런타임 상태 적용 - 비활성화: {id}");
-                    }
+                // PowerBox
+                if (runtimePowerBoxState != null && behaviour is PowerBoxController)
+                {
+                    SaveData temp = new SaveData();
+                    temp.powerBoxData = runtimePowerBoxState;
+                    saveable.Load(temp);
+                }
 
-                    // PowerBox 상태 적용
-                    if (runtimePowerBoxState != null && behaviour is PowerBoxController powerBox)
-                    {
-                        SaveData tempData = new SaveData();
-                        tempData.powerBoxData = runtimePowerBoxState;
-                        powerBox.Load(tempData);
-                        Debug.Log("[RuntimeState] PowerBox 상태 적용");
-                    }
-
-                    // Elevator 상태 적용
-                    if (runtimeElevatorState != null && behaviour is ElevatorManager elevator)
-                    {
-                        SaveData tempData = new SaveData();
-                        tempData.elevatorData = runtimeElevatorState;
-                        elevator.Load(tempData);
-                        Debug.Log("[RuntimeState] Elevator 상태 적용");
-                    }
-
-                    // 런타임에 이동된 오브젝트 처리
-                    if (runtimeMovedObjects.ContainsKey(id))
-                    {
-                        behaviour.transform.position = runtimeMovedObjects[id];
-                    }
-
-                    // ⭐ 런타임 문 상태 적용
-                    if (runtimeDoorStates.ContainsKey(id))
-                    {
-                        var doorState = runtimeDoorStates[id];
-                        SaveData tempData = new SaveData();
-                        tempData.doorStates.Add(doorState);
-                        saveable.Load(tempData);
-                        Debug.Log($"[RuntimeState] 문 상태 적용: {id}");
-                    }
-
-                    // ⭐ 런타임 문서 읽음 상태 적용
-                    if (runtimeReadDocuments.Contains(id))
-                    {
-                        SaveData tempData = new SaveData();
-                        tempData.readDocuments.Add(id);
-                        saveable.Load(tempData);
-                        Debug.Log($"[RuntimeState] 문서 읽음 상태 적용: {id}");
-                    }
+                // Elevator
+                if (runtimeElevatorState != null && behaviour is ElevatorManager)
+                {
+                    SaveData temp = new SaveData();
+                    temp.elevatorData = runtimeElevatorState;
+                    saveable.Load(temp);
                 }
             }
 
-            Debug.Log($"[RuntimeState] 런타임 상태 적용 완료 - 비활성화: {runtimeDestroyedObjects.Count}, 문: {runtimeDoorStates.Count}, 문서: {runtimeReadDocuments.Count}");
+            Debug.Log("[RuntimeState] 런타임 상태 적용 완료");
         }
 
-        // ===================== 체크포인트 저장 시 런타임 → SaveData =====================
+        // =====================
+        // Merge → SaveData
+        // =====================
 
         public static void MergeRuntimeStateToSaveData(ref SaveData data)
         {
+            // PowerBox
             if (runtimePowerBoxState != null)
-            {
                 data.powerBoxData = runtimePowerBoxState;
-            }
 
+            // Elevator
             if (runtimeElevatorState != null)
-            {
                 data.elevatorData = runtimeElevatorState;
-            }
 
-
-            // 기존 저장된 상태 + 런타임 상태 병합
+            // Destroyed
             foreach (var id in runtimeDestroyedObjects)
             {
                 if (!data.destroyedObjects.Contains(id))
-                {
                     data.destroyedObjects.Add(id);
-                }
             }
 
+            // Moved
             foreach (var kvp in runtimeMovedObjects)
             {
                 var existing = data.movedObjects.Find(m => m.id == kvp.Key);
                 if (existing != null)
-                {
                     existing.position = kvp.Value;
-                }
                 else
-                {
                     data.movedObjects.Add(new MovedObjectData
                     {
                         id = kvp.Key,
                         position = kvp.Value
                     });
-                }
             }
 
-            // ⭐ 문 상태 병합
+            // Door
             foreach (var kvp in runtimeDoorStates)
             {
                 var existing = data.doorStates.Find(d => d.id == kvp.Key);
@@ -239,37 +207,33 @@ namespace FaintFear
                 }
                 else
                 {
-                    data.doorStates.Add(new DoorStateData
-                    {
-                        id = kvp.Key,
-                        isOpen = kvp.Value.isOpen,
-                        isLocked = kvp.Value.isLocked
-                    });
+                    data.doorStates.Add(kvp.Value);
                 }
             }
 
-            // ⭐ 문서 읽음 상태 병합
+            // Documents
             foreach (var id in runtimeReadDocuments)
             {
                 if (!data.readDocuments.Contains(id))
-                {
                     data.readDocuments.Add(id);
-                }
             }
 
-            Debug.Log($"[RuntimeState] 런타임 상태 → SaveData 병합 완료");
+            Debug.Log("[RuntimeState] 런타임 → SaveData 병합 완료");
         }
 
-        // ===================== 새 게임 or 이어하기 시 런타임 상태 초기화 =====================
+        // =====================
+        // Clear
+        // =====================
 
         public static void ClearRuntimeState()
         {
-            runtimePowerBoxState = null;
-            runtimeElevatorState = null;
             runtimeDestroyedObjects.Clear();
             runtimeMovedObjects.Clear();
             runtimeDoorStates.Clear();
             runtimeReadDocuments.Clear();
+            runtimePowerBoxState = null;
+            runtimeElevatorState = null;
+
             Debug.Log("[RuntimeState] 런타임 상태 초기화");
         }
     }

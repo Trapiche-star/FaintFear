@@ -176,9 +176,13 @@ namespace FaintFear
         //죽음 처리
         private void Die()
         {
+            if (isDeath) return;
             isDeath = true;
 
-            onDie?.Invoke();
+            onDie?.Invoke(); // 연출용 (UI, 사운드 등)
+
+            // ⭐ 체크포인트에서 재시작 요청
+            GameManager.Instance.RestartFromCheckpoint();
         }
         #endregion
     }

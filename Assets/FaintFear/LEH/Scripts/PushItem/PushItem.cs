@@ -151,10 +151,13 @@ namespace FaintFear
             isPushing = false;
             isCleared = true;
             DisablePushing();
+
+            // ⭐ 런타임 이동 상태 기록
+            RuntimeStateManager.RecordMovedObject(uniqueId, movePosition.position);
+
             SoundManager.Instance?.PlaySFX(completePushSFX);
             StartCoroutine(MoveToPosition());
         }
-
         IEnumerator MoveToPosition()
         {
             float originalY = transform.position.y;

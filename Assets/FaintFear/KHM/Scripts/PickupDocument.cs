@@ -5,8 +5,6 @@ namespace FaintFear
 {
     public class PickupDocument : Interactive, IActionProvider, ISaveableWorldObject
     {
-        #region Variables
-
         public static PickupDocument Current;
         private PlayerMove playerMove;
         private DocumentPuzzleItem puzzleItem;
@@ -21,18 +19,10 @@ namespace FaintFear
 
         private bool wasRead = false;
 
-        #endregion
-
-        #region Unity Event Method
-
         private void Awake()
         {
             puzzleItem = GetComponent<DocumentPuzzleItem>();
         }
-
-        #endregion
-
-        #region Custom Method
 
         public override void Interaction()
         {
@@ -41,7 +31,6 @@ namespace FaintFear
             if (documentUI == null || playerMove == null)
                 return;
 
-            // + ADD : 문서 열기 사운드
             SoundManager.Instance?.PlaySFX("SFX_Paper");
 
             if (documentUIImage == null)
@@ -60,11 +49,9 @@ namespace FaintFear
         {
             CachePlayer();
 
-            // + ADD : 문서 닫기 사운드
             SoundManager.Instance?.PlaySFX("SFX_Paper");
 
-            if (documentUI != null)
-                documentUI.SetActive(false);
+            documentUI?.SetActive(false);
 
             if (playerMove != null)
                 playerMove.enabled = true;
@@ -72,8 +59,7 @@ namespace FaintFear
             PlayerStatus.Instance.isMentalSystemActive = true;
             PlayerStatus.Instance.isBatteryActive = true;
 
-            if (puzzleItem != null)
-                puzzleItem.MarkAsRead();
+            puzzleItem?.MarkAsRead();
 
             if (!wasRead)
             {
@@ -86,39 +72,33 @@ namespace FaintFear
                 Current = null;
         }
 
-        #endregion
-
-        #region Helper
-
         private void CachePlayer()
         {
             if (playerMove != null) return;
             playerMove = Object.FindFirstObjectByType<PlayerMove>();
         }
 
-        #endregion
-
-        #region Property
-
         public string GetActionText() => "[E] 문서";
 
-        #endregion
-
-        #region Save
+        // ================= SAVE =================
 
         public string GetID() => uniqueId;
 
         public void Save(ref SaveData data)
         {
+            if (data.readDocuments == null)
+                data.readDocuments = new System.Collections.Generic.List<string>();
+
             if (wasRead && !data.readDocuments.Contains(uniqueId))
                 data.readDocuments.Add(uniqueId);
         }
 
         public void Load(SaveData data)
         {
+            if (data.readDocuments == null)
+                return;
+
             wasRead = data.readDocuments.Contains(uniqueId);
         }
-
-        #endregion
     }
 }
