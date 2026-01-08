@@ -109,6 +109,8 @@ namespace FaintFear
             interactCount++;
             // 대거 보유 상태에서만 카운트를 증가시킨다
 
+            // --- 기존 단계별 연출 비활성화 ---
+            /*
             if (interactCount == 1)
             {
                 PlaySequence(dagger_First);
@@ -120,7 +122,9 @@ namespace FaintFear
                 PlaySequence(dagger_Second);
                 return;
             }
+            */
 
+            // 첫 상호작용부터 즉시 획득 처리
             StartCoroutine(AcquireProcess());
         }
 

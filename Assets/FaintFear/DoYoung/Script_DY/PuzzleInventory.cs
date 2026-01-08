@@ -98,7 +98,7 @@ namespace FaintFear
             Debug.Log("[PuzzleInventory] 후크 획득");
         }
 
-        // ⭐ 추가: 인벤토리 완전 초기화
+        // ⭐ 인벤토리 완전 초기화
         public void ResetInventory()
         {
             for (int i = 0; i < ownedLevers.Length; i++)
@@ -142,6 +142,13 @@ namespace FaintFear
 
         public void Load(SaveData data)
         {
+            // ⭐ 핵심: NewGame일 때는 세이브 데이터로 덮어쓰지 않는다
+            if (GameManager.Instance != null && GameManager.Instance.IsNewGame)
+            {
+                Debug.Log("[PuzzleInventory] NewGame 상태 - 로드 무시 (초기화 유지)");
+                return;
+            }
+
             for (int i = 0; i < ownedLevers.Length && i < data.ownedLevers.Length; i++)
             {
                 ownedLevers[i] = data.ownedLevers[i];

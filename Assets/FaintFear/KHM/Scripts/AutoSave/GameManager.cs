@@ -287,6 +287,9 @@ namespace FaintFear
         // State
         // =========================
 
+        // *추가 현재 게임이 NewGame 모드인지 여부
+        public bool IsNewGame => currentStartMode == GameStartMode.NewGame;
+
         public static void EnterMenuState()
         {
             Cursor.lockState = CursorLockMode.None;
