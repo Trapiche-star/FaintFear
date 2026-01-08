@@ -1128,6 +1128,7 @@ MonoBehaviour:
   blockedWaitTime: 2
   obstacleTag: Obstacle
   viewAngle: 60
+  enemyId: 
 --- !u!135 &1654653255
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2758,6 +2759,7 @@ MonoBehaviour:
   blockedWaitTime: 2
   obstacleTag: Obstacle
   viewAngle: 120
+  enemyId: 
 --- !u!1 &4907043727490267413
 GameObject:
   m_ObjectHideFlags: 0
