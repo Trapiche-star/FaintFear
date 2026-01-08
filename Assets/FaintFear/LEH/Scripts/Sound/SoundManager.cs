@@ -17,6 +17,9 @@ namespace FaintFear
         private Sound currentBGM;
         private Sound previousBGM;
 
+        //+ 여기 추가
+        public string CurrentBGMName => currentBGM != null ? currentBGM.name : null; //+
+
         private void Awake()
         {
             if (Instance != null && Instance != this)

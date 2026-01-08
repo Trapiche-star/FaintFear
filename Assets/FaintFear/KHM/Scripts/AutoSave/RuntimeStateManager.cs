@@ -23,6 +23,7 @@ namespace FaintFear
         private static PowerBoxData runtimePowerBoxState = null;
         private static ElevatorData runtimeElevatorState = null;
         private static EndingData runtimeEndingState = null;
+        private static Dictionary<string, EnemyRuntimeState> runtimeEnemyStates = new();
 
         // =====================
         // Unity
@@ -105,6 +106,11 @@ namespace FaintFear
 
             runtimeElevatorState.isPowerSupplied = isPowerSupplied;
         }
+        public static void RecordEnemyState(string id, EnemyRuntimeState state)
+        {
+            if (string.IsNullOrEmpty(id)) return;
+            runtimeEnemyStates[id] = state;
+        }
 
         // =====================
         // Apply (씬 로드 시)
@@ -171,6 +177,15 @@ namespace FaintFear
                     SaveData temp = new SaveData();
                     temp.endingData = runtimeEndingState;
                     saveable.Load(temp);
+                }
+
+                if (behaviour is Enemy_Ex enemy)
+                {
+                    string enemyId = enemy.GetEnemyId();
+                    if (runtimeEnemyStates.TryGetValue(enemyId, out var state))
+                    {
+                        enemy.RestoreRuntimeState(state);
+                    }
                 }
             }
 

@@ -1,3 +1,4 @@
+using FaintFear;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -81,6 +82,14 @@ public class MovedObjectData
 public class EndingData
 {
     public bool[] activatedLevers = new bool[4]; // 0:빨강, 1:노랑, 2:검정, 3:파랑
+}
+
+[Serializable]
+public class EnemyRuntimeState
+{
+    public EnemyState state;
+    public Vector3 position;
+    public Vector3 lastKnownPlayerPos;
 }
 
 [Serializable]

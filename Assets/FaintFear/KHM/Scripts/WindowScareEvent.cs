@@ -90,7 +90,7 @@ namespace FaintFear
             lightZone.SetLightsActive(false);
             lightZone.SetPermanentlyOff();
 
-            //+ 🔊 소등 효과음 재생
+            //+ 소등 효과음 재생
             if (SoundManager.Instance != null)
             {
                 SoundManager.Instance.PlaySFX("SFX_LightOff"); //+
@@ -101,6 +101,18 @@ namespace FaintFear
 
             // 손전등 ON까지 대기
             yield return new WaitUntil(() => flashlight.IsOn);
+
+            //+손전등 처음 켰을 때 점프스케어 사운드 재생
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlaySFX("SFX_Jumpscare01"); //+
+            }
+
+            //+손전등 처음 켰을 때 BGM_Tense 10초 임시 재생
+            if (SoundManager.Instance != null)
+            {
+                StartCoroutine(PlayBGMTemporary("BGM_Tense", 10f)); //+
+            }
 
             if (IsTutorialCompleted())
                 yield break;
@@ -200,14 +212,33 @@ namespace FaintFear
             Destroy(ghost);
         }
 
-        // ⭐ BGM 10초 병렬 재생 코루틴
+        //+ BGM 10초 병렬 재생 후 이전 BGM으로 복귀
         private IEnumerator PlayBGMTemporary(string bgmName, float duration)
         {
-            SoundManager.Instance.PlayBGM(bgmName);
+            if (SoundManager.Instance == null)
+                yield break;
+
+            //!!! 이전 BGM 저장 (getter 사용)
+            var prevBGM = SoundManager.Instance.CurrentBGMName; //!!!
+
+            //!!! 임시 BGM 재생
+            SoundManager.Instance.PlayBGM(bgmName, rememberPrevious: false); //!!!
+
+            // duration 동안 대기
             yield return new WaitForSeconds(duration);
-            SoundManager.Instance.StopBGM();
+
+            //!!! 이전 BGM 복귀
+            if (!string.IsNullOrEmpty(prevBGM))
+            {
+                SoundManager.Instance.PlayBGM(prevBGM, rememberPrevious: false); //!!!
+            }
+            else
+            {
+                Debug.Log("[WindowScareEvent] 이전 BGM 없음, BGM 종료"); //!!!
+            }
         }
+    }
 
         #endregion
     }
-}
+
