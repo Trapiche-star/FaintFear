@@ -34,7 +34,6 @@ namespace FaintFear
             DontDestroyOnLoad(gameObject);
         }
 
-        // ⭐ 추가: 씬 로드 시 저장된 상태 복원
         private void OnEnable()
         {
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
@@ -50,7 +49,7 @@ namespace FaintFear
             // 씬 로드 시 저장된 문서 읽음 상태를 복원
             RestoreReadDocuments();
 
-            // targetDoor 재연결 (씬마다 새로 찾아야 함)
+            // targetDoor 재연결
             if (targetDoor == null)
             {
                 targetDoor = FindFirstObjectByType<DoorDocumentTrigger>();
@@ -81,7 +80,6 @@ namespace FaintFear
 
             if (!readIdSet.Add(documentId)) return;
 
-            // ⭐ 런타임 상태에 기록
             RuntimeStateManager.RecordDocumentRead($"Document_{documentId}");
 
             if (!IsAllRequiredRead()) return;
@@ -89,19 +87,25 @@ namespace FaintFear
             CompletePuzzle();
         }
 
-        // ⭐ 추가: 저장된 문서 읽음 상태 복원
+        // ⭐ 추가: 상태 초기화
+        public void ResetState()
+        {
+            readIdSet.Clear();
+            isCompleted = false;
+
+            Debug.Log("[DocumentPuzzleManager] 상태 초기화 완료");
+        }
+
         private void RestoreReadDocuments()
         {
             SaveData data = SaveSystem.LoadPreview();
             if (data == null) return;
 
-            // SaveData에서 읽은 문서 복원
             foreach (string docId in data.readDocuments)
             {
-                // "Document_5" 형식에서 숫자만 추출
                 if (docId.StartsWith("Document_"))
                 {
-                    string idStr = docId.Substring(9); // "Document_" 이후 문자열
+                    string idStr = docId.Substring(9);
                     if (int.TryParse(idStr, out int id))
                     {
                         if (IsRequiredId(id))
@@ -112,7 +116,6 @@ namespace FaintFear
                 }
             }
 
-            // 모든 문서를 읽었는지 확인
             if (IsAllRequiredRead())
             {
                 isCompleted = true;
@@ -120,7 +123,6 @@ namespace FaintFear
             }
         }
 
-        // ⭐ 추가: 외부에서 특정 문서 ID가 이미 읽혔는지 확인
         public bool IsDocumentRead(int documentId)
         {
             return readIdSet.Contains(documentId);
@@ -160,7 +162,6 @@ namespace FaintFear
             if (targetDoor != null)
                 targetDoor.SetUnlocked(true);
 
-            // ⭐ 퍼즐 완료 시 자동 저장
             AutoSaveManager.Instance?.RequestSave("document_puzzle_complete");
             Debug.Log("[DocumentPuzzle] 퍼즐 완료 - 자동 저장 요청");
         }
