@@ -204,7 +204,7 @@ namespace FaintFear
             }
 
             // 추적 이동 상태
-            ani.SetInteger("State", 1);
+            ani.SetInteger("State", 2);
 
             // 이동 전 정면 장애물 체크
             if (CheckForwardObstacle())
