@@ -20,7 +20,7 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.039215688, g: 0.039215688, b: 0.047058824, a: 1}
+  m_AmbientSkyColor: {r: 0.02745098, g: 0.02745098, b: 0.039215688, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1.5
@@ -1024,6 +1024,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 260867823}
   m_Mesh: {fileID: -1951827193649158135, guid: 8bbf65342b442c946b4f132458d4d733, type: 3}
+--- !u!1 &282038656 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1347357306439633456, guid: ebcd2eef575c87149bd65ad2f65b4b49, type: 3}
+  m_PrefabInstance: {fileID: 4975032953908500281}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &305519705
 GameObject:
   m_ObjectHideFlags: 0
@@ -3371,6 +3376,7 @@ MonoBehaviour:
   moveTarget: {fileID: 740514489}
   ghostSpeed: 10
   sequenceText: {fileID: 2312052753772196972}
+  spawner: {fileID: 282038656}
 --- !u!1 &924158761
 GameObject:
   m_ObjectHideFlags: 0
@@ -6366,6 +6372,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2173105014912353909}
     m_Modifications:
+    - target: {fileID: 1927818262211271496, guid: 0341f06d7d69cea4b820033c1d83a55b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -729
+      objectReference: {fileID: 0}
     - target: {fileID: 3333309908326546040, guid: 0341f06d7d69cea4b820033c1d83a55b, type: 3}
       propertyPath: m_Name
       value: StaminaUI
@@ -97197,6 +97207,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemySpawner
       objectReference: {fileID: 0}
+    - target: {fileID: 1347357306439633456, guid: ebcd2eef575c87149bd65ad2f65b4b49, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8085459319277207177, guid: ebcd2eef575c87149bd65ad2f65b4b49, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -174465,6 +174479,7 @@ SceneRoots:
   - {fileID: 1095682883}
   - {fileID: 1303353210}
   - {fileID: 1674351876}
+  - {fileID: 1448277708}
   - {fileID: 1818590460}
   - {fileID: 251237380}
   - {fileID: 2173105014912353909}
@@ -174480,4 +174495,3 @@ SceneRoots:
   - {fileID: 681683540}
   - {fileID: 660099525}
   - {fileID: 1385774943}
-  - {fileID: 1448277708}

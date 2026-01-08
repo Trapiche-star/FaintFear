@@ -43,8 +43,18 @@ namespace FaintFear
             if (BasementDoorManager.Instance == null) return false;
             // 만약 매니저 인스턴스가 없다면 이 문에서는 더 이상 상호작용하지 않는다
 
-            if (!BasementDoorManager.Instance.IsBasementDoorUnlocked) return false;
+            //if (!BasementDoorManager.Instance.IsBasementDoorUnlocked) return false;
             // 만약 지하실 도어가 아직 해제되지 않았다면 이 문에서는 더 이상 상호작용하지 않는다
+
+            if (!BasementDoorManager.Instance.IsBasementDoorUnlocked)
+            {
+                // + 잠김 상태일 때 SFX 재생
+                if (SoundManager.Instance != null)
+                    SoundManager.Instance.PlaySFX("SFX_DoorLocked");
+
+                ShowLockedMessage();
+                return false;
+            }
 
             return true;
             // 전역 해제 상태이므로 문을 열 수 있다
@@ -53,6 +63,15 @@ namespace FaintFear
         // 문을 열거나 닫는 동작을 수행한다
         protected override void ToggleDoor()
         {
+            //+ 문 열림/닫힘 SFX
+            if (SoundManager.Instance != null)
+            {
+                if (!isOpen)
+                    SoundManager.Instance.PlaySFX("SFX_DoorOpen"); // 문 열림
+                else
+                    SoundManager.Instance.PlaySFX("SFX_DoorClose"); // 문 닫힘
+            }
+
             StartCoroutine(MoveDoorRoutine(isOpen));
             // 현재 상태를 기준으로 열기 또는 닫기 애니메이션을 실행한다
 
@@ -133,6 +152,14 @@ namespace FaintFear
             }
 
             isMoving = false;
+
+            //+ 지하실 언락 후 문 열림일 때 SFX_Jumpscare01
+            if (!opened)
+            {
+                if (SoundManager.Instance != null)
+                    SoundManager.Instance.PlaySFX("SFX_Jumpscare01");
+            }
+
             // 문 이동이 완료되었음을 표시한다
         }
 

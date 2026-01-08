@@ -158,9 +158,9 @@ MonoBehaviour:
   visionLayer:
     serializedVersion: 2
     m_Bits: 2944
-  moveSpeed: 2
+  moveSpeed: 1
   rotSpeed: 5
-  rayDistance: 8
+  rayDistance: 3
   attackRange: 1.5
   gravity: 9.81
   attackImpactRadius: 1
