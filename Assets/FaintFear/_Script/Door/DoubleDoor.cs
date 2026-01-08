@@ -31,6 +31,15 @@ namespace FaintFear
         {
             if (isMoving) return;
 
+            // + 문 열림/닫힘 SFX 재생
+            if (SoundManager.Instance != null)
+            {
+                if (!isOpen)
+                    SoundManager.Instance.PlaySFX("SFX_DoorOpen"); // 문 열림
+                else
+                    SoundManager.Instance.PlaySFX("SFX_DoorClose"); // 문 닫힘
+            }
+
             if (!isOpen)
             {
                 StartCoroutine(MoveDoorsRoutine(-openAngle, openAngle));
@@ -39,7 +48,7 @@ namespace FaintFear
             {
                 StartCoroutine(MoveDoorsRoutine(0f, 0f));
             }
-
+            
             isOpen = !isOpen;
 
             // ⭐ 런타임 상태 기록
