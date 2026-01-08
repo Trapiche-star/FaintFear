@@ -159,9 +159,21 @@ namespace FaintFear
             isCompleted = true;
 
             AutoSaveManager.Instance?.RequestSave("document_puzzle_complete");
-            Debug.Log("[DocumentPuzzle] 퍼즐 완료 - 자동 저장 요청");
-        }
 
+            Debug.Log("[DocumentPuzzle] 퍼즐 완료 - 자동 저장 요청");
+
+            // 🔽 퍼즐 완료 알림
+            NotifyDoors();
+        }
+        private void NotifyDoors()
+        {
+            DoorDocumentTrigger[] doors =FindObjectsByType<DoorDocumentTrigger>(FindObjectsSortMode.None);
+
+            foreach (var door in doors)
+            {
+                door.SetUnlocked(true);
+            }
+        }
         #endregion
     }
 }
