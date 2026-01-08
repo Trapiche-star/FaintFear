@@ -4948,6 +4948,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4068929432764341574, guid: 62065511566bfa349b0c56eed2e0cb4f, type: 3}
+      propertyPath: requiredDocumentIds.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4068929432764341574, guid: 62065511566bfa349b0c56eed2e0cb4f, type: 3}
+      propertyPath: 'requiredDocumentIds.Array.data[0]'
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4068929432764341574, guid: 62065511566bfa349b0c56eed2e0cb4f, type: 3}
+      propertyPath: 'requiredDocumentIds.Array.data[1]'
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4068929432764341574, guid: 62065511566bfa349b0c56eed2e0cb4f, type: 3}
+      propertyPath: 'requiredDocumentIds.Array.data[2]'
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7757969793895220348, guid: 62065511566bfa349b0c56eed2e0cb4f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.0330095
@@ -4991,6 +5007,10 @@ PrefabInstance:
     - target: {fileID: 8230528058230047870, guid: 62065511566bfa349b0c56eed2e0cb4f, type: 3}
       propertyPath: m_Name
       value: DocumentPuzzleManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 8230528058230047870, guid: 62065511566bfa349b0c56eed2e0cb4f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
