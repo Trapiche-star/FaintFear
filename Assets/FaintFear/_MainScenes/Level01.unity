@@ -6372,6 +6372,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2173105014912353909}
     m_Modifications:
+    - target: {fileID: 1927818262211271496, guid: 0341f06d7d69cea4b820033c1d83a55b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -729
+      objectReference: {fileID: 0}
     - target: {fileID: 3333309908326546040, guid: 0341f06d7d69cea4b820033c1d83a55b, type: 3}
       propertyPath: m_Name
       value: StaminaUI
@@ -174475,6 +174479,7 @@ SceneRoots:
   - {fileID: 1095682883}
   - {fileID: 1303353210}
   - {fileID: 1674351876}
+  - {fileID: 1448277708}
   - {fileID: 1818590460}
   - {fileID: 251237380}
   - {fileID: 2173105014912353909}
@@ -174490,4 +174495,3 @@ SceneRoots:
   - {fileID: 681683540}
   - {fileID: 660099525}
   - {fileID: 1385774943}
-  - {fileID: 1448277708}
