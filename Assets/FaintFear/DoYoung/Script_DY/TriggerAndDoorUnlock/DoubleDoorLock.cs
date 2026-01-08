@@ -39,7 +39,14 @@ namespace FaintFear
             if (player == null) return false;
             // 만약 플레이어 인스턴스가 없다면 이 문에서는 더 이상 상호작용하지 않는다
 
-            if (!player.HasKey(requiredKey)) return false;
+            // + 열쇠 없을 때 잠김 SFX 재생
+            if (!player.HasKey(requiredKey))
+            {
+                if (SoundManager.Instance != null)
+                    SoundManager.Instance.PlaySFX("SFX_DoorLocked"); // 문 잠김
+                return false;
+            }
+            //if (!player.HasKey(requiredKey)) return false;
             // 만약 필요한 열쇠를 보유하지 않았다면 이 문에서는 더 이상 상호작용하지 않는다
 
             player.ConsumeKey(requiredKey);
@@ -52,6 +59,15 @@ namespace FaintFear
         // 문을 열거나 닫는 동작을 수행한다
         protected override void ToggleDoor()
         {
+            // + 문 열림/닫힘 SFX 재생
+            if (SoundManager.Instance != null)
+            {
+                if (isOpen)
+                    SoundManager.Instance.PlaySFX("SFX_DoorClose"); // 문 닫힘
+                else
+                    SoundManager.Instance.PlaySFX("SFX_DoorOpen"); // 문 열림
+            }
+
             StartCoroutine(MoveDoorRoutine(isOpen));
             // 현재 상태를 기준으로 열기 또는 닫기 애니메이션을 실행한다
 
@@ -97,6 +113,16 @@ namespace FaintFear
             // 애니메이션 종료 시 최종 회전값을 정확히 적용한다
 
             isMoving = false;
+
+            // + 지하실 언락 처리
+            if (!opened && !hasSentUnlockSignal)
+            {
+                hasSentUnlockSignal = true;
+                if (unlockTrigger != null)
+                    unlockTrigger.TriggerUnlock();
+            }
+
+            /*
             // 문 이동이 완료되었으므로 이동 상태를 해제한다
 
             if (!opened && !hasSentUnlockSignal)
@@ -110,6 +136,7 @@ namespace FaintFear
                     unlockTrigger.TriggerUnlock();
                 // 지하실 도어 해제를 전역 상태로 기록한다
             }
+            */
         }
 
         // 현재 문 상태에 따라 회전을 즉시 반영한다
