@@ -84,6 +84,10 @@ namespace FaintFear
         // + Enemy 전용 사운드 제어 스크립트 참조
         private EnemyAudio enemyAudio;
 
+        //고유 ID
+        [SerializeField] private string enemyId;
+        public string GetEnemyId() => enemyId;
+
         private void Awake()
         {
             controller = GetComponent<CharacterController>();
@@ -506,6 +510,9 @@ namespace FaintFear
 
             currentState = newState;
 
+            // 상태 변경 후 런타임 기록
+            RuntimeStateManager.RecordEnemyState(enemyId,CaptureRuntimeState());
+
             // 상태 변경 시 대기 관련 플래그 초기화
             isWanderIdle = false;
 
@@ -569,6 +576,24 @@ namespace FaintFear
                     ChangeState(EnemyState.Chase);
                 }
             }
+        }
+
+        //이너미 상태 런타임에 저장
+        public EnemyRuntimeState CaptureRuntimeState()
+        {
+            return new EnemyRuntimeState
+            {
+                state = currentState,
+                position = transform.position,
+                lastKnownPlayerPos = lastKnownPos
+            };
+        }
+
+        public void RestoreRuntimeState(EnemyRuntimeState data)
+        {
+            transform.position = data.position;
+            lastKnownPos = data.lastKnownPlayerPos;
+            ChangeState(data.state);
         }
 
         // 디버깅용 기즈모 (Scene 뷰 확인용)
