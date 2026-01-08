@@ -9,8 +9,7 @@ namespace FaintFear
             Path.Combine(Application.persistentDataPath, "save.json");
 
         // ===================== SAVE =====================
-        public static void SaveGame(string checkpointId = "", bool tutorialCompleted = false,
-    bool saveWorldObjects = true)
+        public static void SaveGame(string checkpointId = "", bool tutorialCompleted = false, bool saveWorldObjects = true)
         {
             SaveData prev = LoadPreview();
             SaveData data = new SaveData();
@@ -27,24 +26,21 @@ namespace FaintFear
                 data.playerRotation = player.transform.rotation;
             }
 
-            // ⭐ 현재 씬 이름 저장
             data.savedSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-            Debug.Log($"[SaveSystem] 현재 씬 저장: {data.savedSceneName}");
 
             // ===================== 진행 상태 =====================
             data.checkpointId = checkpointId;
-            data.tutorialCompleted =
-                tutorialCompleted || (prev != null && prev.tutorialCompleted);
+            data.tutorialCompleted = tutorialCompleted || (prev != null && prev.tutorialCompleted);
             data.lightsPermaOff = data.tutorialCompleted;
 
             // ===================== ⭐ 월드 오브젝트 상태 저장 =====================
             if (saveWorldObjects)
             {
-                var behaviours =
-                    Object.FindObjectsByType<MonoBehaviour>(
-                        FindObjectsInactive.Include,
-                        FindObjectsSortMode.None
-                    );
+                var behaviours = Object.FindObjectsByType<MonoBehaviour>(
+                    FindObjectsInactive.Include,
+                    FindObjectsSortMode.None
+                );
+
                 foreach (var behaviour in behaviours)
                 {
                     if (behaviour is ISaveableWorldObject saveable)
@@ -52,15 +48,19 @@ namespace FaintFear
                         saveable.Save(ref data);
                     }
                 }
+
+                // ⭐ PlayerStatus도 명시적으로 저장 (DontDestroyOnLoad라서 FindObjectsByType에 안 잡힐 수 있음)
+                if (PlayerStatus.Instance != null)
+                {
+                    PlayerStatus.Instance.Save(ref data);
+                }
+
                 // ⭐ 런타임 상태도 병합
                 RuntimeStateManager.MergeRuntimeStateToSaveData(ref data);
             }
 
             // ===================== 파일 저장 =====================
-            File.WriteAllText(
-                SavePath,
-                JsonUtility.ToJson(data, true)
-            );
+            File.WriteAllText(SavePath, JsonUtility.ToJson(data, true));
             Debug.Log($"[SaveSystem] 게임 저장 완료 : {SavePath}");
         }
 

@@ -69,9 +69,26 @@ namespace FaintFear
 
         public void StartNewGame()
         {
+            // ⭐ 1. 세이브 파일 삭제
             SaveSystem.DeleteSave();
+
+            // ⭐ 2. 튜토리얼 상태 초기화
             TutorialCompleted = false;
+
+            // ⭐ 3. 모든 DontDestroyOnLoad 매니저 초기화
+            ResetAllManagers();
+
+            // ⭐ 4. 런타임 상태 완전 초기화
+            RuntimeStateManager.ClearRuntimeState();
+
+            //DestroyGlobalSingletons();
+
+            // ⭐ 5. 게임 시작 모드 설정
             currentStartMode = GameStartMode.NewGame;
+
+            Debug.Log("[GameManager] NewGame - 모든 데이터 초기화 완료");
+
+            // ⭐ 6. Intro 씬 로드
             SceneManager.LoadScene("Intro");
         }
 
@@ -81,6 +98,8 @@ namespace FaintFear
 
             SaveData data = SaveSystem.LoadPreview();
             string sceneToLoad = data != null ? data.savedSceneName : "Level01";
+
+            Debug.Log($"[GameManager] ContinueGame - 씬 로드: {sceneToLoad}");
             SceneManager.LoadScene(sceneToLoad);
         }
 
@@ -90,7 +109,48 @@ namespace FaintFear
 
             SaveData data = SaveSystem.LoadPreview();
             string sceneToLoad = data != null ? data.savedSceneName : "Level01";
+
+            Debug.Log($"[GameManager] RestartFromCheckpoint - 씬 로드: {sceneToLoad}");
             SceneManager.LoadScene(sceneToLoad);
+        }
+
+        // ⭐ 추가: 모든 DontDestroyOnLoad 매니저 초기화
+        private void ResetAllManagers()
+        {
+            // PlayerStatus 초기화
+            if (PlayerStatus.Instance != null)
+            {
+                PlayerStatus.Instance.ResetStatus();
+                Debug.Log("[GameManager] PlayerStatus 초기화");
+            }
+
+            // EndingManager 초기화
+            if (EndingManager.Instance != null)
+            {
+                EndingManager.Instance.ResetState();
+                Debug.Log("[GameManager] EndingManager 초기화");
+            }
+
+            // DocumentPuzzleManager 초기화
+            if (DocumentPuzzleManager.Instance != null)
+            {
+                DocumentPuzzleManager.Instance.ResetState();
+                Debug.Log("[GameManager] DocumentPuzzleManager 초기화");
+            }
+
+            // ⭐ 추가: ElevatorManager 초기화
+            if (ElevatorManager.Instance != null)
+            {
+                ElevatorManager.Instance.ResetState();
+                Debug.Log("[GameManager] ElevatorManager 초기화");
+            }
+
+            if (PuzzleInventory.Instance != null)
+            {
+                PuzzleInventory.Instance.ResetInventory();
+                Debug.Log("[GameManager] PuzzleInventory 초기화");
+            }
+            // SceneLoadManager는 상태가 없으므로 초기화 불필요
         }
 
         // =========================
@@ -99,6 +159,8 @@ namespace FaintFear
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
+            Debug.Log($"[GameManager] 씬 로드됨: {scene.name}, 모드: {currentStartMode}");
+
             if (!gameplayScenes.Contains(scene.name))
             {
                 EnterMenuState();
@@ -118,6 +180,7 @@ namespace FaintFear
             switch (modeToExecute)
             {
                 case GameStartMode.NewGame:
+                    Debug.Log("[GameManager] NewGame 모드 - 플레이어 스폰 및 초기화");
                     RuntimeStateManager.ClearRuntimeState();
                     SpawnPlayerAtSpawnPoint(newGameSpawnPointName);
                     PlayerStatus.Instance?.ResetStatus();
@@ -125,14 +188,20 @@ namespace FaintFear
 
                 case GameStartMode.Continue:
                 case GameStartMode.RestartFromCheckpoint:
+                    Debug.Log($"[GameManager] {modeToExecute} 모드 - 저장 데이터 로드");
                     RuntimeStateManager.ClearRuntimeState();
                     LoadPlayerFromSave();
                     SaveSystem.ApplyWorldObjectLoad();
                     break;
 
                 case GameStartMode.SceneTransition:
+                    Debug.Log("[GameManager] SceneTransition 모드 - 런타임 상태 적용");
                     SpawnPlayerAtSpawnPoint(sceneTransitionSpawnPoint);
                     RuntimeStateManager.ApplyRuntimeState();
+                    break;
+
+                default:
+                    Debug.LogWarning("[GameManager] 알 수 없는 게임 모드");
                     break;
             }
 
@@ -169,15 +238,21 @@ namespace FaintFear
             SaveData data = SaveSystem.LoadPreview();
             if (data == null)
             {
+                Debug.LogWarning("[GameManager] 저장 데이터 없음 - 기본 스폰 위치 사용");
                 SpawnPlayerAtSpawnPoint(newGameSpawnPointName);
+                PlayerStatus.Instance?.ResetStatus();
                 return;
             }
 
             SpawnPlayer(data.playerPosition, data.playerRotation);
 
+            // 플레이어 상태 복원
             PlayerStatus.Instance?.SetHealth(data.mental);
             PlayerStatus.Instance.currentBattery = data.battery;
             PlayerStatus.Instance.batteryCount = data.batteryCount;
+            PlayerStatus.Instance.Load(data);
+            Debug.Log($"[GameManager] 플레이어 상태 로드 완료 - " +
+                     $"체력:{data.mental}, 배터리:{data.battery}, 배터리 개수:{data.batteryCount}");
         }
 
         private void BindPlayerSystems(GameObject player)
@@ -225,11 +300,59 @@ namespace FaintFear
             Cursor.visible = false;
             Time.timeScale = 1f;
         }
-        public void GoToMainMenu() 
-        { 
-            SoundManager.Instance?.StopBGM(); 
-            SceneManager.LoadScene("MainMenu"); 
+
+        public void GoToMainMenu()
+        {
+            SoundManager.Instance?.StopBGM();
+            SceneManager.LoadScene("MainMenu");
         }
-        
+        private void DestroyGlobalSingletons()
+        {
+            // 퍼즐 인벤토리
+            if (PuzzleInventory.Instance != null)
+            {
+                Destroy(PuzzleInventory.Instance.gameObject);
+                PuzzleInventory.Instance = null;
+                Debug.Log("[GameManager] PuzzleInventory 파괴");
+            }
+
+            // 문서 퍼즐
+            if (DocumentPuzzleManager.Instance != null)
+            {
+                Destroy(DocumentPuzzleManager.Instance.gameObject);
+                DocumentPuzzleManager.Instance = null;
+                Debug.Log("[GameManager] DocumentPuzzleManager 파괴");
+            }
+
+            // 엔딩
+            if (EndingManager.Instance != null)
+            {
+                Destroy(EndingManager.Instance.gameObject);
+                EndingManager.Instance = null;
+                Debug.Log("[GameManager] EndingManager 파괴");
+            }
+
+            // 엘리베이터
+            if (ElevatorManager.Instance != null)
+            {
+                Destroy(ElevatorManager.Instance.gameObject);
+                ElevatorManager.Instance = null;
+                Debug.Log("[GameManager] ElevatorManager 파괴");
+            }
+
+            // PlayerStatus (Singleton<T>)
+            if (PlayerStatus.Instance != null)
+            {
+                Destroy(PlayerStatus.Instance.gameObject);
+                Debug.Log("[GameManager] PlayerStatus 파괴");
+            }
+
+            // AutoSaveManager
+            if (AutoSaveManager.Instance != null)
+            {
+                Destroy(AutoSaveManager.Instance.gameObject);
+                Debug.Log("[GameManager] AutoSaveManager 파괴");
+            }
+        }
     }
 }

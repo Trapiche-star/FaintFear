@@ -6,10 +6,9 @@ namespace FaintFear
     {
         #region Variables
 
-        public static ElevatorManager Instance { get; private set; }
-        private bool isPowerSupplied = false;
+        public static ElevatorManager Instance { get; set; }
 
-        // ⭐ 이미 체크포인트로 저장됐는지 추적
+        private bool isPowerSupplied = false;
         private bool wasSavedAsCheckpoint = false;
 
         #endregion
@@ -56,20 +55,43 @@ namespace FaintFear
             return isPowerSupplied;
         }
 
+        // ⭐ 추가: 상태 초기화 (NewGame용)
+        public void ResetState()
+        {
+            isPowerSupplied = false;
+            wasSavedAsCheckpoint = false;
+
+            Debug.Log("[ElevatorManager] 상태 초기화 완료");
+        }
+
         #endregion
 
-        // ⭐ ISaveableWorldObject 구현
+        #region ISaveableWorldObject
+
         public string GetID() => "ElevatorManager";
 
         public void Save(ref SaveData data)
         {
             data.elevatorData.isPowerSupplied = isPowerSupplied;
+
+            Debug.Log($"[ElevatorManager] 저장 - 전력 공급: {isPowerSupplied}");
         }
 
         public void Load(SaveData data)
         {
+            // ⭐ null 체크 추가
+            if (data.elevatorData == null)
+            {
+                Debug.LogWarning("[ElevatorManager] elevatorData가 null입니다. 기본값 사용");
+                return;
+            }
+
             isPowerSupplied = data.elevatorData.isPowerSupplied;
             wasSavedAsCheckpoint = isPowerSupplied; // 로드 시 이미 저장됨으로 표시
+
+            Debug.Log($"[ElevatorManager] 로드 - 전력 공급: {isPowerSupplied}");
         }
+
+        #endregion
     }
 }

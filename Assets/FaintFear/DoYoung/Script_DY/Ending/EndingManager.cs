@@ -6,7 +6,7 @@ namespace FaintFear
     {
         #region Variables
 
-        public static EndingManager Instance { get; private set; }
+        public static EndingManager Instance { get; set; }
 
         private bool[] activatedLevers = new bool[4];
 
@@ -25,8 +25,7 @@ namespace FaintFear
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
-            // ⭐ 추가: 시작 시 저장된 상태 복원
-            RestoreLeverStates();
+            // ⭐ Awake에서는 저장된 상태 복원하지 않음 (GameManager가 제어)
         }
 
         #endregion
@@ -39,9 +38,9 @@ namespace FaintFear
                 return;
 
             activatedLevers[leverIndex] = true;
-
-            // ⭐ 추가: 레버 활성화 시 런타임 상태 기록
             RecordEndingState();
+
+            Debug.Log($"[EndingManager] 레버 {leverIndex} 활성화");
         }
 
         public bool CanEnterEndingA()
@@ -67,39 +66,58 @@ namespace FaintFear
                 activatedLevers[3];
         }
 
-        // ⭐ 추가: 런타임 상태 기록
+        // ⭐ 추가: 상태 초기화
+        public void ResetState()
+        {
+            for (int i = 0; i < activatedLevers.Length; i++)
+            {
+                activatedLevers[i] = false;
+            }
+
+            Debug.Log("[EndingManager] 상태 초기화 완료");
+        }
+
         private void RecordEndingState()
         {
-            RuntimeStateManager.RecordEndingState(activatedLevers);
+            RuntimeStateManager.RecordEndingState((bool[])activatedLevers.Clone());
         }
 
-        // ⭐ 추가: 저장된 상태 복원
-        private void RestoreLeverStates()
+        // ⭐ 추가: 저장된 상태 복원 (Continue 시에만 호출)
+        public void RestoreLeverStates(SaveData data)
         {
-            SaveData data = SaveSystem.LoadPreview();
-            if (data == null) return;
-
-            // SaveData에서 레버 상태 복원
-            if (data.endingData != null && data.endingData.activatedLevers != null)
+            if (data == null || data.endingData == null)
             {
-                for (int i = 0; i < activatedLevers.Length && i < data.endingData.activatedLevers.Length; i++)
-                {
-                    activatedLevers[i] = data.endingData.activatedLevers[i];
-                }
-
-                Debug.Log($"[EndingManager] 레버 상태 복원: " +
-                    $"빨강={activatedLevers[0]}, 노랑={activatedLevers[1]}, " +
-                    $"검정={activatedLevers[2]}, 파랑={activatedLevers[3]}");
+                Debug.LogWarning("[EndingManager] 복원할 데이터 없음");
+                return;
             }
+
+            if (data.endingData.activatedLevers == null || data.endingData.activatedLevers.Length == 0)
+            {
+                Debug.LogWarning("[EndingManager] activatedLevers가 비어있음");
+                return;
+            }
+
+            for (int i = 0; i < activatedLevers.Length && i < data.endingData.activatedLevers.Length; i++)
+            {
+                activatedLevers[i] = data.endingData.activatedLevers[i];
+            }
+
+            Debug.Log($"[EndingManager] 레버 상태 복원: " +
+                $"빨강={activatedLevers[0]}, 노랑={activatedLevers[1]}, " +
+                $"검정={activatedLevers[2]}, 파랑={activatedLevers[3]}");
         }
 
-        // ⭐ 추가: 디버그용 - 현재 상태 확인
         public string GetCurrentStatus()
         {
             return $"레버 상태 - 빨강:{activatedLevers[0]}, 노랑:{activatedLevers[1]}, " +
                    $"검정:{activatedLevers[2]}, 파랑:{activatedLevers[3]} | " +
                    $"엔딩A 가능:{CanEnterEndingA()}, 엔딩B 가능:{CanEnterEndingB()}";
         }
+
+        #endregion
+
+        #region ISaveableWorldObject
+
         public string GetID() => "EndingManager_Global";
 
         public void Save(ref SaveData data)
@@ -109,14 +127,9 @@ namespace FaintFear
 
         public void Load(SaveData data)
         {
-            if (data.endingData != null && data.endingData.activatedLevers != null)
-            {
-                for (int i = 0; i < activatedLevers.Length && i < data.endingData.activatedLevers.Length; i++)
-                {
-                    activatedLevers[i] = data.endingData.activatedLevers[i];
-                }
-            }
+            RestoreLeverStates(data);
         }
+
         #endregion
     }
 }
