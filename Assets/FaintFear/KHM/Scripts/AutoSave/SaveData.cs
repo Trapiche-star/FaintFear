@@ -46,7 +46,13 @@ public class SaveData
     public bool[] ownedLevers = new bool[4];
     public bool hasBoltCutter = false;
 
+    //레버 상태
+    public bool[] leverObjectsActive = new bool[4];
+
+    //분전반
     public PowerBoxData powerBoxData = new PowerBoxData();
+
+    //엘리베이터
     public ElevatorData elevatorData = new ElevatorData();
 }
 
