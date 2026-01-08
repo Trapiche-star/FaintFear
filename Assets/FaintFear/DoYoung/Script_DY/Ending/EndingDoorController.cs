@@ -46,6 +46,14 @@ namespace FaintFear
             {
                 if (endingATrigger != null)
                     endingATrigger.ExecuteEnding();
+
+                //+ 정문 열리는 사운드 재생
+                if (SoundManager.Instance != null)
+                    {
+                        SoundManager.Instance.PlaySFX("SFX_ExitOpen");
+                        Debug.Log("[EndingDoor] 정문 열림 사운드 재생");
+                    }
+
                 return; // 만약 [엔딩 A 조건이 충족되었다면] [엔딩 A를 실행한다]
             }
 
@@ -53,6 +61,14 @@ namespace FaintFear
             {
                 if (endingBTrigger != null)
                     endingBTrigger.ExecuteEnding();
+
+                //+ 정문 열리는 사운드 재생
+                if (SoundManager.Instance != null)
+                {
+                    SoundManager.Instance.PlaySFX("SFX_ExitOpen");
+                    Debug.Log("[EndingDoor] 정문 열림 사운드 재생");
+                }
+
                 return; // 만약 [엔딩 B 조건이 충족되었다면] [엔딩 B를 실행한다]
             }
 

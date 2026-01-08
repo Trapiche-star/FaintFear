@@ -81,6 +81,13 @@ namespace FaintFear
             if (sequenceText != null)
                 sequenceText.ShowMessage("일부 시설들에 전력이 들어온 것 같다.");
 
+            //+ 사운드 재생 (전등 일부 ON)
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlaySFX("SFX_LightOn"); //+ 사운드 이름 확인 필요
+                Debug.Log("[PowerBox] 일부 전등 사운드 재생"); //+ 디버그용
+            }
+
             // ⭐ 런타임 상태 기록 (메인 전력 공급)
             RecordPowerBoxState();
         }

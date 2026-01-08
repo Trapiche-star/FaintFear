@@ -179,6 +179,9 @@ namespace FaintFear
             if (isDeath) return;
             isDeath = true;
 
+            if (SoundManager.Instance != null) //+ 게임 오버 SFX 재생
+                SoundManager.Instance.PlaySFX("SFX_GameOver");
+
             onDie?.Invoke(); // 연출용 (UI, 사운드 등)
 
             // ⭐ 체크포인트에서 재시작 요청

@@ -1,3 +1,4 @@
+using FaintFear;
 using System.Collections;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
@@ -28,12 +29,21 @@ public class Cabinet : Interactive
             // 닫혀있으면 -> 연다 (목표 각도 -90도)
             Debug.Log("문 여는 중");
             StartCoroutine(MoveCabinetRoutine(-180f, 180f));
+
+            //+ 문 여는 사운드 재생
+            if (SoundManager.Instance != null)
+                SoundManager.Instance.PlaySFX("SFX_CabinetOpen");
+
         }
         else
         {
             // 열려있으면 -> 닫는다 (목표 각도 0도)
             Debug.Log("문 닫는 중");
             StartCoroutine(MoveCabinetRoutine(-0f, 0f));
+
+            //+ 문 닫는 사운드 재생
+            if (SoundManager.Instance != null)
+                SoundManager.Instance.PlaySFX("SFX_CabinetClose");
         }
 
         // 상태 반전 (열림 <-> 닫힘)
