@@ -3868,6 +3868,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Corpse_02
       objectReference: {fileID: 0}
+    - target: {fileID: 308742241688923038, guid: 36f6a343d1d421a488156a0bc04a4c41, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8388719907757822968, guid: 36f6a343d1d421a488156a0bc04a4c41, type: 3}
       propertyPath: textManager
       value: 
