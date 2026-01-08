@@ -44,7 +44,8 @@ public class SaveData
 
     // ⭐ 퍼즐 인벤토리 상태
     public bool[] ownedLevers = new bool[4];
-    public bool hasBoltCutter = false;
+    public bool hasBoltCutter = false; // 볼트커터 보유 여부
+    public bool hasHook = false;       // 후크 보유 여부
 
     //분전반
     public PowerBoxData powerBoxData = new PowerBoxData();
@@ -68,6 +69,7 @@ public class ElevatorData
 {
     public bool isPowerSupplied = false;
 }
+
 [Serializable]
 public class MovedObjectData
 {
