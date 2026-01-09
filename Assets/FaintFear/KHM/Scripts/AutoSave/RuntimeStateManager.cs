@@ -28,6 +28,33 @@ namespace FaintFear
         // =====================
         // Unity
         // =====================
+        public static void RestoreRuntimeStateFromSaveData(SaveData data)
+        {
+            ClearRuntimeState();
+
+            if (data == null) return;
+
+            foreach (var id in data.destroyedObjects)
+                runtimeDestroyedObjects.Add(id);
+
+            foreach (var m in data.movedObjects)
+                runtimeMovedObjects[m.id] = m.position;
+
+            foreach (var d in data.doorStates)
+            {
+                if (!string.IsNullOrEmpty(d.id))
+                    runtimeDoorStates[d.id] = d;
+            }
+
+            foreach (var doc in data.readDocuments)
+                runtimeReadDocuments.Add(doc);
+
+            runtimePowerBoxState = data.powerBoxData;
+            runtimeElevatorState = data.elevatorData;
+            runtimeEndingState = data.endingData;
+
+            Debug.Log("[RuntimeState] SaveData → RuntimeState 복원 완료");
+        }
 
         private void Awake()
         {

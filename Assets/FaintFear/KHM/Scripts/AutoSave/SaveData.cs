@@ -30,7 +30,7 @@ public class SaveData
     // ⭐ 조명 영구 꺼짐 상태
     public bool lightsPermaOff;
 
-    // ⭐ 월드 오브젝트 상태
+    // ⭐ 월드 오브젝트 상태 (기본값 명시적 초기화)
     public List<string> destroyedObjects = new List<string>();
     public List<MovedObjectData> movedObjects = new List<MovedObjectData>();
 
@@ -45,15 +45,31 @@ public class SaveData
 
     // ⭐ 퍼즐 인벤토리 상태
     public bool[] ownedLevers = new bool[4];
-    public bool hasBoltCutter = false; // 볼트커터 보유 여부
-    public bool hasHook = false;       // 후크 보유 여부
+    public bool hasBoltCutter = false;
+    public bool hasHook = false;
 
-    //분전반
+    // 분전반
     public PowerBoxData powerBoxData = new PowerBoxData();
 
-    //엘리베이터
+    // 엘리베이터
     public ElevatorData elevatorData = new ElevatorData();
+
     public EndingData endingData = new EndingData();
+
+    // ⭐ 생성자 추가 (null 방지)
+    public SaveData()
+    {
+        // 리스트가 null이 아닌지 보장
+        if (destroyedObjects == null) destroyedObjects = new List<string>();
+        if (movedObjects == null) movedObjects = new List<MovedObjectData>();
+        if (doorStates == null) doorStates = new List<DoorStateData>();
+        if (readDocuments == null) readDocuments = new List<string>();
+        if (ownedKeys == null) ownedKeys = new List<string>();
+        if (ownedLevers == null) ownedLevers = new bool[4];
+        if (powerBoxData == null) powerBoxData = new PowerBoxData();
+        if (elevatorData == null) elevatorData = new ElevatorData();
+        if (endingData == null) endingData = new EndingData();
+    }
 }
 
 [Serializable]
@@ -81,7 +97,7 @@ public class MovedObjectData
 [Serializable]
 public class EndingData
 {
-    public bool[] activatedLevers = new bool[4]; // 0:빨강, 1:노랑, 2:검정, 3:파랑
+    public bool[] activatedLevers = new bool[4];
 }
 
 [Serializable]
@@ -95,8 +111,8 @@ public class EnemyRuntimeState
 [Serializable]
 public class DoorStateData
 {
-    public string id;           // 문 고유 ID
-    public bool isOpen;         // 열림/닫힘 상태
-    public bool isLocked;       // 잠금 상태
-    public bool wasSaved;       // 이미 체크포인트로 저장됨 (중복 저장 방지)
+    public string id;
+    public bool isOpen;
+    public bool isLocked;
+    public bool wasSaved;
 }

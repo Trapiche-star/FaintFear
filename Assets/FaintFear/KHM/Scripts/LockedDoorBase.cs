@@ -89,13 +89,17 @@ namespace FaintFear
 
         public virtual void Save(ref SaveData data)
         {
+            // ⭐ 기존 데이터 찾기
             var doorState = data.doorStates.Find(d => d.id == uniqueId);
+
             if (doorState == null)
             {
+                // 없으면 새로 추가
                 doorState = new DoorStateData { id = uniqueId };
                 data.doorStates.Add(doorState);
             }
 
+            // ⭐ 기존 데이터 업데이트
             doorState.isOpen = isOpen;
             doorState.isLocked = isLocked;
             doorState.wasSaved = wasSavedAsCheckpoint;

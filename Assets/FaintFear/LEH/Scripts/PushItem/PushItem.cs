@@ -49,11 +49,23 @@ namespace FaintFear
         public void Load(SaveData data)
         {
             var saved = data.movedObjects.Find(x => x.id == uniqueId);
-            if (saved == null) return;
+
+            if (saved == null)
+            {
+                Debug.Log($"[PushItem] {uniqueId} Load - movedObjects에 없음, 초기 위치 유지");
+                return;
+            }
+
+            Debug.Log($"[PushItem] {uniqueId} Load - 저장된 위치로 이동 시도");
+            Debug.Log($"  현재 위치: {transform.position}");
+            Debug.Log($"  목표 위치: {saved.position}");
 
             transform.position = saved.position;
             isCleared = true;
             DisablePushing();
+
+            Debug.Log($"[PushItem] {uniqueId} Load - 이동 완료, isCleared = true");
+            Debug.Log($"  최종 위치: {transform.position}");
         }
 
         // ===================== Unity =====================

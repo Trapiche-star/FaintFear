@@ -1,6 +1,7 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections.Generic;
 
 namespace FaintFear
 {
@@ -61,6 +62,16 @@ namespace FaintFear
         private void OnDisable()
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                // ⭐ 튜토리얼 상태도 함께 저장
+                SaveSystem.SaveGame("cheatKey_Save", TutorialCompleted, true);
+                Debug.Log("[GameManager] 치트키 자동 저장 완료 (모든 상태 병합)");
+            }
         }
 
         // =========================
@@ -188,11 +199,21 @@ namespace FaintFear
 
                 case GameStartMode.Continue:
                 case GameStartMode.RestartFromCheckpoint:
-                    Debug.Log($"[GameManager] {modeToExecute} 모드 - 저장 데이터 로드");
-                    RuntimeStateManager.ClearRuntimeState();
-                    LoadPlayerFromSave();
-                    SaveSystem.ApplyWorldObjectLoad();
-                    break;
+                    {
+                        Debug.Log($"[GameManager] {modeToExecute} 모드 - 저장 데이터 로드");
+
+                        SaveData data = SaveSystem.LoadPreview();
+
+                        // ⭐ 1. SaveData → RuntimeState 복원
+                        RuntimeStateManager.RestoreRuntimeStateFromSaveData(data);
+
+                        // ⭐ 2. 플레이어 로드
+                        LoadPlayerFromSave();
+
+                        // ⭐ 3. 1프레임 대기 후 Runtime 적용
+                        StartCoroutine(ApplyRuntimeStateDelayed());
+                        break;
+                    }
 
                 case GameStartMode.SceneTransition:
                     Debug.Log("[GameManager] SceneTransition 모드 - 런타임 상태 적용");
@@ -206,6 +227,21 @@ namespace FaintFear
             }
 
             sceneTransitionSpawnPoint = "";
+        }
+        private IEnumerator ApplyWorldObjectLoadDelayed()
+        {
+            // 1프레임 대기 (모든 Awake/Start 완료 대기)
+            yield return new WaitForEndOfFrame();
+
+            Debug.Log("[GameManager] 월드 오브젝트 로드 시작 (딜레이 후)");
+            SaveSystem.ApplyWorldObjectLoad();
+
+            Debug.Log("[GameManager] 월드 오브젝트 로드 완료");
+        }
+        private IEnumerator ApplyRuntimeStateDelayed()
+        {
+            yield return new WaitForEndOfFrame();
+            RuntimeStateManager.ApplyRuntimeState();
         }
 
         // =========================
@@ -309,53 +345,6 @@ namespace FaintFear
             SoundManager.Instance?.StopBGM();
             SceneManager.LoadScene("MainMenu");
         }
-        private void DestroyGlobalSingletons()
-        {
-            // 퍼즐 인벤토리
-            if (PuzzleInventory.Instance != null)
-            {
-                Destroy(PuzzleInventory.Instance.gameObject);
-                PuzzleInventory.Instance = null;
-                Debug.Log("[GameManager] PuzzleInventory 파괴");
-            }
-
-            // 문서 퍼즐
-            if (DocumentPuzzleManager.Instance != null)
-            {
-                Destroy(DocumentPuzzleManager.Instance.gameObject);
-                DocumentPuzzleManager.Instance = null;
-                Debug.Log("[GameManager] DocumentPuzzleManager 파괴");
-            }
-
-            // 엔딩
-            if (EndingManager.Instance != null)
-            {
-                Destroy(EndingManager.Instance.gameObject);
-                EndingManager.Instance = null;
-                Debug.Log("[GameManager] EndingManager 파괴");
-            }
-
-            // 엘리베이터
-            if (ElevatorManager.Instance != null)
-            {
-                Destroy(ElevatorManager.Instance.gameObject);
-                ElevatorManager.Instance = null;
-                Debug.Log("[GameManager] ElevatorManager 파괴");
-            }
-
-            // PlayerStatus (Singleton<T>)
-            if (PlayerStatus.Instance != null)
-            {
-                Destroy(PlayerStatus.Instance.gameObject);
-                Debug.Log("[GameManager] PlayerStatus 파괴");
-            }
-
-            // AutoSaveManager
-            if (AutoSaveManager.Instance != null)
-            {
-                Destroy(AutoSaveManager.Instance.gameObject);
-                Debug.Log("[GameManager] AutoSaveManager 파괴");
-            }
-        }
+        
     }
 }

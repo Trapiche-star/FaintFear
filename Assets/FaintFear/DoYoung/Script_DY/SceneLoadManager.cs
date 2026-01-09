@@ -18,9 +18,6 @@ namespace FaintFear
 
         private string currentSceneName;
 
-        // ⭐ 제거: 사용하지 않는 변수
-        // private static string nextSpawnPointName;
-
         public static bool IsSceneTransitioning { get; private set; }
 
         private void Awake()
@@ -42,8 +39,6 @@ namespace FaintFear
             if (fadeImage != null)
             {
                 fadeImage.color = Color.black;
-
-                // ⭐ 추가: 시작 시 페이드 인
                 StartCoroutine(FadeIn());
             }
         }
@@ -74,30 +69,79 @@ namespace FaintFear
 
         private IEnumerator LoadSceneRoutine(string sceneName)
         {
-            // 1. 페이드 아웃
+            // ⭐ 1. 씬 이동 전에 현재 상태 저장
+            SaveBeforeSceneTransition();
+
+            // 2. 페이드 아웃
             yield return FadeOut();
 
-            // 2. 씬 로드
+            // 3. 씬 로드
             currentSceneName = sceneName;
 
             AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
 
-            // 로딩 진행률 표시 (선택사항)
             while (!asyncLoad.isDone)
             {
-                // 필요하면 로딩 바 업데이트
                 yield return null;
             }
 
-            // 3. 씬 로드 완료 후 대기
+            // 4. 씬 로드 완료 후 대기
             yield return new WaitForEndOfFrame();
 
-            // 4. 페이드 인
+            // 5. 페이드 인
             yield return FadeIn();
 
             IsSceneTransitioning = false;
 
             Debug.Log($"[SceneLoadManager] 씬 로드 완료: {sceneName}");
+        }
+
+        // ⭐ 추가: 씬 전환 전 저장
+        private void SaveBeforeSceneTransition()
+        {
+            // 게임플레이 씬에서만 저장 (메뉴 등은 제외)
+            string currentScene = SceneManager.GetActiveScene().name;
+
+            // 메뉴나 인트로 씬은 저장하지 않음
+            if (currentScene == "MainMenu" || currentScene == "Intro")
+            {
+                Debug.Log("[SceneLoadManager] 메뉴/인트로 씬은 저장 생략");
+                return;
+            }
+
+            // 플레이어가 존재하는지 확인 (게임플레이 중인지)
+            GameObject player = GameObject.FindWithTag("Player");
+            if (player == null)
+            {
+                Debug.Log("[SceneLoadManager] 플레이어 없음 - 저장 생략");
+                return;
+            }
+
+            // ⭐ 핵심: 런타임 상태를 SaveData에 병합한 후 저장
+            Debug.Log("[SceneLoadManager] 씬 전환 전 자동 저장 실행 (런타임 상태 포함)");
+
+            // 기존 저장 파일 로드
+            SaveData data = SaveSystem.LoadPreview() ?? new SaveData();
+
+            // 현재 플레이어 상태 업데이트
+            data.mental = PlayerStatus.Instance.currentMentalPower;
+            data.battery = PlayerStatus.Instance.currentBattery;
+            data.batteryCount = PlayerStatus.Instance.batteryCount;
+            data.playerPosition = player.transform.position;
+            data.playerRotation = player.transform.rotation;
+            data.savedSceneName = currentScene;
+            data.tutorialCompleted = GameManager.TutorialCompleted;
+
+            // ⭐ 런타임 상태를 SaveData에 병합
+            RuntimeStateManager.MergeRuntimeStateToSaveData(ref data);
+
+            // 저장
+            System.IO.File.WriteAllText(
+                System.IO.Path.Combine(UnityEngine.Application.persistentDataPath, "save.json"),
+                JsonUtility.ToJson(data, true)
+            );
+
+            Debug.Log("[SceneLoadManager] 씬 전환 자동 저장 완료 (런타임 상태 병합됨)");
         }
 
         // =========================
@@ -144,7 +188,6 @@ namespace FaintFear
             fadeImage.color = Color.black;
         }
 
-        // ⭐ 추가: 디버그용 - 현재 상태 확인
         public string GetCurrentStatus()
         {
             return $"현재 씬: {currentSceneName}, 전환 중: {IsSceneTransitioning}";

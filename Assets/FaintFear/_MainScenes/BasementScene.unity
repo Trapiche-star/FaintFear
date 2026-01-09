@@ -2784,7 +2784,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isLocked: 1
   isOpen: 0
-  uniqueId: 
+  uniqueId: Basement_Door_03
   alwaysUnlocked: 0
   sequenceText: {fileID: 186963925}
   isDoubleDoor: 0
@@ -6008,7 +6008,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isLocked: 0
   isOpen: 0
-  uniqueId: 
+  uniqueId: Basement_SceneDoor_01
   alwaysUnlocked: 1
   sequenceText: {fileID: 186963925}
   targetSceneName: Level01
@@ -7813,7 +7813,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isLocked: 1
   isOpen: 0
-  uniqueId: 
+  uniqueId: Basement_Door_04
   alwaysUnlocked: 0
   sequenceText: {fileID: 186963925}
   isDoubleDoor: 0
